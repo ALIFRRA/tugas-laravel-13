@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    body {
+        @apply bg-shuka-mist text-shuka-ink antialiased;
+    }
+}
+
+@layer components {
+    .font-display {
+        font-family: Caveat, cursive;
+    }
+
+    .page-title {
+        @apply font-display text-3xl font-semibold tracking-wide text-slate-800 sm:text-4xl;
+    }
+
+    .soft-panel {
+        @apply border border-shuka-line bg-white;
+    }
+
+    .notebook-edge {
+        @apply relative border border-shuka-line bg-white;
+        box-shadow: inset 3px 0 0 #F9A8D4;
+    }
+
+    .guitar-rule {
+        @apply border-b border-shuka-string;
+    }
+
+    .bocchi-mascot {
+        @apply object-contain object-bottom;
+        background: transparent;
+        border: 0;
+    }
+}
