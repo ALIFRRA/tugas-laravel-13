@@ -4,7 +4,6 @@ namespace App\Http\Requests;
 
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class UpdateUserProfileRequest extends FormRequest
 {
@@ -17,7 +16,8 @@ class UpdateUserProfileRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'avatar' => ['required', 'string', Rule::in(User::avatarPresetKeys())],
+            'avatar' => ['nullable', 'string'],
+            'avatar_file' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp,gif', 'max:2048'],
         ];
     }
 }

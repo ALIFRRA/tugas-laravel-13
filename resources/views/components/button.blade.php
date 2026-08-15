@@ -5,13 +5,13 @@
 ])
 
 @php
-    $base = 'inline-flex items-center justify-center px-4 py-2 text-sm font-medium transition border';
+    $base = 'inline-flex items-center justify-center px-4 py-2 text-xs font-semibold rounded transition-colors shadow-sm';
     $variants = [
-        'primary' => 'border-shuka-pink bg-shuka-pink text-white hover:bg-pink-400',
-        'secondary' => 'border-shuka-line bg-white text-slate-700 hover:border-shuka-pink hover:text-shuka-pink',
-        'danger' => 'border-rose-300 bg-white text-rose-600 hover:bg-rose-50',
+        'primary' => 'bg-pink-500 hover:bg-pink-600 text-white',
+        'secondary' => 'bg-white hover:bg-slate-50 text-slate-700 border border-slate-300',
+        'danger' => 'bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200',
     ];
-    $class = $base.' '.($variants[$variant] ?? $variants['primary']);
+    $class = $base . ' ' . ($variants[$variant] ?? $variants['primary']);
 @endphp
 
 @if($href)

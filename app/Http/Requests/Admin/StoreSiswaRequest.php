@@ -21,6 +21,8 @@ class StoreSiswaRequest extends FormRequest
             'jenis_kelamin' => ['required', Rule::in(['L', 'P'])],
             'alamat' => ['required', 'string'],
             'tanggal_lahir' => ['required', 'date'],
+            'email' => ['nullable', 'email', 'max:255', 'unique:users,email'],
+            'password' => ['nullable', 'string', 'min:8'],
         ];
     }
 }

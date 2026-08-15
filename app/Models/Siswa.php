@@ -34,4 +34,14 @@ class Siswa extends Model
     {
         return $this->hasMany(Nilai::class);
     }
+
+    public function pelanggarans(): HasMany
+    {
+        return $this->hasMany(Pelanggaran::class);
+    }
+
+    public function totalPoinPelanggaran(): int
+    {
+        return (int) $this->pelanggarans()->sum('poin');
+    }
 }

@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Informasi Akademik — Shuka Highschool</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#fdf2f8',
+                            100: '#fce7f3',
+                            200: '#fbcfe8',
+                            300: '#f9a8d4',
+                            400: '#f472b6',
+                            500: '#ec4899', /* Hitori Gotoh Signature Pink */
+                            600: '#db2777',
+                            700: '#be185d',
+                            800: '#9d174d',
+                            900: '#831843',
+                        },
+                        slate: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            300: '#cbd5e1',
+                            400: '#94a3b8',
+                            500: '#64748b',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        }
+                    },
+                    borderRadius: {
+                        'none': '0',
+                        'sm': '2px',
+                        DEFAULT: '4px',
+                        'md': '6px',
+                        'lg': '8px',
+                    },
+                    boxShadow: {
+                        'none': 'none',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Flat Design Rules: No Drop Shadows, Crisp 1px Borders, Clean Solid Colors */
+        * {
+            box-sizing: border-box;
+            border-color: #e2e8f0;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            -webkit-font-smoothing: antialiased;
+        }
+        /* Custom Scrollbar Flat Style */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 2px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        /* No transition glow or shadows */
+        .flat-card {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+        }
+        .flat-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 3px;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen flex flex-col antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- MOBILE OVERLAY BACKDROP -->
+    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900 bg-opacity-40 z-30 hidden lg:hidden transition-opacity"></div>
+
+    <!-- 1. SIDEBAR KONVENSIONAL (100% Fixed, Non-Floating, Left Edge Full Height) -->
+    <aside id="main-sidebar" class="fixed top-0 bottom-0 left-0 w-64 bg-white border-r border-slate-200 z-40 flex flex-col justify-between transition-transform duration-200 ease-in-out -translate-x-full lg:translate-x-0">
+        
+        <!-- Sidebar Header: School Logo & Info -->
+        <div>
+            <div class="h-16 flex items-center justify-between px-5 border-b border-slate-200 bg-white">
+                <a href="#" class="flex items-center gap-3">
+                    <!-- Flat School Crest Icon -->
+                    <div class="w-9 h-9 bg-brand-500 text-white flex items-center justify-center font-bold text-lg rounded-sm shrink-0">
+                        秀
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-sm font-bold tracking-tight text-slate-900 uppercase">Shuka Highschool</span>
+                        <span class="text-[11px] font-medium text-slate-500">秀華高校 SIA System</span>
+                    </div>
+                </a>
+                <button onclick="toggleSidebar()" class="lg:hidden text-slate-400 hover:text-slate-700 p-1">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <!-- Academic Year Label -->
+            <div class="px-5 py-2.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between text-xs text-slate-600">
+                <span class="font-medium">T.A. 2026/2027 Ganjil</span>
+                <span class="flat-badge bg-emerald-100 text-emerald-800 border border-emerald-200">Semester 1</span>
+            </div>
+
+            <!-- Navigation Links List -->
+            <nav class="p-3 space-y-1 overflow-y-auto max-h-[calc(100vh-170px)]">
+                <div class="px-3 py-1.5 text-[10px] font-bold tracking-wider text-slate-400 uppercase">Utama</div>
+                
+                <!-- 1. Dashboard (Active) -->
+                <a href="#dashboard" class="flex items-center gap-3 px-3 py-2 text-sm font-semibold text-brand-700 bg-brand-50 border border-brand-200 rounded-sm">
+                    <svg class="w-4 h-4 text-brand-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                    <span>Dashboard</span>
+                </a>
+
+                <!-- 2. Data Guru -->
+                <a href="#guru" onclick="showNotification('Membuka Modul Data Guru')" class="flex items-center justify-between px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-sm transition-colors">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        <span>Data Guru</span>
+                    </div>
+                    <span class="text-xs bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded-sm font-semibold" id="sidebar-guru-count">45</span>
+                </a>
+
+                <!-- 3. Data Murid -->
+                <a href="#murid" onclick="scrollToTable()" class="flex items-center justify-between px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-sm transition-colors">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                        <span>Data Murid</span>
+                    </div>
+                    <span class="text-xs bg-brand-100 text-brand-700 px-1.5 py-0.5 rounded-sm font-semibold" id="sidebar-murid-count">600</span>
+                </a>
+
+                <!-- 4. Mata Pelajaran -->
+                <a href="#mapel" onclick="showNotification('Membuka Modul Mata Pelajaran')" class="flex items-center justify-between px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-sm transition-colors">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                        <span>Mata Pelajaran</span>
+                    </div>
+                    <span class="text-xs bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded-sm font-semibold" id="sidebar-mapel-count">28</span>
+                </a>
+
+                <!-- 5. Jadwal Kelas -->
+                <a href="#jadwal" onclick="scrollToJadwal()" class="flex items-center gap-3 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-sm transition-colors">
+                    <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    <span>Jadwal Kelas</span>
+                </a>
+
+                <!-- 6. Rekap Nilai -->
+                <a href="#nilai" onclick="showNotification('Membuka Modul Rekap Nilai')" class="flex items-center gap-3 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-sm transition-colors">
+                    <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                    <span>Rekap Nilai</span>
+                </a>
+
+                <div class="pt-2 px-3 py-1.5 text-[10px] font-bold tracking-wider text-slate-400 uppercase">Kesiswaan & Info</div>
+
+                <!-- 7. Agenda Kessoku (Ekstrakurikuler) -->
+                <a href="#kessoku" onclick="showNotification('Agenda Kessoku Band & Klub Seni Terjadwal')" class="flex items-center justify-between px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-sm transition-colors">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-4 h-4 text-brand-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
+                        <span>Agenda Kessoku</span>
+                    </div>
+                    <span class="flat-badge bg-rose-100 text-rose-700 border border-rose-200 text-[10px]">Ekskul</span>
+                </a>
+
+                <!-- 8. Pengumuman -->
+                <a href="#pengumuman" onclick="showNotification('Pengumuman Festival Budaya Shuka')" class="flex items-center gap-3 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-sm transition-colors">
+                    <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/></svg>
+                    <span>Pengumuman</span>
+                </a>
+
+                <!-- 9. Laporan Akademik -->
+                <a href="#laporan" onclick="showNotification('Modul Laporan Akademik Siap Diunduh')" class="flex items-center gap-3 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-sm transition-colors">
+                    <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    <span>Laporan Akademik</span>
+                </a>
+
+                <div class="pt-2 px-3 py-1.5 text-[10px] font-bold tracking-wider text-slate-400 uppercase">Sistem</div>
+
+                <!-- 10. Pengaturan -->
+                <a href="#pengaturan" onclick="showNotification('Menu Pengaturan Sistem')" class="flex items-center gap-3 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-sm transition-colors">
+                    <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    <span>Pengaturan</span>
+                </a>
+            </nav>
+        </div>
+
+        <!-- Sidebar Footer: Server Status Flat Box -->
+        <div class="p-3 border-t border-slate-200 bg-slate-50">
+            <div class="p-2.5 bg-white border border-slate-200 rounded-sm">
+                <div class="flex items-center justify-between mb-1">
+                    <span class="text-[11px] font-semibold text-slate-500">Status Server</span>
+                    <span class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
+                </div>
+                <div class="text-xs font-bold text-slate-800">SIA Shuka Online</div>
+                <div class="text-[10px] text-slate-400 mt-0.5">Database MySQL Connected</div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- 2. MAIN LAYOUT WRAPPER (Offset by sidebar width on desktop) -->
+    <div class="lg:pl-64 flex flex-col min-h-screen">
+
+        <!-- TOP BAR (Sticky, Flat, User Profile Hitori Admin) -->
+        <header class="sticky top-0 z-20 h-16 bg-white border-b border-slate-200 px-4 sm:px-6 flex items-center justify-between">
+            
+            <!-- Left Side: Toggle Mobile & Breadcrumb -->
+            <div class="flex items-center gap-3">
+                <button onclick="toggleSidebar()" class="lg:hidden p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-sm border border-slate-200">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+                <div class="flex items-center gap-2 text-xs sm:text-sm">
+                    <span class="font-medium text-slate-400">Portal Utama</span>
+                    <span class="text-slate-300">/</span>
+                    <span class="font-bold text-slate-800">Dashboard Administrator</span>
+                </div>
+            </div>
+
+            <!-- Right Side: Search, Date, User Profile (Hitori Admin) -->
+            <div class="flex items-center gap-3 sm:gap-4">
+                
+                <!-- Quick Global Search Input -->
+                <div class="relative hidden md:block w-64">
+                    <input type="text" id="quick-search-input" onkeyup="handleGlobalSearch(this.value)" placeholder="Cari nama murid, NIS, guru..." class="w-full pl-8 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-brand-500 focus:bg-white">
+                    <svg class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                </div>
+
+                <!-- Realtime Date Badge -->
+                <div class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 bg-slate-100 border border-slate-200 rounded-sm text-xs text-slate-600 font-medium">
+                    <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    <span id="realtime-date">Sabtu, 15 Agustus 2026</span>
+                </div>
+
+                <!-- User Profile Badge (Hitori Admin - Static Avatar, No Glow) -->
+                <div class="flex items-center gap-3 pl-3 border-l border-slate-200">
+                    <!-- Static Avatar Without Glowing Effect -->
+                    <div class="w-9 h-9 rounded-sm bg-brand-100 border border-brand-300 flex items-center justify-center text-brand-700 font-bold text-sm overflow-hidden shrink-0">
+                        <img src="images/bocchi-shy.png" alt="Hitori Admin" onerror="this.src='images/bocchi.png'; this.onerror=function(){this.style.display='none'; document.getElementById('avatar-fallback').style.display='block';}" class="w-full h-full object-cover">
+                        <span id="avatar-fallback" style="display:none;" class="text-xs font-bold text-brand-700">HA</span>
+                    </div>
+                    <div class="hidden sm:flex flex-col text-left">
+                        <span class="text-xs font-bold text-slate-900 leading-tight">Hitori Admin</span>
+                        <span class="text-[11px] font-medium text-brand-600">Administrator Utama</span>
+                    </div>
+                    <button onclick="showNotification('Profil Hitori Admin: Hak Akses Penuh Aktif')" title="Menu Profil" class="text-slate-400 hover:text-slate-700 p-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                </div>
+
+            </div>
+        </header>
+
+        <!-- 3. DASHBOARD MAIN CONTENT AREA -->
+        <main class="flex-1 p-4 sm:p-6 lg:p-8 space-y-6">
+            
+            <!-- Toast Notification Container -->
+            <div id="toast" class="fixed bottom-5 right-5 z-50 bg-slate-900 text-white text-xs font-semibold px-4 py-3 rounded-sm border border-slate-700 hidden flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-brand-400"></span>
+                <span id="toast-message">Pesan sistem</span>
+            </div>
+
+            <!-- Page Title & Quick Actions Header -->
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-slate-200">
+                <div>
+                    <h1 class="text-2xl font-bold tracking-tight text-slate-900">Dasbor Akademik Shuka Highschool</h1>
+                    <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Pusat data informasi guru, murid, mata pelajaran, dan jadwal kegiatan sekolah.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="refreshData()" class="px-3 py-1.5 text-xs font-semibold text-slate-700 bg-white border border-slate-300 rounded-sm hover:bg-slate-100 flex items-center gap-1.5 transition-colors">
+                        <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                        <span>Muat Ulang Data</span>
+                    </button>
+                    <button onclick="openAddStudentModal()" class="px-3 py-1.5 text-xs font-semibold text-white bg-brand-500 hover:bg-brand-600 rounded-sm flex items-center gap-1.5 transition-colors">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                        <span>Tambah Murid Baru</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- PANEL RINGKASAN SISTEM (Solid Metric Cards, Flat Crisp Border) -->
+            <section aria-labelledby="ringkasan-title">
+                <div class="flex items-center justify-between mb-3">
+                    <h2 id="ringkasan-title" class="text-sm font-bold uppercase tracking-wider text-slate-700 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 bg-brand-500 inline-block rounded-none"></span>
+                        Ringkasan Sistem
+                    </h2>
+                    <span class="text-xs text-slate-500 font-medium" id="data-status-text">Data termutakhir: 600 Murid, 45 Guru, 28 Mapel</span>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+                    
+                    <!-- 1. Total Murid -->
+                    <div class="flat-card p-4 border-l-4 border-l-brand-500">
+                        <p class="text-xs font-medium text-slate-500">Total Murid</p>
+                        <p class="text-2xl font-bold text-slate-900 mt-1" id="stat-total-murid">600</p>
+                        <div class="mt-2 flex items-center text-[11px] text-emerald-700 font-semibold">
+                            <span>100% Terverifikasi</span>
+                        </div>
+                    </div>
+
+                    <!-- 2. Total Guru -->
+                    <div class="flat-card p-4 border-l-4 border-l-slate-700">
+                        <p class="text-xs font-medium text-slate-500">Tenaga Pendidik</p>
+                        <p class="text-2xl font-bold text-slate-900 mt-1" id="stat-total-guru">45</p>
+                        <div class="mt-2 flex items-center text-[11px] text-slate-600 font-medium">
+                            <span>Guru & Staf Pengajar</span>
+                        </div>
+                    </div>
+
+                    <!-- 3. Mata Pelajaran -->
+                    <div class="flat-card p-4 border-l-4 border-l-brand-400">
+                        <p class="text-xs font-medium text-slate-500">Mata Pelajaran</p>
+                        <p class="text-2xl font-bold text-slate-900 mt-1" id="stat-total-mapel">28</p>
+                        <div class="mt-2 flex items-center text-[11px] text-brand-600 font-semibold">
+                            <span>Termasuk Seni Musik</span>
+                        </div>
+                    </div>
+
+                    <!-- 4. Rombongan Belajar / Kelas -->
+                    <div class="flat-card p-4 border-l-4 border-l-indigo-600">
+                        <p class="text-xs font-medium text-slate-500">Jumlah Rombel</p>
+                        <p class="text-2xl font-bold text-slate-900 mt-1">18</p>
+                        <div class="mt-2 flex items-center text-[11px] text-slate-600 font-medium">
+                            <span>Kelas X, XI, & XII</span>
+                        </div>
+                    </div>
+
+                    <!-- 5. Ekskul & Kessoku Band -->
+                    <div class="flat-card p-4 border-l-4 border-l-rose-500">
+                        <p class="text-xs font-medium text-slate-500">Ekskul Aktif</p>
+                        <p class="text-2xl font-bold text-slate-900 mt-1">12</p>
+                        <div class="mt-2 flex items-center text-[11px] text-rose-700 font-semibold">
+                            <span>Kessoku Band Priority</span>
+                        </div>
+                    </div>
+
+                    <!-- 6. Rerata Nilai Sekolah -->
+                    <div class="flat-card p-4 border-l-4 border-l-emerald-600">
+                        <p class="text-xs font-medium text-slate-500">Rerata Akademik</p>
+                        <p class="text-2xl font-bold text-slate-900 mt-1" id="stat-rerata-nilai">86.8</p>
+                        <div class="mt-2 flex items-center text-[11px] text-emerald-700 font-semibold">
+                            <span>Kategori: Amat Baik</span>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- MAIN GRID: DUA KOLOM (Kiri: Jadwal Hari Ini & Info Sekolah | Kanan: Daftar Murid 600 Data) -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+                <!-- KOLOM KIRI (4 SPAN): JADWAL HARI INI & PENGUMUMAN SEKOLAH -->
+                <div class="lg:col-span-4 space-y-6">
+                    
+                    <!-- PANEL JADWAL HARI INI -->
+                    <section id="jadwal-section" class="flat-card">
+                        <div class="p-4 border-b border-slate-200 flex items-center justify-between bg-white">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2 h-2 bg-brand-500"></span>
+                                <h2 class="text-sm font-bold text-slate-900">Jadwal Hari Ini</h2>
+                            </div>
+                            <span class="flat-badge bg-brand-50 text-brand-700 border border-brand-200 text-xs font-semibold">Sabtu Aktif</span>
+                        </div>
+
+                        <!-- Schedule Items Container (Generated Dynamically) -->
+                        <div class="divide-y divide-slate-100 p-2" id="jadwal-container">
+                            <!-- Populated by JavaScript -->
+                        </div>
+
+                        <div class="p-3 bg-slate-50 border-t border-slate-200 text-center">
+                            <button onclick="showNotification('Membuka Jadwal Lengkap Seluruh Kelas')" class="text-xs font-bold text-brand-600 hover:text-brand-800">Lihat Seluruh Jadwal Mingguan (18 Kelas) →</button>
+                        </div>
+                    </section>
+
+                    <!-- PANEL AGENDA KESSOKU & PENGUMUMAN SHUKA -->
+                    <section class="flat-card">
+                        <div class="p-4 border-b border-slate-200 bg-white flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2 h-2 bg-rose-500"></span>
+                                <h2 class="text-sm font-bold text-slate-900">Agenda Kessoku & Kegiatan</h2>
+                            </div>
+                            <span class="flat-badge bg-rose-50 text-rose-700 border border-rose-200">Ekskul</span>
+                        </div>
+                        <div class="p-4 space-y-3">
+                            <div class="p-3 bg-slate-50 border border-slate-200 rounded-sm">
+                                <div class="flex items-center justify-between text-xs font-semibold text-slate-500 mb-1">
+                                    <span>Latihan Band Livehouse STARRY</span>
+                                    <span class="text-brand-600 font-bold">16:30 JST</span>
+                                </div>
+                                <p class="text-xs font-bold text-slate-800">Sesi Latihan Rutin Kessoku Band</p>
+                                <p class="text-[11px] text-slate-600 mt-1">Personel: Hitori Gotoh (Lead), Ikuyo Kita (Voc/Gt), Ryo Yamada (Bass), Nijika Ijichi (Dr).</p>
+                            </div>
+
+                            <div class="p-3 bg-slate-50 border border-slate-200 rounded-sm">
+                                <div class="flex items-center justify-between text-xs font-semibold text-slate-500 mb-1">
+                                    <span>Festival Budaya Shuka (Shuka-sai)</span>
+                                    <span class="text-slate-600 font-bold">28 Ags 2026</span>
+                                </div>
+                                <p class="text-xs font-bold text-slate-800">Persiapan Panggung Utama & Booth Kelas</p>
+                                <p class="text-[11px] text-slate-600 mt-1">Seluruh wali kelas dan pengurus OSIS mengumpulkan form izin tata panggung.</p>
+                            </div>
+
+                            <div class="p-3 bg-slate-50 border border-slate-200 rounded-sm">
+                                <div class="flex items-center justify-between text-xs font-semibold text-slate-500 mb-1">
+                                    <span>Konseling Akademik & Karier Musik</span>
+                                    <span class="text-slate-600 font-bold">Setiap Kamis</span>
+                                </div>
+                                <p class="text-xs font-bold text-slate-800">Bimbingan Konseling Bersama Seika Ijichi & PA-san</p>
+                                <p class="text-[11px] text-slate-600 mt-1">Pendaftaran sesi konsultasi dibuka di ruang Tata Usaha Shuka Highschool.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+
+                <!-- KOLOM KANAN (8 SPAN): TABEL DAFTAR MURID TERBARU (600 DATA SEEDER DINAMIS) -->
+                <div class="lg:col-span-8 space-y-4">
+                    
+                    <section id="murid-table-card" class="flat-card">
+                        
+                        <!-- Table Card Header & Filters -->
+                        <div class="p-4 border-b border-slate-200 bg-white">
+                            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-2 h-2 bg-brand-500"></span>
+                                        <h2 class="text-sm font-bold text-slate-900">Daftar Murid Terbaru & Data Akademik</h2>
+                                    </div>
+                                    <p class="text-xs text-slate-500 mt-0.5">Menampilkan data murid terdaftar dari total <strong id="filter-total-indicator">600</strong> siswa di database.</p>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <!-- Filter Kelas -->
+                                    <select id="filter-kelas" onchange="filterStudents()" class="px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-sm text-slate-800 font-medium focus:outline-none focus:border-brand-500">
+                                        <option value="ALL">Semua Kelas (X - XII)</option>
+                                        <option value="X-1">Kelas X-1 (Kelas Hitori & Kita)</option>
+                                        <option value="X-2">Kelas X-2 (Kelas Nijika & Ryo)</option>
+                                        <option value="X-3">Kelas X-3</option>
+                                        <option value="XI-1">Kelas XI-1</option>
+                                        <option value="XI-2">Kelas XI-2</option>
+                                        <option value="XII-1">Kelas XII-1</option>
+                                        <option value="XII-2">Kelas XII-2</option>
+                                    </select>
+                                    <!-- Filter Status -->
+                                    <select id="filter-status" onchange="filterStudents()" class="px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-sm text-slate-800 font-medium focus:outline-none focus:border-brand-500">
+                                        <option value="ALL">Semua Status</option>
+                                        <option value="Aktif">Aktif</option>
+                                        <option value="Kessoku Band">Kessoku Band</option>
+                                        <option value="Cuti">Cuti</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Live Search within Student Table -->
+                            <div class="mt-3 flex items-center gap-2">
+                                <div class="relative flex-1">
+                                    <input type="text" id="student-search-input" onkeyup="filterStudents()" placeholder="Ketik nama (misal: Hitori Gotoh, Ikuyo, Nijika, Ryo) atau NIS..." class="w-full pl-8 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-brand-500 focus:bg-white">
+                                    <svg class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                                </div>
+                                <button onclick="resetStudentFilters()" class="px-3 py-1.5 text-xs font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 border border-slate-300 rounded-sm">
+                                    Reset
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Data Table Container (Responsive Scroll Wrapper) -->
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold uppercase tracking-wider">
+                                        <th class="py-2.5 px-4">NIS</th>
+                                        <th class="py-2.5 px-4">Nama Siswa</th>
+                                        <th class="py-2.5 px-4">Kelas</th>
+                                        <th class="py-2.5 px-4">L/P</th>
+                                        <th class="py-2.5 px-4">Klub / Ekskul</th>
+                                        <th class="py-2.5 px-4 text-center">Nilai Rerata</th>
+                                        <th class="py-2.5 px-4">Status</th>
+                                        <th class="py-2.5 px-4 text-center">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="student-table-body" class="divide-y divide-slate-200 bg-white">
+                                    <!-- Populated dynamically via JS Seeder -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Table Pagination Bar -->
+                        <div class="p-3 bg-white border-t border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs text-slate-600">
+                            <div id="pagination-info">
+                                Menampilkan data 1 - 10 dari 600 murid
+                            </div>
+                            <div class="flex items-center gap-1" id="pagination-buttons">
+                                <!-- Generated by JS -->
+                            </div>
+                        </div>
+
+                    </section>
+
+                </div>
+
+            </div>
+
+        </main>
+
+        <!-- FOOTER (Flat Standard Academic Footer) -->
+        <footer class="mt-auto bg-white border-t border-slate-200 px-6 py-4 text-xs text-slate-500 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+            <div>
+                <span class="font-bold text-slate-700">Sistem Informasi Akademik Shuka Highschool</span> &copy; 2026. Terinspirasi dari anime <em>Bocchi the Rock!</em>
+            </div>
+            <div class="flex items-center gap-4 text-[11px]">
+                <a href="#bantuan" onclick="showNotification('Pusat Bantuan Akademik')" class="hover:text-brand-600">Pusat Bantuan</a>
+                <span>•</span>
+                <a href="#kebijakan" onclick="showNotification('Kebijakan Privasi Data Murid')" class="hover:text-brand-600">Privasi Siswa</a>
+                <span>•</span>
+                <span class="text-slate-400">Versi 2.4.0-flat</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- STUDENT DETAIL MODAL -->
+    <div id="student-modal" class="fixed inset-0 z-50 bg-slate-900 bg-opacity-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white border border-slate-300 rounded-sm w-full max-w-lg overflow-hidden">
+            <div class="px-5 py-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 bg-brand-500"></span>
+                    <h3 class="text-sm font-bold text-slate-900" id="modal-student-title">Detail Profil Murid</h3>
+                </div>
+                <button onclick="closeStudentModal()" class="text-slate-400 hover:text-slate-700 text-lg font-bold leading-none">&times;</button>
+            </div>
+            <div class="p-5 space-y-4 text-xs" id="modal-student-content">
+                <!-- Dynamically injected -->
+            </div>
+            <div class="px-5 py-3 bg-slate-50 border-t border-slate-200 flex justify-end gap-2">
+                <button onclick="closeStudentModal()" class="px-3 py-1.5 bg-white border border-slate-300 text-slate-700 font-semibold rounded-sm hover:bg-slate-100">Tutup</button>
+                <button onclick="showNotification('Data catatan siswa berhasil dicetak'); closeStudentModal();" class="px-3 py-1.5 bg-brand-500 hover:bg-brand-600 text-white font-semibold rounded-sm">Cetak Rapor Ringkas</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADD STUDENT MODAL -->
+    <div id="add-modal" class="fixed inset-0 z-50 bg-slate-900 bg-opacity-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white border border-slate-300 rounded-sm w-full max-w-md overflow-hidden">
+            <div class="px-5 py-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 bg-brand-500"></span>
+                    <h3 class="text-sm font-bold text-slate-900">Tambah Data Murid Baru</h3>
+                </div>
+                <button onclick="closeAddModal()" class="text-slate-400 hover:text-slate-700 text-lg font-bold leading-none">&times;</button>
+            </div>
+            <form onsubmit="handleAddStudent(event)" class="p-5 space-y-3 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Nama Lengkap Murid</label>
+                    <input type="text" id="new-nama" required placeholder="Contoh: Yoyoko Ohtsuki" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-sm focus:outline-none focus:border-brand-500">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Kelas</label>
+                        <select id="new-kelas" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-sm focus:outline-none focus:border-brand-500">
+                            <option value="X-1">Kelas X-1</option>
+                            <option value="X-2">Kelas X-2</option>
+                            <option value="X-3">Kelas X-3</option>
+                            <option value="XI-1">Kelas XI-1</option>
+                            <option value="XII-1">Kelas XII-1</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Jenis Kelamin</label>
+                        <select id="new-gender" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-sm focus:outline-none focus:border-brand-500">
+                            <option value="P">Perempuan (P)</option>
+                            <option value="L">Laki-laki (L)</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Klub / Ekstrakurikuler</label>
+                    <input type="text" id="new-klub" placeholder="Contoh: SICK HACK Band / Teater" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-sm focus:outline-none focus:border-brand-500">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Nilai Rerata Masuk</label>
+                    <input type="number" step="0.1" min="50" max="100" id="new-nilai" value="88.0" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-sm focus:outline-none focus:border-brand-500">
+                </div>
+                <div class="pt-2 flex justify-end gap-2">
+                    <button type="button" onclick="closeAddModal()" class="px-3 py-1.5 bg-white border border-slate-300 text-slate-700 font-semibold rounded-sm hover:bg-slate-100">Batal</button>
+                    <button type="submit" class="px-3 py-1.5 bg-brand-500 hover:bg-brand-600 text-white font-semibold rounded-sm">Simpan ke Database</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         JAVASCRIPT DATA SEEDER & DASHBOARD INTERACTIVITY ENGINE
+         Menghasilkan: 600 Murid, 45 Guru, 28 Mata Pelajaran (Tanpa Hardcode HTML)
+         ========================================================================= -->
+    <script>
+        // Global State Containers
+        let database = {
+            students: [],
+            teachers: [],
+            subjects: [],
+            schedules: []
+        };
+
+        let currentStudentPage = 1;
+        const studentsPerPage = 10;
+        let filteredStudents = [];
+
+        // 1. DATA SEEDER ENGINE (Generates 600 Students, 45 Teachers, 28 Subjects)
+        function generateSeederData() {
+            // A. SEED 28 MATA PELAJARAN
+            const subjectNames = [
+                { code: 'SHK-MUS01', name: 'Seni Musik: Gitar & Vokal', category: 'Seni Musik', sks: 3 },
+                { code: 'SHK-MUS02', name: 'Seni Musik: Bass & Perkusi/Drum', category: 'Seni Musik', sks: 3 },
+                { code: 'SHK-MUS03', name: 'Harmoni & Aransemen Band', category: 'Seni Musik', sks: 2 },
+                { code: 'SHK-MUS04', name: 'Teknik Audio & Stage Sound', category: 'Multimedia', sks: 2 },
+                { code: 'SHK-MAT01', name: 'Matematika Wajib X', category: 'Umum', sks: 4 },
+                { code: 'SHK-MAT02', name: 'Matematika Lanjut XI', category: 'Peminatan', sks: 4 },
+                { code: 'SHK-MAT03', name: 'Kalkulus & Statistik XII', category: 'Peminatan', sks: 4 },
+                { code: 'SHK-FIS01', name: 'Fisika Dasar & Gelombang Bunyi', category: 'MIPA', sks: 3 },
+                { code: 'SHK-FIS02', name: 'Fisika Eksperimental', category: 'MIPA', sks: 3 },
+                { code: 'SHK-KIM01', name: 'Kimia Analitik Dasar', category: 'MIPA', sks: 3 },
+                { code: 'SHK-BIO01', name: 'Biologi Umum & Lingkungan', category: 'MIPA', sks: 3 },
+                { code: 'SHK-JPN01', name: 'Bahasa Jepang & Sastra', category: 'Bahasa', sks: 3 },
+                { code: 'SHK-JPN02', name: 'Komposisi Tulisan Jepang', category: 'Bahasa', sks: 2 },
+                { code: 'SHK-ING01', name: 'Bahasa Inggris Komunikasi', category: 'Bahasa', sks: 3 },
+                { code: 'SHK-ING02', name: 'Literasi Bahasa Inggris', category: 'Bahasa', sks: 2 },
+                { code: 'SHK-SEJ01', name: 'Sejarah Modern & Kebudayaan', category: 'Sosial', sks: 2 },
+                { code: 'SHK-GEO01', name: 'Geografi & Pemetaan', category: 'Sosial', sks: 2 },
+                { code: 'SHK-EKO01', name: 'Ekonomi Bisnis & Kewirausahaan', category: 'Sosial', sks: 3 },
+                { code: 'SHK-SOS01', name: 'Sosiologi Masyarakat Kreatif', category: 'Sosial', sks: 2 },
+                { code: 'SHK-INF01', name: 'Informatika & Pemrograman Web', category: 'Teknologi', sks: 3 },
+                { code: 'SHK-INF02', name: 'Sistem Informasi & Basis Data', category: 'Teknologi', sks: 3 },
+                { code: 'SHK-DKV01', name: 'Desain Grafis & Merchandise', category: 'Seni Rupa', sks: 2 },
+                { code: 'SHK-OR01',  name: 'Pendidikan Jasmani & Kesehatan', category: 'Olahraga', sks: 2 },
+                { code: 'SHK-PKN01', name: 'Pendidikan Pancasila / Kewarganegaraan', category: 'Umum', sks: 2 },
+                { code: 'SHK-AGM01', name: 'Pendidikan Etika & Budi Pekerti', category: 'Umum', sks: 2 },
+                { code: 'SHK-BK01',  name: 'Bimbingan Konseling & Eksplorasi Diri', category: 'Konseling', sks: 1 },
+                { code: 'SHK-PRA01', name: 'Prakarya & Tata Boga', category: 'Keterampilan', sks: 2 },
+                { code: 'SHK-MAN01', name: 'Manajemen Event & Panggung', category: 'Keterampilan', sks: 2 }
+            ];
+            database.subjects = subjectNames;
+
+            // B. SEED 45 GURU (With Bocchi the Rock! Character Easter Eggs)
+            const easterEggTeachers = [
+                { nip: '198504122008012001', name: 'Seika Ijichi, S.Sn., M.Pd.', subject: 'Manajemen Event & Pembina Musik', phone: '0812-3344-9001' },
+                { nip: '198809222010012002', name: 'PA-san, S.T., M.Kom.', subject: 'Teknik Audio & Multimedia Lab', phone: '0812-3344-9002' },
+                { nip: '198205152005011003', name: 'Gin Sasaki, S.Pd.', subject: 'Seni Musik: Gitar & Vokal', phone: '0812-3344-9003' },
+                { nip: '198001102003011004', name: 'Naoki Gotoh, M.Sc.', subject: 'Fisika Dasar & Akustik', phone: '0812-3344-9004' },
+                { nip: '198103192004012005', name: 'Michiyo Gotoh, S.Pd.', subject: 'Bahasa Jepang & Sastra', phone: '0812-3344-9005' },
+                { nip: '197906202002011006', name: 'Jimihen Sensei, M.M.', subject: 'Pendidikan Disiplin & Olahraga', phone: '0812-3344-9006' },
+                { nip: '198711302011012007', name: 'Kikuri Hiroi, S.Sn. (Instruktur Tamu)', subject: 'Harmoni & Bass Eksperimental', phone: '0812-3344-9007' }
+            ];
+
+            const teacherFirstNames = ['Kenji', 'Daisuke', 'Satoshi', 'Hiroshi', 'Takumi', 'Kazuki', 'Yuji', 'Shinji', 'Taro', 'Ryota', 'Emi', 'Yoko', 'Ayumi', 'Kaori', 'Mayumi', 'Shizuka', 'Tomoko', 'Akiko', 'Noriko', 'Keiko'];
+            const teacherLastNames = ['Tanaka', 'Sato', 'Suzuki', 'Takahashi', 'Watanabe', 'Ito', 'Yamamoto', 'Nakamura', 'Kobayashi', 'Kato', 'Yoshida', 'Yamada', 'Sasaki', 'Yamaguchi', 'Saito', 'Matsumoto', 'Inoue', 'Kimura', 'Hayashi', 'Shimizu'];
+
+            let teachersList = [...easterEggTeachers];
+            for (let i = teachersList.length + 1; i <= 45; i++) {
+                const fname = teacherFirstNames[i % teacherFirstNames.length];
+                const lname = teacherLastNames[(i * 3) % teacherLastNames.length];
+                const subj = database.subjects[i % database.subjects.length].name;
+                teachersList.push({
+                    nip: `198${(70 + (i % 25)).toString()}${(101 + i).toString()}200${(i % 9)}01${i % 2 === 0 ? '1' : '2'}0${i < 10 ? '0' + i : i}`,
+                    name: `${lname} ${fname}, S.Pd.`,
+                    subject: subj,
+                    phone: `0812-8899-${1000 + i}`
+                });
+            }
+            database.teachers = teachersList;
+
+            // C. SEED 600 MURID (With Bocchi the Rock! Main Cast as VIP Easter Eggs)
+            const easterEggStudents = [
+                { nis: '20261001', name: 'Hitori Gotoh (後藤 ひとり)', kelas: 'X-1', gender: 'P', klub: 'Kessoku Band (Lead Guitar)', score: 92.5, status: 'Aktif (Kessoku Band)', note: 'Gitaris handal, sering berlatih di lemari, ketua divisi melodi.' },
+                { nis: '20261002', name: 'Ikuyo Kita (喜多 郁代)', kelas: 'X-1', gender: 'P', klub: 'Kessoku Band (Vocal & Guitar)', score: 94.0, status: 'Aktif (Kessoku Band)', note: 'Sosialita ceria, aura Kita-Aura, vokalis utama dan gitar ritem.' },
+                { nis: '20261003', name: 'Nijika Ijichi (伊地知 虹夏)', kelas: 'X-2', gender: 'P', klub: 'Kessoku Band (Drums / Leader)', score: 91.0, status: 'Aktif (Kessoku Band)', note: 'Leader Kessoku Band, drummer bersemangat, adik dari Seika Ijichi.' },
+                { nis: '20261004', name: 'Ryo Yamada (山田 リョウ)', kelas: 'X-2', gender: 'P', klub: 'Kessoku Band (Bass & Composer)', score: 89.8, status: 'Aktif (Kessoku Band)', note: 'Bassist unik pencinta tanaman liar, komposer lagu utama.' },
+                { nis: '20261005', name: 'Futari Gotoh (後藤 ふたり)', kelas: 'X-1', gender: 'P', klub: 'Klub Musik Pemula', score: 88.0, status: 'Aktif', note: 'Adik dari Hitori Gotoh, jujur dan berani bicara blak-blakan.' },
+                { nis: '20261006', name: 'Yoyoko Ohtsuki (大槻 ヨヨコ)', kelas: 'XI-1', gender: 'P', klub: 'SICK HACK Band (Leader/Gt)', score: 93.4, status: 'Aktif', note: 'Rival ramah Kessoku Band dari SMA tetangga yang sedang studi banding.' },
+                { nis: '20261007', name: 'Eliza Shimizu', kelas: 'XI-1', gender: 'P', klub: 'SICK HACK Band (Gt)', score: 87.5, status: 'Aktif', note: 'Pencinta anime dan musik rock Jepang.' },
+                { nis: '20261008', name: 'Shima Iwashita', kelas: 'XI-2', gender: 'P', klub: 'SICK HACK Band (Dr)', score: 89.0, status: 'Aktif', note: 'Drummer bertenaga tinggi dengan tempo presisi.' }
+            ];
+
+            const studentPoolF = ['Aoi', 'Hina', 'Yui', 'Mio', 'Ritsu', 'Tsumugi', 'Azusa', 'Akari', 'Mei', 'Sakura', 'Koharu', 'Nanami', 'Rin', 'Kanna', 'Chika', 'Honoka', 'Kotori', 'Umi', 'Maki', 'Nozomi', 'Eli', 'Nico', 'Sayaka', 'Madoka', 'Homura', 'Kyoko', 'Mami', 'Yukino', 'Yui', 'Iroha'];
+            const studentPoolM = ['Ren', 'Haruto', 'Sota', 'Yuto', 'Riku', 'Kaito', 'Asahi', 'Taiki', 'Daiki', 'Kensuke', 'Shin', 'Shota', 'Kazuma', 'Takashi', 'Hayato', 'Minato', 'Ryusei', 'Koki', 'Yuuki', 'Sho', 'Tatsuya', 'Genta', 'Mitsuhiko', 'Conan', 'Heiji', 'Kazuya', 'Naoto', 'Kei', 'Toru', 'Jun'];
+            const studentLastNames = ['Sato', 'Suzuki', 'Takahashi', 'Tanaka', 'Watanabe', 'Ito', 'Yamamoto', 'Nakamura', 'Kobayashi', 'Kato', 'Yoshida', 'Yamada', 'Sasaki', 'Yamaguchi', 'Saito', 'Matsumoto', 'Inoue', 'Kimura', 'Hayashi', 'Shimizu', 'Yamazaki', 'Mori', 'Abe', 'Ikeda', 'Hashimoto', 'Yamashita', 'Ishikawa', 'Nakajima', 'Maeda', 'Fujita', 'Ogawa', 'Goto', 'Okada', 'Hasegawa', 'Murakami', 'Kondo', 'Ishii', 'Saito', 'Sakamoto', 'Endo', 'Aoki', 'Fujii', 'Nishimura', 'Fukuda', 'Ota', 'Miura', 'Fujiwara', 'Okamoto', 'Matsuda', 'Nakagawa'];
+            const clubList = ['Kessoku Band Fanclub', 'Klub Seni Musik', 'Klub Teater & Drama', 'Klub Penyiaran & Podcast', 'Klub Sains & Robotika', 'Klub Bahasa & Budaya', 'Klub Fotografi & DKV', 'Klub Olahraga Basket', 'Klub Bulutangkis', 'Klub Jurnalistik Dinding', 'OSIS / MPK Shuka', 'Klub Tata Boga'];
+            const classList = ['X-1', 'X-2', 'X-3', 'XI-1', 'XI-2', 'XI-3', 'XII-1', 'XII-2', 'XII-3'];
+
+            let studentsList = [...easterEggStudents];
+            
+            // Generate up to 600 students
+            for (let i = studentsList.length + 1; i <= 600; i++) {
+                const isFemale = i % 2 === 0;
+                const fname = isFemale ? studentPoolF[i % studentPoolF.length] : studentPoolM[i % studentPoolM.length];
+                const lname = studentLastNames[(i * 7) % studentLastNames.length];
+                const kelas = classList[i % classList.length];
+                const club = clubList[i % clubList.length];
+                const baseScore = 72 + ((i * 13) % 27) + ((i % 5) * 0.4);
+                const scoreRounded = Math.min(99.4, Math.max(68.0, Math.round(baseScore * 10) / 10));
+                
+                const status = (i % 45 === 0) ? 'Cuti' : 'Aktif';
+
+                studentsList.push({
+                    nis: `2026${1000 + i}`,
+                    name: `${lname} ${fname}`,
+                    kelas: kelas,
+                    gender: isFemale ? 'P' : 'L',
+                    klub: club,
+                    score: scoreRounded,
+                    status: status,
+                    note: `Siswa terdaftar resmi TA 2026/2027 di Kelas ${kelas}. Kehadiran tercatat 98%.`
+                });
+            }
+
+            database.students = studentsList;
+            filteredStudents = [...database.students];
+
+            // D. SEED JADWAL HARI INI
+            database.schedules = [
+                {
+                    time: '07:30 - 09:00',
+                    subject: 'Seni Musik: Gitar & Vokal',
+                    kelas: 'Kelas X-1',
+                    room: 'Studio Musik Shuka / Lab 1',
+                    teacher: 'Gin Sasaki, S.Pd.',
+                    status: 'Sedang Berlangsung',
+                    statusColor: 'bg-emerald-100 text-emerald-800 border-emerald-300'
+                },
+                {
+                    time: '09:15 - 10:45',
+                    subject: 'Fisika Dasar & Gelombang Bunyi',
+                    kelas: 'Kelas X-1',
+                    room: 'Ruang Teori X-1',
+                    teacher: 'Naoki Gotoh, M.Sc.',
+                    status: 'Menunggu',
+                    statusColor: 'bg-slate-100 text-slate-700 border-slate-300'
+                },
+                {
+                    time: '11:00 - 12:30',
+                    subject: 'Harmoni & Aransemen Band',
+                    kelas: 'Kelas X-2',
+                    room: 'Studio Musik Shuka / Lab 2',
+                    teacher: 'Kikuri Hiroi, S.Sn.',
+                    status: 'Menunggu',
+                    statusColor: 'bg-slate-100 text-slate-700 border-slate-300'
+                },
+                {
+                    time: '13:30 - 15:00',
+                    subject: 'Teknik Audio & Stage Sound',
+                    kelas: 'Kelas XI-1',
+                    room: 'Multimedia Center STARRY',
+                    teacher: 'PA-san, S.T., M.Kom.',
+                    status: 'Menunggu',
+                    statusColor: 'bg-slate-100 text-slate-700 border-slate-300'
+                },
+                {
+                    time: '15:15 - 16:30',
+                    subject: 'Bimbingan Konseling & Eksplorasi Diri',
+                    kelas: 'Kelas X-1 & X-2',
+                    room: 'Ruang Konseling & Karir',
+                    teacher: 'Seika Ijichi, S.Sn.',
+                    status: 'Menunggu',
+                    statusColor: 'bg-slate-100 text-slate-700 border-slate-300'
+                }
+            ];
+        }
+
+        // 2. RENDER FUNCTIONS
+        function renderStatistics() {
+            document.getElementById('stat-total-murid').innerText = database.students.length;
+            document.getElementById('stat-total-guru').innerText = database.teachers.length;
+            document.getElementById('stat-total-mapel').innerText = database.subjects.length;
+            
+            document.getElementById('sidebar-murid-count').innerText = database.students.length;
+            document.getElementById('sidebar-guru-count').innerText = database.teachers.length;
+            document.getElementById('sidebar-mapel-count').innerText = database.subjects.length;
+
+            // Calculate exact average score across 600 students
+            const totalScore = database.students.reduce((acc, s) => acc + s.score, 0);
+            const avgScore = (totalScore / database.students.length).toFixed(1);
+            document.getElementById('stat-rerata-nilai').innerText = avgScore;
+        }
+
+        function renderSchedules() {
+            const container = document.getElementById('jadwal-container');
+            container.innerHTML = '';
+
+            database.schedules.forEach((item, index) => {
+                const scheduleEl = document.createElement('div');
+                scheduleEl.className = 'p-3 hover:bg-slate-50 transition-colors flex flex-col gap-1.5';
+                scheduleEl.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-slate-800">${item.subject}</span>
+                        <span class="flat-badge ${item.statusColor} border text-[10px]">${item.status}</span>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-slate-500 font-medium">
+                        <span class="text-brand-600 font-semibold">${item.kelas}</span>
+                        <span>•</span>
+                        <span>${item.time}</span>
+                        <span>•</span>
+                        <span>${item.room}</span>
+                    </div>
+                    <div class="text-[11px] text-slate-600">
+                        Pengampu: <strong class="text-slate-700">${item.teacher}</strong>
+                    </div>
+                `;
+                container.appendChild(scheduleEl);
+            });
+        }
+
+        function renderStudentTable() {
+            const tbody = document.getElementById('student-table-body');
+            tbody.innerHTML = '';
+
+            const startIndex = (currentStudentPage - 1) * studentsPerPage;
+            const endIndex = startIndex + studentsPerPage;
+            const currentList = filteredStudents.slice(startIndex, endIndex);
+
+            if (currentList.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="py-8 text-center text-slate-400">
+                            Tidak ditemukan data murid yang cocok dengan pencarian / filter.
+                        </td>
+                    </tr>
+                `;
+            } else {
+                currentList.forEach((s) => {
+                    const tr = document.createElement('tr');
+                    tr.className = 'hover:bg-brand-50/40 border-b border-slate-200 transition-colors';
+                    
+                    // Highlight Bocchi and Kessoku Band Members with solid flat subtle styling
+                    const isKessoku = s.name.includes('Gotoh') || s.name.includes('Kita') || s.name.includes('Ijichi') || s.name.includes('Yamada') || s.klub.includes('Kessoku');
+
+                    let statusBadgeClass = 'bg-slate-100 text-slate-700 border-slate-200';
+                    if (s.status.includes('Kessoku Band')) {
+                        statusBadgeClass = 'bg-brand-100 text-brand-800 border-brand-300 font-bold';
+                    } else if (s.status === 'Aktif') {
+                        statusBadgeClass = 'bg-emerald-50 text-emerald-700 border-emerald-200';
+                    } else if (s.status === 'Cuti') {
+                        statusBadgeClass = 'bg-amber-50 text-amber-700 border-amber-200';
+                    }
+
+                    tr.innerHTML = `
+                        <td class="py-2.5 px-4 font-mono font-bold text-slate-600">${s.nis}</td>
+                        <td class="py-2.5 px-4">
+                            <div class="font-bold text-slate-900 ${isKessoku ? 'text-brand-700' : ''}">${s.name}</div>
+                            <div class="text-[10px] text-slate-400">${s.note ? s.note.substring(0, 38) + '...' : 'Siswa Terdaftar'}</div>
+                        </td>
+                        <td class="py-2.5 px-4 font-semibold text-slate-700">${s.kelas}</td>
+                        <td class="py-2.5 px-4">
+                            <span class="flat-badge ${s.gender === 'P' ? 'bg-pink-100 text-pink-700 border-pink-200' : 'bg-blue-100 text-blue-700 border-blue-200'}">${s.gender}</span>
+                        </td>
+                        <td class="py-2.5 px-4 text-slate-600 font-medium">${s.klub}</td>
+                        <td class="py-2.5 px-4 text-center font-bold text-slate-800">
+                            <span class="${s.score >= 90 ? 'text-brand-600 font-extrabold' : ''}">${s.score}</span>
+                        </td>
+                        <td class="py-2.5 px-4">
+                            <span class="flat-badge border ${statusBadgeClass}">${s.status}</span>
+                        </td>
+                        <td class="py-2.5 px-4 text-center">
+                            <button onclick="viewStudentDetail('${s.nis}')" class="px-2 py-1 text-[11px] font-semibold text-brand-700 bg-brand-50 hover:bg-brand-100 border border-brand-300 rounded-sm">
+                                Detail
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            renderPagination(filteredStudents.length);
+        }
+
+        function renderPagination(totalItems) {
+            const totalPages = Math.ceil(totalItems / studentsPerPage) || 1;
+            const paginationInfo = document.getElementById('pagination-info');
+            const startIndex = totalItems === 0 ? 0 : (currentStudentPage - 1) * studentsPerPage + 1;
+            const endIndex = Math.min(currentStudentPage * studentsPerPage, totalItems);
+
+            paginationInfo.innerHTML = `Menampilkan data <strong>${startIndex} - ${endIndex}</strong> dari <strong>${totalItems}</strong> murid terfilter (Total ${database.students.length} data)`;
+
+            const btnContainer = document.getElementById('pagination-buttons');
+            btnContainer.innerHTML = '';
+
+            // Previous Button
+            const prevBtn = document.createElement('button');
+            prevBtn.className = `px-2 py-1 border rounded-sm font-semibold ${currentStudentPage === 1 ? 'border-slate-200 text-slate-300 cursor-not-allowed' : 'border-slate-300 text-slate-700 hover:bg-slate-100'}`;
+            prevBtn.innerText = '← Prev';
+            prevBtn.disabled = currentStudentPage === 1;
+            prevBtn.onclick = () => { if (currentStudentPage > 1) { currentStudentPage--; renderStudentTable(); } };
+            btnContainer.appendChild(prevBtn);
+
+            // Page numbers display (compact window)
+            let startP = Math.max(1, currentStudentPage - 2);
+            let endP = Math.min(totalPages, currentStudentPage + 2);
+
+            if (startP > 1) {
+                const firstP = createPageBtn(1);
+                btnContainer.appendChild(firstP);
+                if (startP > 2) {
+                    const dots = document.createElement('span');
+                    dots.className = 'px-1 text-slate-400';
+                    dots.innerText = '...';
+                    btnContainer.appendChild(dots);
+                }
+            }
+
+            for (let p = startP; p <= endP; p++) {
+                btnContainer.appendChild(createPageBtn(p));
+            }
+
+            if (endP < totalPages) {
+                if (endP < totalPages - 1) {
+                    const dots = document.createElement('span');
+                    dots.className = 'px-1 text-slate-400';
+                    dots.innerText = '...';
+                    btnContainer.appendChild(dots);
+                }
+                btnContainer.appendChild(createPageBtn(totalPages));
+            }
+
+            // Next Button
+            const nextBtn = document.createElement('button');
+            nextBtn.className = `px-2 py-1 border rounded-sm font-semibold ${currentStudentPage === totalPages || totalPages === 0 ? 'border-slate-200 text-slate-300 cursor-not-allowed' : 'border-slate-300 text-slate-700 hover:bg-slate-100'}`;
+            nextBtn.innerText = 'Next →';
+            nextBtn.disabled = currentStudentPage === totalPages || totalPages === 0;
+            nextBtn.onclick = () => { if (currentStudentPage < totalPages) { currentStudentPage++; renderStudentTable(); } };
+            btnContainer.appendChild(nextBtn);
+        }
+
+        function createPageBtn(pageNumber) {
+            const btn = document.createElement('button');
+            const isActive = pageNumber === currentStudentPage;
+            btn.className = `px-2.5 py-1 border rounded-sm font-semibold ${isActive ? 'bg-brand-500 text-white border-brand-500' : 'bg-white border-slate-300 text-slate-700 hover:bg-slate-100'}`;
+            btn.innerText = pageNumber;
+            btn.onclick = () => {
+                currentStudentPage = pageNumber;
+                renderStudentTable();
+            };
+            return btn;
+        }
+
+        // 3. FILTERING & SEARCH ENGINE
+        function filterStudents() {
+            const searchVal = document.getElementById('student-search-input').value.toLowerCase().trim();
+            const kelasVal = document.getElementById('filter-kelas').value;
+            const statusVal = document.getElementById('filter-status').value;
+
+            filteredStudents = database.students.filter(s => {
+                const matchSearch = s.name.toLowerCase().includes(searchVal) || s.nis.includes(searchVal) || s.klub.toLowerCase().includes(searchVal);
+                const matchKelas = (kelasVal === 'ALL') || s.kelas === kelasVal;
+                let matchStatus = true;
+                if (statusVal === 'Kessoku Band') {
+                    matchStatus = s.status.includes('Kessoku Band') || s.klub.includes('Kessoku');
+                } else if (statusVal !== 'ALL') {
+                    matchStatus = s.status === statusVal;
+                }
+                return matchSearch && matchKelas && matchStatus;
+            });
+
+            currentStudentPage = 1;
+            document.getElementById('filter-total-indicator').innerText = filteredStudents.length;
+            renderStudentTable();
+        }
+
+        function handleGlobalSearch(val) {
+            document.getElementById('student-search-input').value = val;
+            filterStudents();
+            scrollToTable();
+        }
+
+        function resetStudentFilters() {
+            document.getElementById('student-search-input').value = '';
+            document.getElementById('quick-search-input').value = '';
+            document.getElementById('filter-kelas').value = 'ALL';
+            document.getElementById('filter-status').value = 'ALL';
+            filterStudents();
+            showNotification('Filter daftar murid direset');
+        }
+
+        // 4. MODAL & INTERACTION HANDLERS
+        function viewStudentDetail(nis) {
+            const student = database.students.find(s => s.nis === nis);
+            if (!student) return;
+
+            document.getElementById('modal-student-title').innerText = `Detail Murid — ${student.name}`;
+            const content = document.getElementById('modal-student-content');
+            content.innerHTML = `
+                <div class="p-3 bg-slate-50 border border-slate-200 rounded-sm flex items-center justify-between">
+                    <div>
+                        <span class="text-slate-400 block text-[10px] uppercase font-bold">Nomor Induk Siswa (NIS)</span>
+                        <span class="font-mono text-sm font-bold text-slate-800">${student.nis}</span>
+                    </div>
+                    <span class="flat-badge bg-brand-100 text-brand-800 border border-brand-300 font-bold text-xs">${student.status}</span>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="p-2.5 bg-white border border-slate-200 rounded-sm">
+                        <span class="text-slate-400 block text-[10px] uppercase font-bold">Nama Lengkap</span>
+                        <span class="font-bold text-slate-900 text-xs">${student.name}</span>
+                    </div>
+                    <div class="p-2.5 bg-white border border-slate-200 rounded-sm">
+                        <span class="text-slate-400 block text-[10px] uppercase font-bold">Rombel / Kelas</span>
+                        <span class="font-bold text-slate-900 text-xs">${student.kelas}</span>
+                    </div>
+                    <div class="p-2.5 bg-white border border-slate-200 rounded-sm">
+                        <span class="text-slate-400 block text-[10px] uppercase font-bold">Jenis Kelamin</span>
+                        <span class="font-bold text-slate-900 text-xs">${student.gender === 'P' ? 'Perempuan (P)' : 'Laki-laki (L)'}</span>
+                    </div>
+                    <div class="p-2.5 bg-white border border-slate-200 rounded-sm">
+                        <span class="text-slate-400 block text-[10px] uppercase font-bold">Nilai Rerata Akademik</span>
+                        <span class="font-bold text-brand-600 text-xs">${student.score} / 100</span>
+                    </div>
+                </div>
+
+                <div class="p-2.5 bg-white border border-slate-200 rounded-sm">
+                    <span class="text-slate-400 block text-[10px] uppercase font-bold">Ekstrakurikuler / Klub</span>
+                    <span class="font-semibold text-slate-800 text-xs">${student.klub}</span>
+                </div>
+
+                <div class="p-2.5 bg-brand-50 border border-brand-200 rounded-sm">
+                    <span class="text-brand-800 block text-[10px] uppercase font-bold">Catatan Perkembangan Akademik & Karakter</span>
+                    <p class="text-xs text-slate-700 mt-1 leading-relaxed">${student.note || 'Siswa aktif mengikuti seluruh sesi pembelajaran dan ekstrakurikuler sekolah dengan disiplin tinggi.'}</p>
+                </div>
+            `;
+
+            document.getElementById('student-modal').classList.remove('hidden');
+        }
+
+        function closeStudentModal() {
+            document.getElementById('student-modal').classList.add('hidden');
+        }
+
+        function openAddStudentModal() {
+            document.getElementById('add-modal').classList.remove('hidden');
+        }
+
+        function closeAddModal() {
+            document.getElementById('add-modal').classList.add('hidden');
+        }
+
+        function handleAddStudent(e) {
+            e.preventDefault();
+            const nama = document.getElementById('new-nama').value.trim();
+            const kelas = document.getElementById('new-kelas').value;
+            const gender = document.getElementById('new-gender').value;
+            const klub = document.getElementById('new-klub').value.trim() || 'Klub Seni Musik';
+            const score = parseFloat(document.getElementById('new-nilai').value) || 85.0;
+
+            const newNis = `2026${1000 + database.students.length + 1}`;
+
+            const newObj = {
+                nis: newNis,
+                name: nama,
+                kelas: kelas,
+                gender: gender,
+                klub: klub,
+                score: score,
+                status: 'Aktif',
+                note: `Murid baru ditambahkan ke Kelas ${kelas} pada ${new Date().toLocaleDateString('id-ID')}.`
+            };
+
+            database.students.unshift(newObj);
+            filterStudents();
+            renderStatistics();
+            closeAddModal();
+            showNotification(`Murid baru "${nama}" berhasil didaftarkan (NIS: ${newNis})`);
+            document.getElementById('new-nama').value = '';
+        }
+
+        // 5. UTILITY & TOAST
+        function showNotification(msg) {
+            const toast = document.getElementById('toast');
+            const text = document.getElementById('toast-message');
+            text.innerText = msg;
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3000);
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('main-sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            const isClosed = sidebar.classList.contains('-translate-x-full');
+
+            if (isClosed) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+            }
+        }
+
+        function scrollToTable() {
+            document.getElementById('murid-table-card').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function scrollToJadwal() {
+            document.getElementById('jadwal-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function refreshData() {
+            generateSeederData();
+            renderStatistics();
+            renderSchedules();
+            filterStudents();
+            showNotification('Seluruh data seeder berhasil diperbarui');
+        }
+
+        // Initialize on DOM Ready
+        document.addEventListener('DOMContentLoaded', () => {
+            generateSeederData();
+            renderStatistics();
+            renderSchedules();
+            renderStudentTable();
+        });
+    </script>
+</body>
+</html>

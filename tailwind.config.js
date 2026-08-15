@@ -24,7 +24,7 @@ export default {
                 },
             },
             fontFamily: {
-                sans: ['Nunito', ...defaultTheme.fontFamily.sans],
+                sans: ['"Plus Jakarta Sans"', 'Nunito', ...defaultTheme.fontFamily.sans],
                 display: ['Caveat', 'cursive'],
             },
             backgroundImage: {
