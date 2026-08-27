@@ -120,7 +120,7 @@
                             <td class="py-2.5 px-4">
                                 <span class="font-bold {{ $isKessoku ? 'text-pink-700' : 'text-slate-900' }}">{{ $s->nama }}</span>
                                 @if($isKessoku)
-                                    <span class="ml-1 text-[9px] font-extrabold bg-pink-100 text-pink-700 px-1 py-0.2 rounded border border-pink-300">VIP</span>
+                                    <span class="ml-1 text-[9px] font-extrabold bg-pink-100 text-pink-700 px-1 py-0.2 rounded border border-pink-300">Anggota Kessoku Band</span>
                                 @endif
                             </td>
                             <td class="py-2.5 px-4 font-semibold text-slate-700">{{ $s->kelas }}</td>

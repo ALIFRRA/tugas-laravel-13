@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Pengumuman extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'pengumumans';
 
@@ -25,6 +26,7 @@ class Pengumuman extends Model
     {
         return [
             'is_active' => 'boolean',
+            'deleted_at' => 'datetime',
         ];
     }
 

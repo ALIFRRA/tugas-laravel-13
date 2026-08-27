@@ -9,10 +9,10 @@
     <!-- BARIS AKSI UTAMA & SUMMARY HEADER -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-slate-200">
         <div>
-            <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">Dasbor Akademik SMK Shuka (秀華高等専門学校)</h1>
+            <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">Dasbor Akademik SMK Shuka</h1>
             <p class="text-xs sm:text-sm text-slate-500 mt-1">Pusat data informasi terpadu kejuruan seni musik populer, audio engineering, DKV, RPL, dan manajemen event.</p>
         </div>
-        <div class="flex items-center gap-2">
+        <div class="flex flex-wrap items-center gap-2">
             <a href="{{ route('admin.pengumuman.index') }}" class="px-3 py-1.5 text-xs font-semibold text-slate-700 bg-white border border-slate-300 rounded hover:bg-slate-50 flex items-center gap-1.5 transition-colors shadow-sm">
                 <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/></svg>
                 <span>Kelola Pengumuman</span>
@@ -26,22 +26,22 @@
 
     <!-- PANEL RINGKASAN SISTEM (Flat Metric Cards, Solid Pink & Slate, Minimalist) -->
     <section aria-labelledby="ringkasan-title">
-        <div class="flex items-center justify-between mb-3">
+        <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between mb-3">
             <h2 id="ringkasan-title" class="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-2">
                 <span class="w-2 h-2 bg-pink-500 inline-block rounded-full"></span>
                 Ringkasan Sistem Kejuruan SMK Shuka
             </h2>
-            <span class="text-xs text-slate-500 font-medium">Tercatat: {{ number_format($siswaCount ?? 600) }} Siswa • {{ $guruCount ?? 45 }} Guru • {{ $mapelCount ?? 28 }} Mapel</span>
+            <span class="text-xs text-slate-500 font-medium">Tercatat: {{ number_format($siswaCount) }} Siswa • {{ $guruCount }} Guru • {{ $mapelCount }} Mapel</span>
         </div>
 
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-            
+
             <!-- 1. Total Murid -->
             <div class="bg-white p-4 border border-slate-200 rounded-lg border-l-4 border-l-pink-500 shadow-sm">
                 <span class="text-xs font-semibold text-slate-500 block">Total Siswa</span>
                 <p class="text-2xl font-bold text-slate-900 mt-1">{{ number_format($siswaCount ?? 600) }}</p>
                 <div class="mt-1 text-[11px] text-pink-700 font-semibold">
-                    <span>600 Murid SMK</span>
+                    <span>{{ number_format($siswaCount) }} Siswa SMK</span>
                 </div>
             </div>
 
@@ -59,7 +59,7 @@
                 <span class="text-xs font-semibold text-slate-500 block">Mata Pelajaran</span>
                 <p class="text-2xl font-bold text-slate-900 mt-1">{{ $mapelCount ?? 28 }}</p>
                 <div class="mt-1 text-[11px] text-sky-700 font-semibold">
-                    <span>5 Program Keahlian</span>
+                    <span>{{ $programCount }} Program Keahlian</span>
                 </div>
             </div>
 
@@ -98,10 +98,11 @@
 
         <!-- TABEL JADWAL HARI INI, AGENDA SEKOLAH & PENGUMUMAN (4 SPAN KIRI) -->
         <div class="lg:col-span-4 space-y-4">
-            
-            <!-- PANEL JADWAL HARI INI -->
+
+            @if ($canManageAcademic)
+            <!-- PANEL JADWAL HARI INI (Scrollable like Murid Dashboard) -->
             <div class="bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden">
-                <div class="p-4 border-b border-slate-200 flex items-center justify-between">
+                <div class="p-4 border-b border-slate-200 flex items-center justify-between sticky top-0 bg-white z-10">
                     <div class="flex items-center gap-2">
                         <span class="w-2 h-2 bg-pink-500 rounded-full"></span>
                         <h3 class="text-sm font-bold text-slate-900">Jadwal Pelajaran Hari Ini</h3>
@@ -111,11 +112,11 @@
                     </span>
                 </div>
 
-                <div class="divide-y divide-slate-100">
+                <div class="divide-y divide-slate-100 max-h-96 overflow-y-auto">
                     @forelse ($jadwalHariIni as $j)
                         <div class="p-3.5 hover:bg-slate-50 transition-colors">
                             <div class="flex items-center justify-between mb-1">
-                                <span class="text-xs font-bold text-slate-900">{{ $j->mapel->nama ?? $j['mapel'] }}</span>
+                                <span class="min-w-0 truncate text-xs font-bold text-slate-900">{{ $j->mapel?->nama ?? 'Mata pelajaran belum ditautkan' }}</span>
                                 <span class="inline-block px-1.5 py-0.2 text-[10px] font-semibold rounded bg-emerald-50 text-emerald-700 border border-emerald-200">
                                     Berlangsung
                                 </span>
@@ -131,9 +132,11 @@
                 </div>
 
                 <div class="p-3 bg-slate-50 border-t border-slate-200 text-center">
-                    <a href="{{ route('admin.jadwal.index') }}" class="text-xs font-semibold text-pink-600 hover:text-pink-700">Lihat Seluruh Jadwal 18 Rombel SMK →</a>
+                    <a href="{{ route('admin.jadwal.index') }}" class="text-xs font-semibold text-pink-600 hover:text-pink-700">Lihat Seluruh Jadwal SMK →</a>
                 </div>
             </div>
+
+            @endif
 
             <!-- PANEL AGENDA SEKOLAH TERKINI -->
             <div class="bg-white border border-slate-200 rounded-lg shadow-sm p-4 space-y-3">
@@ -189,21 +192,21 @@
 
         </div>
 
-        <!-- TABEL DAFTAR MURID (8 SPAN KANAN - RENDER DATA SEEDER 600 SISWA SAMA RATA TANPA VIP) -->
+        <!-- TABEL DAFTAR MURID (8 SPAN KANAN - RENDER DATA SEEDER 600 MURID SMK) -->
         <div class="lg:col-span-8 space-y-4">
             <div class="bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden">
-                
+
                 <!-- Header Tabel & Filter Kelas -->
                 <div class="p-4 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div>
                         <div class="flex items-center gap-2">
                             <span class="w-2 h-2 bg-pink-500 rounded-full"></span>
-                            <h3 class="text-sm font-bold text-slate-900">Daftar Siswa Terdaftar (Database 600 Murid SMK)</h3>
+                            <h3 class="text-sm font-bold text-slate-900">Daftar Siswa Terdaftar ({{ number_format($siswaCount) }} Siswa)</h3>
                         </div>
                         <p class="text-xs text-slate-500 mt-0.5">Jurusan Seni Musik Populer (SMP), Audio Engineering (AET), DKV, RPL, dan MBE.</p>
                     </div>
                     <div class="flex items-center gap-2">
-                        <a href="{{ route('admin.siswa.index') }}" class="text-xs text-pink-600 font-bold hover:underline">Lihat Semua 600 Siswa →</a>
+                        <a href="{{ route('admin.siswa.index') }}" class="text-xs text-pink-600 font-bold hover:underline">Lihat Semua Siswa →</a>
                     </div>
                 </div>
 
@@ -256,10 +259,10 @@
                 <!-- Footer Status & Action -->
                 <div class="p-3 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-xs text-slate-600">
                     <div>
-                        Menampilkan sampel <strong>{{ count($siswaTerbaru ?? []) }}</strong> data siswa terbaru dari total <strong>{{ number_format($siswaCount ?? 600) }}</strong> siswa terdaftar di SMK Shuka.
+                        Menampilkan sampel <strong>{{ count($siswaTerbaru) }}</strong> data siswa terbaru dari total <strong>{{ number_format($siswaCount) }}</strong> siswa terdaftar di SMK Shuka.
                     </div>
                     <a href="{{ route('admin.siswa.index') }}" class="px-3 py-1.5 bg-pink-500 text-white font-semibold rounded text-xs hover:bg-pink-600 transition-colors shadow-sm">
-                        Buka Master Data 600 Siswa →
+                        Buka Master Data Siswa →
                     </a>
                 </div>
 

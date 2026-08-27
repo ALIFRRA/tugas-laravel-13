@@ -15,6 +15,10 @@ class PelanggaranController extends Controller
     {
         $query = Pelanggaran::with('siswa');
 
+        if ($request->filled('siswa_id')) {
+            $query->where('siswa_id', $request->integer('siswa_id'));
+        }
+
         if ($request->filled('kategori') && $request->input('kategori') !== 'all') {
             $query->where('kategori', $request->input('kategori'));
         }

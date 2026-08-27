@@ -3,6 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreEkskulRequest;
+use App\Http\Requests\Admin\UpdateEkskulRequest;
+use App\Models\Ekskul;
+use App\Models\Siswa;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -10,150 +15,142 @@ class EkskulController extends Controller
 {
     public function index(Request $request): View
     {
-        $ekskulList = [
-            [
-                'nama' => 'Kessoku Band (Klub Musik & Band)',
-                'kategori' => 'Seni Musik',
-                'pembina' => 'Seika Ijichi (Manager STARRY) & Gin Sasaki, S.Pd.',
-                'ketua' => 'Nijika Ijichi (X-SMP-2)',
-                'anggota' => 28,
-                'jadwal' => 'Rabu & Sabtu, 16:30 JST',
-                'lokasi' => 'Livehouse STARRY Basement',
-                'deskripsi' => 'Fokus pada aransemen lagu rock/indie, perform panggung, dan rekaman single band sekolah.',
-                'badge' => 'Prioritas Utama',
-            ],
-            [
-                'nama' => 'Studio Audio & Sound Reinforcement',
-                'kategori' => 'Teknologi Suara',
-                'pembina' => 'PA-san, S.T., M.Kom.',
-                'ketua' => 'Ryo Yamada (X-SMP-2)',
-                'anggota' => 22,
-                'jadwal' => 'Selasa & Kamis, 15:30 JST',
-                'lokasi' => 'Lab Audio & DAW Center',
-                'deskripsi' => 'Pengoperasian digital mixer, microphoning, acoustic testing, dan live sound reinforcement.',
-                'badge' => 'Kejuruan AET',
-            ],
-            [
-                'nama' => 'DKV Manga, Merchandise & Album Art',
-                'kategori' => 'Desain & Seni Rupa',
-                'pembina' => 'Yoko Sasaki, S.Sn.',
-                'ketua' => 'Hitori Gotoh (X-SMP-1)',
-                'anggota' => 35,
-                'jadwal' => 'Senin & Jumat, 15:30 JST',
-                'lokasi' => 'Studio Desain Grafis DKV',
-                'deskripsi' => 'Pembuatan desain merchandise kaos, stiker, cover album vinyl, dan poster festival.',
-                'badge' => 'Kejuruan DKV',
-            ],
-            [
-                'nama' => 'Broadcasting, Podcast & Live Streaming',
-                'kategori' => 'Media & Penyiaran',
-                'pembina' => 'Hiroshi Tanaka, M.I.Kom.',
-                'ketua' => 'Ikuyo Kita (X-SMP-1)',
-                'anggota' => 26,
-                'jadwal' => 'Kamis & Sabtu, 14:00 JST',
-                'lokasi' => 'Studio Siaran Shuka Live',
-                'deskripsi' => 'Produksi podcast sekolah "Guitarhero Room", video live streaming event, dan social media marketing.',
-                'badge' => 'Kejuruan MBE',
-            ],
-            [
-                'nama' => 'STARRY Culinary & Cafe Management',
-                'kategori' => 'Hospitality & Kuliner',
-                'pembina' => 'Michiyo Gotoh, S.Pd.',
-                'ketua' => 'Futari Gotoh (X-SMP-1)',
-                'anggota' => 30,
-                'jadwal' => 'Rabu, 15:30 JST',
-                'lokasi' => 'Dapur Praktek Tata Boga',
-                'deskripsi' => 'Manajemen hospitality cafe live house, barista drinks, dan booth kuliner festival Shuka-sai.',
-                'badge' => 'Hospitality',
-            ],
-            [
-                'nama' => 'Web Development & Audio Software Lab',
-                'kategori' => 'Teknologi Informasi',
-                'pembina' => 'Daisuke Suzuki, M.Kom.',
-                'ketua' => 'Shinji Yamamoto (X-RPL-1)',
-                'anggota' => 24,
-                'jadwal' => 'Senin & Kamis, 15:30 JST',
-                'lokasi' => 'Lab Komputer RPL',
-                'deskripsi' => 'Pengembangan portal sistem informasi akademik sekolah dan plugin audio DSP berbasis web.',
-                'badge' => 'Kejuruan RPL',
-            ],
-            [
-                'nama' => 'Fotografi Panggung & Jurnalistik',
-                'kategori' => 'Jurnalistik',
-                'pembina' => 'Akiko Matsumoto, S.Pd.',
-                'ketua' => 'Yoyoko Ohtsuki (XI-SMP-1)',
-                'anggota' => 19,
-                'jadwal' => 'Jumat, 15:00 JST',
-                'lokasi' => 'Ruang Redaksi Shuka',
-                'deskripsi' => 'Liputan konser live, jurnalisme musik indie, dan publikasi buletin berkala Shuka Post.',
-                'badge' => 'Media',
-            ],
-            [
-                'nama' => 'Stage Lighting & Tata Cahaya Konser',
-                'kategori' => 'Teknik Panggung',
-                'pembina' => 'Naoki Gotoh, M.Sc.',
-                'ketua' => 'Eliza Shimizu (XI-AET-1)',
-                'anggota' => 18,
-                'jadwal' => 'Selasa, 16:00 JST',
-                'lokasi' => 'Gymnasium / Panggung Shuka',
-                'deskripsi' => 'DMX512 lighting console, laser synchronization, moving heads, dan efek panggung visual.',
-                'badge' => 'Teknik Panggung',
-            ],
-            [
-                'nama' => 'Paduan Suara & Vokal Harmoni',
-                'kategori' => 'Seni Vokal',
-                'pembina' => 'Kikuri Hiroi, S.Sn.',
-                'ketua' => 'Shima Iwashita (XI-SMP-2)',
-                'anggota' => 32,
-                'jadwal' => 'Rabu & Jumat, 15:30 JST',
-                'lokasi' => 'Ruang Akustik Vokal',
-                'deskripsi' => 'Pelatihan teknik pernapasan diafragma, solfeggio, harmoni vokal 4 suara, dan ensemble.',
-                'badge' => 'Seni Vokal',
-            ],
-            [
-                'nama' => 'Cosplay & Teater Pertunjukan',
-                'kategori' => 'Seni Peran',
-                'pembina' => 'Kaori Watanabe, S.Pd.',
-                'ketua' => 'Akebi Hasegawa (XI-DKV-1)',
-                'anggota' => 25,
-                'jadwal' => 'Kamis, 15:30 JST',
-                'lokasi' => 'Aula Teater Shuka',
-                'deskripsi' => 'Tata panggung drama musikal, perancangan kostum karakter, dan ekspresi panggung.',
-                'badge' => 'Seni Peran',
-            ],
-            [
-                'nama' => 'Badminton & Stamina Panggung',
-                'kategori' => 'Olahraga & Kebugaran',
-                'pembina' => 'Jimihen Sensei, M.M.',
-                'ketua' => 'Takumi Kato (X-RPL-1)',
-                'anggota' => 40,
-                'jadwal' => 'Senin & Sabtu, 08:00 JST',
-                'lokasi' => 'Gelanggang Olahraga',
-                'deskripsi' => 'Pembinaan kebugaran jasmani, ketahanan stamina pemain band konser, dan turnamen olahraga.',
-                'badge' => 'Olahraga',
-            ],
-            [
-                'nama' => 'Japanese Culture & Sastra Modern',
-                'kategori' => 'Bahasa & Budaya',
-                'pembina' => 'Michiyo Gotoh, S.Pd.',
-                'ketua' => 'Kana Koyama (XI-SMP-2)',
-                'anggota' => 20,
-                'jadwal' => 'Selasa, 15:00 JST',
-                'lokasi' => 'Perpustakaan Lt. 2',
-                'deskripsi' => 'Penulisan lirik puisi lagu modern, apresiasi literatur Jepang, dan penulisan skenario.',
-                'badge' => 'Sastra',
-            ],
-        ];
+        $query = Ekskul::query()->withCount('siswas');
 
-        $inventarisAlat = [
-            ['nama' => 'Gibson Les Paul Custom ' . '68 Reissue (Black Beauty)', 'kategori' => 'Gitar Listrik', 'pemilik' => 'Inventaris Khusus / Hitori', 'kondisi' => 'Sangat Baik', 'status' => 'Dipakai'],
-            ['nama' => 'Fender Junior Collection Telecaster (Fiesta Red)', 'kategori' => 'Gitar Listrik', 'pemilik' => 'Ikuyo Kita', 'kondisi' => 'Sangat Baik', 'status' => 'Dipakai'],
-            ['nama' => 'Fender Precision Bass (Olympic White)', 'kategori' => 'Bass Listrik', 'pemilik' => 'Ryo Yamada', 'kondisi' => 'Sangat Baik', 'status' => 'Dipakai'],
-            ['nama' => 'Yamada Custom Drum Kit + Paiste Cymbals', 'kategori' => 'Drum Set', 'pemilik' => 'Nijika Ijichi / STARRY', 'kondisi' => 'Sangat Baik', 'status' => 'Tersedia di Studio'],
-            ['nama' => 'Marshall JCM900 Lead 1960 Amp Head + Cabinet', 'kategori' => 'Amplifier', 'pemilik' => 'Studio Musik Shuka', 'kondisi' => 'Baik', 'status' => 'Tersedia'],
-            ['nama' => 'Yamaha THR30II Wireless Amplifier & Shure SM58 Mic Set', 'kategori' => 'Audio System', 'pemilik' => 'Lab Audio', 'kondisi' => 'Sangat Baik', 'status' => 'Tersedia'],
-        ];
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('nama', 'like', "%{$search}%")
+                  ->orWhere('kategori', 'like', "%{$search}%")
+                  ->orWhere('pembina', 'like', "%{$search}%");
+            });
+        }
 
-        return view('admin.ekskul.index', compact('ekskulList', 'inventarisAlat'));
+        if ($request->filled('kategori') && $request->input('kategori') !== 'all') {
+            $query->where('kategori', $request->input('kategori'));
+        }
+
+        if ($request->filled('status') && $request->input('status') !== 'all') {
+            $query->where('is_active', $request->input('status') === 'active');
+        }
+
+        $ekskuls = $query->orderBy('kategori')->orderBy('nama')->paginate(12)->withQueryString();
+
+        $kategoriList = Ekskul::select('kategori')->distinct()->orderBy('kategori')->pluck('kategori');
+
+        return view('admin.ekskul.index', compact('ekskuls', 'kategoriList'));
+    }
+
+    public function create(): View
+    {
+        return view('admin.ekskul.create');
+    }
+
+    public function store(StoreEkskulRequest $request): RedirectResponse
+    {
+        $data = $request->validated();
+        $data['is_active'] = $request->boolean('is_active');
+        Ekskul::create($data);
+
+        return redirect()->route('admin.ekskul.index')->with('success', 'Klub ekstrakurikuler berhasil ditambahkan.');
+    }
+
+    public function show(Ekskul $ekskul): View
+    {
+        $ekskul->loadCount('siswas');
+        return view('admin.ekskul.show', compact('ekskul'));
+    }
+
+    public function edit(Ekskul $ekskul): View
+    {
+        return view('admin.ekskul.edit', compact('ekskul'));
+    }
+
+    public function update(UpdateEkskulRequest $request, Ekskul $ekskul): RedirectResponse
+    {
+        $data = $request->validated();
+        $data['is_active'] = $request->boolean('is_active');
+        if ($ekskul->siswas()->exists()) {
+            $data['anggota'] = $ekskul->siswas()->count();
+        }
+        $ekskul->update($data);
+
+        return redirect()->route('admin.ekskul.index')->with('success', 'Data klub berhasil diperbarui.');
+    }
+
+    public function destroy(Ekskul $ekskul): RedirectResponse
+    {
+        $ekskul->delete();
+
+        return redirect()->route('admin.ekskul.index')->with('success', 'Klub ekstrakurikuler berhasil dihapus.');
+    }
+
+    public function members(Ekskul $ekskul): View
+    {
+        $ekskul->load(['siswas' => function ($query) {
+            $query->withPivot('posisi', 'tahun_bergabung', 'is_active')
+                  ->orderBy('ekskul_siswa.posisi')
+                  ->orderBy('nama');
+        }])->loadCount('siswas');
+
+        $siswas = Siswa::orderBy('nama')->get();
+
+        return view('admin.ekskul.members', compact('ekskul', 'siswas'));
+    }
+
+    public function addMember(Request $request, Ekskul $ekskul): RedirectResponse
+    {
+        $request->validate([
+            'siswa_id' => 'required|exists:siswas,id',
+            'posisi' => 'required|string|in:Anggota,Ketua,Wakil Ketua,Sekretaris,Bendahara',
+            'tahun_bergabung' => 'required|integer|min:2020|max:2030',
+        ]);
+
+        if ($ekskul->siswas()->where('siswa_id', $request->siswa_id)->exists()) {
+            return back()->withErrors(['siswa_id' => 'Siswa sudah menjadi anggota klub ini.']);
+        }
+
+        $ekskul->siswas()->attach($request->siswa_id, [
+            'posisi' => $request->posisi,
+            'tahun_bergabung' => $request->tahun_bergabung,
+            'is_active' => true,
+        ]);
+        $this->syncMemberCount($ekskul);
+
+        return redirect()->route('admin.ekskul.members', $ekskul)->with('success', 'Anggota berhasil ditambahkan.');
+    }
+
+    public function removeMember(Ekskul $ekskul, Siswa $siswa): RedirectResponse
+    {
+        if (! $ekskul->siswas()->whereKey($siswa->id)->exists()) {
+            return back()->with('error', 'Siswa ini bukan anggota klub yang dipilih.');
+        }
+
+        $ekskul->siswas()->detach($siswa->id);
+        $this->syncMemberCount($ekskul);
+
+        return redirect()->route('admin.ekskul.members', $ekskul)->with('success', 'Anggota berhasil dihapus dari klub.');
+    }
+
+    public function updateMember(Request $request, Ekskul $ekskul, Siswa $siswa): RedirectResponse
+    {
+        $request->validate([
+            'posisi' => 'required|string|in:Anggota,Ketua,Wakil Ketua,Sekretaris,Bendahara',
+        ]);
+
+        if (! $ekskul->siswas()->whereKey($siswa->id)->exists()) {
+            return back()->with('error', 'Siswa ini bukan anggota klub yang dipilih.');
+        }
+
+        $ekskul->siswas()->updateExistingPivot($siswa->id, [
+            'posisi' => $request->posisi,
+        ]);
+
+        return redirect()->route('admin.ekskul.members', $ekskul)->with('success', 'Posisi anggota berhasil diperbarui.');
+    }
+
+    private function syncMemberCount(Ekskul $ekskul): void
+    {
+        $ekskul->update(['anggota' => $ekskul->siswas()->count()]);
     }
 }

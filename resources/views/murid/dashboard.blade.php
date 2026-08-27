@@ -1,6 +1,6 @@
 @extends('layouts.murid')
 
-@section('title', 'Dashboard Siswa — SMK Shuka (秀華高等専門学校)')
+@section('title', 'Dashboard Siswa — SMK Shuka')
 @section('heading', 'Halo, ' . $user->name)
 @section('subheading', 'Ringkasan biodata akademik dan hasil evaluasi belajar siswa.')
 

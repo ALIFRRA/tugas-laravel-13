@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Portal Siswa — SMK Shuka (秀華高等専門学校)')</title>
+    <title>@yield('title', 'Portal Siswa — SMK Shuka')</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -12,7 +12,7 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['"Plus Jakarta Sans"', 'Inter', '"Noto Sans JP"', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
+                        sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
                     },
                     colors: {
                         pink: {
@@ -21,7 +21,7 @@
                             200: '#fbcfe8',
                             300: '#f9a8d4',
                             400: '#f472b6',
-                            500: '#ec4899', /* Solid Bocchi Pink */
+                            500: '#ec4899',
                             600: '#db2777',
                             700: '#be185d',
                             800: '#9d174d',
@@ -39,10 +39,10 @@
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; border-color: #e2e8f0; }
-        body { font-family: 'Plus Jakarta Sans', 'Noto Sans JP', Inter, system-ui, sans-serif; background-color: #f8fafc; color: #1e293b; -webkit-font-smoothing: antialiased; }
+        body { font-family: 'Plus Jakarta Sans', Inter, system-ui, sans-serif; background-color: #f8fafc; color: #1e293b; -webkit-font-smoothing: antialiased; }
         [x-cloak] { display: none !important; }
     </style>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -72,7 +72,7 @@
                     </div>
                     <div class="flex flex-col">
                         <span class="text-sm font-bold text-slate-900 leading-tight">SMK SHUKA</span>
-                        <span class="text-[10px] font-semibold text-pink-600 font-sans">学生ポータル (Siswa)</span>
+                        <span class="text-[10px] font-semibold text-pink-600">Portal Siswa</span>
                     </div>
                 </a>
                 <button type="button" @click="sidebarOpen = false" class="lg:hidden text-slate-400 hover:text-slate-600">
@@ -84,7 +84,7 @@
             <div class="p-3 space-y-6">
                 
                 <div>
-                    <span class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">Akademik (学業)</span>
+                    <span class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">Akademik</span>
                     <div class="space-y-1 text-xs">
                         <a href="{{ route('murid.dashboard') }}" class="flex items-center gap-2.5 px-3 py-2 rounded font-semibold transition-colors {{ request()->routeIs('murid.dashboard') ? 'bg-pink-500 text-white shadow-sm' : 'text-slate-700 hover:bg-slate-100' }}">
                             <svg class="w-4 h-4 {{ request()->routeIs('murid.dashboard') ? 'text-white' : 'text-slate-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
@@ -99,20 +99,20 @@
                 </div>
 
                 <div>
-                    <span class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">Informasi Sekolah (学校案内)</span>
+                    <span class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">Informasi Sekolah</span>
                     <div class="space-y-1 text-xs">
                         <a href="{{ route('public.agenda') }}" class="flex items-center gap-2.5 px-3 py-2 rounded font-semibold text-slate-700 hover:bg-slate-100 transition-colors">
-                            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2-2v12a2 2 0 002 2z"/></svg>
                             <span>Agenda & Pengumuman</span>
                         </a>
 
                         <a href="{{ route('public.ekskul') }}" class="flex items-center gap-2.5 px-3 py-2 rounded font-semibold text-slate-700 hover:bg-slate-100 transition-colors">
                             <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
-                            <span>Klub Ekstrakurikuler (部活)</span>
+                            <span>Klub Ekstrakurikuler</span>
                         </a>
 
                         <a href="{{ route('public.jurusan') }}" class="flex items-center gap-2.5 px-3 py-2 rounded font-semibold text-slate-700 hover:bg-slate-100 transition-colors">
-                            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477 4.5 1.253"/></svg>
                             <span>Program Keahlian</span>
                         </a>
                     </div>
@@ -145,7 +145,7 @@
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button type="submit" class="w-full py-1.5 px-3 bg-white hover:bg-rose-50 text-rose-600 border border-slate-200 hover:border-rose-200 text-xs font-semibold rounded transition-colors text-center">
-                    Keluar Sesi (ログアウト)
+                    Keluar Sesi
                 </button>
             </form>
         </div>
@@ -204,7 +204,7 @@
         <!-- FOOTER HALAMAN -->
         <footer class="mt-auto bg-white border-t border-slate-200 px-6 py-4 text-xs text-slate-500 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
             <div>
-                <strong class="text-slate-700">SMK Shuka (秀華高等専門学校) — Portal Siswa</strong> &copy; 2026.
+                <strong class="text-slate-700">SMK Shuka — Portal Siswa</strong> &copy; 2026.
             </div>
             <div class="flex items-center gap-2 text-[11px]">
                 <span class="text-slate-500">Livehouse STARRY Partnership</span>

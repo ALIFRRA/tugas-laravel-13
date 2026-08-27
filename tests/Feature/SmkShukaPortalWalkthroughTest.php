@@ -22,21 +22,21 @@ class SmkShukaPortalWalkthroughTest extends TestCase
         $this->seed();
     }
 
-    public function test_public_japanese_vocational_school_routes_are_accessible(): void
+public function test_public_japanese_vocational_school_routes_are_accessible(): void
     {
-        // 1. Beranda / Top Page (ホーム)
+        // 1. Beranda / Top Page
         $responseHome = $this->get('/');
         $responseHome->assertStatus(200);
         $responseHome->assertSee('SMK SHUKA');
         $responseHome->assertSee('秀華高等専門学校');
 
-        // 2. Profil Sekolah (学校案内)
+        // 2. Profil Sekolah
         $responseProfil = $this->get('/profil');
         $responseProfil->assertStatus(200);
-        $responseProfil->assertSee('Profil Sekolah (学校案内)');
+        $responseProfil->assertSee('Profil Sekolah');
         $responseProfil->assertSee('Seika Ijichi');
 
-        // 3. Program Keahlian (学科紹介)
+        // 3. Program Keahlian
         $responseJurusan = $this->get('/jurusan');
         $responseJurusan->assertStatus(200);
         $responseJurusan->assertSeeText('Seni Musik Populer & Band (SMP)');
@@ -45,27 +45,27 @@ class SmkShukaPortalWalkthroughTest extends TestCase
         $responseJurusan->assertSeeText('Rekayasa Perangkat Lunak & Multimedia (RPL)');
         $responseJurusan->assertSeeText('Manajemen Bisnis Pertunjukan & Live Event (MBE)');
 
-        // 4. Tenaga Pendidik (教職員紹介)
+        // 4. Tenaga Pendidik
         $responseGuru = $this->get('/guru');
         $responseGuru->assertStatus(200);
-        $responseGuru->assertSee('Tenaga Pendidik & Instruktur (教職員紹介)');
+        $responseGuru->assertSee('Tenaga Pendidik & Instruktur');
 
-        // 5. Ekstrakurikuler (部活動)
+        // 5. Ekstrakurikuler
         $responseEkskul = $this->get('/ekskul');
         $responseEkskul->assertStatus(200);
         $responseEkskul->assertSee('Kessoku Band');
         $responseEkskul->assertSee('12 Klub Aktif');
 
-        // 6. Agenda & Pengumuman (行事・お知らせ)
+        // 6. Agenda & Pengumuman
         $responseAgenda = $this->get('/agenda-pengumuman');
         $responseAgenda->assertStatus(200);
         $responseAgenda->assertSeeText('Agenda & Pengumuman Sekolah');
 
-        // 7. Kontak & Akses (交通アクセス)
+        // 7. Kontak & Akses
         $responseKontak = $this->get('/kontak');
         $responseKontak->assertStatus(200);
         $responseKontak->assertSee('Shimokitazawa');
-        $responseKontak->assertSee('小田急小田原線');
+        $responseKontak->assertSee('Odakyu Odawara');
     }
 
     public function test_admin_dashboard_and_modules_walkthrough(): void
@@ -110,7 +110,7 @@ class SmkShukaPortalWalkthroughTest extends TestCase
             'kategori' => 'Ringan',
             'poin' => 5,
             'sanksi' => 'Membersihkan kabel studio',
-            'tanggal' => '15 Ags 2026',
+            'tanggal' => '2026-08-15',
             'guru_pencatat' => 'PA-san',
             'status' => 'Dalam Pembinaan',
             'catatan' => 'Siswa berjanji tidak mengulangi.',
@@ -128,7 +128,7 @@ class SmkShukaPortalWalkthroughTest extends TestCase
 
         $responseEkskulAdmin = $this->actingAs($admin)->get('/admin/ekskul');
         $responseEkskulAdmin->assertStatus(200);
-        $responseEkskulAdmin->assertSee('Direktori Ekstrakurikuler SMK Shuka (12 Klub)');
+        $responseEkskulAdmin->assertSee('Direktori Ekstrakurikuler');
 
         // 6. User Profile Show
         $responseProfile = $this->actingAs($admin)->get(route('profile.show', $admin->id));
@@ -156,6 +156,21 @@ class SmkShukaPortalWalkthroughTest extends TestCase
         $responseCreate = $this->actingAs($guruUser)->get(route('guru.nilai.create'));
         $responseCreate->assertStatus(200);
         $responseCreate->assertSeeText('Formulir Penilaian Siswa');
+    }
+
+    public function test_teacher_search_uses_the_subject_relation(): void
+    {
+        $mapel = MataPelajaran::query()->firstOrFail();
+        $admin = User::where('email', 'admin@shuka.test')->firstOrFail();
+
+        $this->get(route('public.guru', ['search' => $mapel->kode]))
+            ->assertOk()
+            ->assertSee($mapel->nama);
+
+        $this->actingAs($admin)
+            ->get(route('admin.guru.index', ['search' => $mapel->kode]))
+            ->assertOk()
+            ->assertSee($mapel->nama);
     }
 
     public function test_murid_can_access_dashboard_and_view_report(): void
@@ -198,7 +213,7 @@ class SmkShukaPortalWalkthroughTest extends TestCase
             'kategori' => 'Ringan',
             'poin' => 5,
             'sanksi' => 'Latihan solfeggio mandiri',
-            'tanggal' => '15 Ags 2026',
+            'tanggal' => '2026-08-15',
             'guru_pencatat' => $guruUser->name,
             'status' => 'Selesai',
         ]);
@@ -281,5 +296,4 @@ class SmkShukaPortalWalkthroughTest extends TestCase
         $this->actingAs($guruUmum)->get(route('admin.guru.index'))->assertStatus(403);
     }
 }
-
 

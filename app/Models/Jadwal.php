@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Jadwal extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = [
         'mapel_id',
         'kelas',
@@ -14,6 +17,13 @@ class Jadwal extends Model
         'jam_mulai',
         'jam_selesai',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'deleted_at' => 'datetime',
+        ];
+    }
 
     public function mapel(): BelongsTo
     {

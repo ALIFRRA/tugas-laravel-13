@@ -5,9 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Siswa extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = [
         'user_id',
         'nama',
@@ -22,6 +26,7 @@ class Siswa extends Model
     {
         return [
             'tanggal_lahir' => 'date',
+            'deleted_at' => 'datetime',
         ];
     }
 
@@ -43,5 +48,12 @@ class Siswa extends Model
     public function totalPoinPelanggaran(): int
     {
         return (int) $this->pelanggarans()->sum('poin');
+    }
+
+    public function ekskuls(): BelongsToMany
+    {
+        return $this->belongsToMany(Ekskul::class, 'ekskul_siswa')
+            ->withPivot('posisi', 'tahun_bergabung', 'is_active')
+            ->withTimestamps();
     }
 }

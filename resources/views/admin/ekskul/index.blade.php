@@ -1,130 +1,129 @@
 @extends('layouts.admin')
 
-@section('title', 'Ekstrakurikuler Kejuruan — SMK Shuka')
-@section('heading', 'Ekstrakurikuler Kejuruan & Seni Musik')
+@section('title', 'Daftar Ekstrakurikuler — SMK Shuka')
+@section('heading', 'Manajemen Ekstrakurikuler')
+@section('subheading', 'Kelola data klub ekstrakurikuler, anggauta, dan prestasi')
 
 @section('content')
 <div class="space-y-6">
 
-    <!-- Header Summary -->
+    <!-- Header & Actions -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-slate-200">
         <div>
-            <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">Direktori Ekstrakurikuler SMK Shuka (12 Klub)</h1>
-            <p class="text-xs sm:text-sm text-slate-500 mt-1">Wadah pengembangan bakat, klub seni musik panggung, audio lab, broadcasting, multimedia, dan kebugaran.</p>
+            <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">Direktori Ekstrakurikuler</h1>
+            <p class="text-xs sm:text-sm text-slate-500 mt-1">Kelola 12 klub ekstrakurikuler: musik, audio, desain, broadcasting, teknologi, dan kebugaran.</p>
         </div>
-        <div class="flex items-center gap-2">
-            <span class="inline-flex items-center px-3 py-1.5 rounded text-xs font-semibold bg-pink-50 text-pink-700 border border-pink-200">
-                12 Klub Aktif Terdaftar
-            </span>
-        </div>
+        <a href="{{ route('admin.ekskul.create') }}" class="px-4 py-2 bg-pink-500 hover:bg-pink-600 text-white font-semibold text-xs rounded transition-colors shadow-sm inline-flex items-center gap-1.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            <span>Tambah Klub Baru</span>
+        </a>
     </div>
 
-    <!-- Ringkasan Status Widget -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-white p-4 border border-slate-200 rounded-lg border-l-4 border-l-pink-500 shadow-sm">
-            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Klub Utama Musik</span>
-            <div class="text-2xl font-bold text-slate-900 mt-1">Kessoku Band</div>
-            <div class="text-xs text-pink-600 font-medium mt-1">28 Anggota • Studio STARRY</div>
-        </div>
+    <!-- Filter Bar -->
+    <div class="bg-white p-4 border border-slate-200 rounded-lg shadow-sm">
+        <form method="GET" action="{{ route('admin.ekskul.index') }}" class="flex flex-col sm:flex-row gap-3">
+            <div class="flex-1 relative">
+                <input
+                    type="text"
+                    name="search"
+                    value="{{ request('search') }}"
+                    placeholder="Cari nama klub, kategori, pembina..."
+                    class="w-full text-xs rounded border-slate-300 focus:border-pink-500 focus:ring-pink-500 py-2 pl-9 pr-3"
+                >
+                <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            </div>
 
-        <div class="bg-white p-4 border border-slate-200 rounded-lg border-l-4 border-l-sky-600 shadow-sm">
-            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Peserta Ekskul</span>
-            <div class="text-2xl font-bold text-slate-900 mt-1">329 Siswa</div>
-            <div class="text-xs text-sky-700 font-medium mt-1">Partisipasi Aktif SMK Shuka</div>
-        </div>
+            <select name="kategori" class="text-xs rounded border-slate-300 focus:border-pink-500 focus:ring-pink-500 py-2 px-3 bg-white">
+                <option value="all">Semua Kategori</option>
+                @foreach($kategoriList as $k)
+                    <option value="{{ $k }}" {{ request('kategori') === $k ? 'selected' : '' }}>{{ $k }}</option>
+                @endforeach
+            </select>
 
-        <div class="bg-white p-4 border border-slate-200 rounded-lg border-l-4 border-l-amber-500 shadow-sm">
-            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Fasilitas & Alat Musik</span>
-            <div class="text-2xl font-bold text-slate-900 mt-1">{{ count($inventarisAlat) }} Unit Utama</div>
-            <div class="text-xs text-amber-700 font-medium mt-1">Gitar, Bass, Drum, Mixer</div>
-        </div>
+            <select name="status" class="text-xs rounded border-slate-300 focus:border-pink-500 focus:ring-pink-500 py-2 px-3 bg-white">
+                <option value="all">Semua Status</option>
+                <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>Aktif</option>
+                <option value="inactive" {{ request('status') === 'inactive' ? 'selected' : '' }}>Non-Aktif</option>
+            </select>
 
-        <div class="bg-white p-4 border border-slate-200 rounded-lg border-l-4 border-l-emerald-600 shadow-sm">
-            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Studio Mitra Resmi</span>
-            <div class="text-2xl font-bold text-emerald-700 mt-1">Livehouse STARRY</div>
-            <div class="text-xs text-slate-500 font-medium mt-1">Shimokitazawa Basement</div>
-        </div>
+            <div class="flex items-center gap-2">
+                <button type="submit" class="px-3 py-2 text-xs font-semibold text-white bg-slate-800 hover:bg-slate-900 rounded transition-colors">
+                    Filter
+                </button>
+
+                @if(request('search') || request('kategori') !== 'all' || request('status') !== 'all')
+                    <a href="{{ route('admin.ekskul.index') }}" class="px-3 py-2 text-xs font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 rounded">
+                        Reset
+                    </a>
+                @endif
+            </div>
+        </form>
     </div>
 
-    <!-- GRID 12 KLUB EKSTRAKURIKULER -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        @foreach ($ekskulList as $ekskul)
-            <div class="bg-white border border-slate-200 rounded-lg p-5 shadow-sm hover:border-pink-300 transition-colors flex flex-col justify-between space-y-4">
-                <div>
-                    <div class="flex items-start justify-between gap-2 mb-2">
-                        <div>
-                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-0.5">{{ $ekskul['kategori'] }}</span>
-                            <h3 class="text-sm font-bold text-slate-900 leading-snug">{{ $ekskul['nama'] }}</h3>
-                        </div>
-                        <span class="inline-block px-2 py-0.5 text-[10px] font-bold rounded bg-pink-50 text-pink-700 border border-pink-200 shrink-0">
-                            {{ $ekskul['badge'] }}
-                        </span>
+    <!-- Ekskul Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        @forelse ($ekskuls as $ekskul)
+            <div class="bg-white border border-slate-200 rounded-lg p-4 shadow-sm hover:border-pink-300 hover:shadow-md transition-all duration-200 flex flex-col">
+                <div class="flex items-start justify-between gap-2 mb-2">
+                    <div class="min-w-0">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-0.5">{{ $ekskul->kategori }}</span>
+                        <h3 class="text-sm font-bold text-slate-900 leading-snug truncate">{{ $ekskul->nama }}</h3>
+                        @if($ekskul->nama_en)
+                            <span class="text-[10px] text-slate-500 block">{{ $ekskul->nama_en }}</span>
+                        @endif
                     </div>
-                    <p class="text-xs text-slate-600 leading-relaxed">{{ $ekskul['deskripsi'] }}</p>
+                    <span class="inline-block px-2 py-0.5 text-[10px] font-bold rounded {{ $ekskul->is_active ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-slate-100 text-slate-500 border border-slate-200' }} shrink-0">
+                        {{ $ekskul->is_active ? 'Aktif' : 'Non-Aktif' }}
+                    </span>
                 </div>
+
+                <p class="text-xs text-slate-600 leading-relaxed line-clamp-2 mb-3 flex-1">{{ $ekskul->deskripsi }}</p>
 
                 <div class="pt-3 border-t border-slate-100 space-y-1.5 text-xs text-slate-600">
                     <div class="flex justify-between">
                         <span class="text-slate-400">Pembina:</span>
-                        <strong class="text-slate-800 text-right">{{ $ekskul['pembina'] }}</strong>
+                        <strong class="text-slate-800 text-right truncate block max-w-[60%]">{{ $ekskul->pembina }}</strong>
                     </div>
                     <div class="flex justify-between">
-                        <span class="text-slate-400">Ketua Klub:</span>
-                        <span class="font-semibold text-slate-800">{{ $ekskul['ketua'] }}</span>
+                        <span class="text-slate-400">Ketua:</span>
+                        <span class="font-semibold text-slate-800 truncate block max-w-[60%] text-right">{{ $ekskul->ketua ?? '—' }}</span>
                     </div>
                     <div class="flex justify-between">
-                        <span class="text-slate-400">Lokasi:</span>
-                        <span class="text-slate-700">{{ $ekskul['lokasi'] }}</span>
+                        <span class="text-slate-400">Anggota:</span>
+                        <span class="font-bold text-pink-600">{{ $ekskul->siswas_count ?? 0 }} Siswa</span>
                     </div>
-                    <div class="flex items-center justify-between pt-1 border-t border-slate-50 text-[11px]">
-                        <span class="text-slate-500 font-medium">Jadwal: <strong class="text-slate-700">{{ $ekskul['jadwal'] }}</strong></span>
-                        <span class="font-bold text-pink-600 bg-pink-50 px-2 py-0.5 rounded">{{ $ekskul['anggota'] }} Siswa</span>
+                    <div class="flex items-center justify-between pt-1 border-t border-slate-50">
+                        <span class="text-slate-500">Jadwal: <strong class="text-slate-700">{{ $ekskul->jadwal ?? '—' }}</strong></span>
                     </div>
                 </div>
+
+                <div class="flex items-center gap-2 pt-3 border-t border-slate-100">
+                    <a href="{{ route('admin.ekskul.show', $ekskul) }}" class="flex-1 px-2 py-1.5 text-[11px] font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded text-center transition-colors">
+                        Detail
+                    </a>
+                    <a href="{{ route('admin.ekskul.edit', $ekskul) }}" class="px-2 py-1.5 text-[11px] font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded transition-colors">
+                        Edit
+                    </a>
+                    <form action="{{ route('admin.ekskul.destroy', $ekskul) }}" method="POST" onsubmit="return confirm('Hapus klub ekstrakurikuler ini?')">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="px-2 py-1.5 text-[11px] font-semibold text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 rounded">Hapus</button>
+                    </form>
+                </div>
             </div>
-        @endforeach
+        @empty
+            <div class="col-span-full p-8 text-center text-xs text-slate-400 bg-white border border-slate-200 rounded-lg">
+                Tidak ditemukan klub ekstrakurikuler.
+            </div>
+        @endforelse
     </div>
 
-    <!-- INVENTARIS FASILITAS & ALAT MUSIK -->
-    <div class="bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden">
-        <div class="px-5 py-4 border-b border-slate-200 flex items-center justify-between">
-            <div>
-                <h2 class="text-sm font-bold text-slate-900">Inventaris Fasilitas Panggung & Alat Musik SMK Shuka</h2>
-                <p class="text-xs text-slate-500 mt-0.5">Daftar peralatan instrumen dan sound system yang dikelola untuk kegiatan ekstrakurikuler.</p>
-            </div>
+    <!-- Pagination -->
+    @if($ekskuls->hasPages())
+        <div class="p-4 bg-white border border-slate-200 rounded-lg">
+            {{ $ekskuls->links() }}
         </div>
-
-        <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs border-collapse">
-                <thead>
-                    <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold uppercase tracking-wider">
-                        <th class="py-2.5 px-4">Nama Instrumen / Alat</th>
-                        <th class="py-2.5 px-4">Kategori Alat</th>
-                        <th class="py-2.5 px-4">Pemilik / Lokasi Penempatan</th>
-                        <th class="py-2.5 px-4 text-center">Kondisi</th>
-                        <th class="py-2.5 px-4 text-center">Status</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100">
-                    @foreach ($inventarisAlat as $item)
-                        <tr class="hover:bg-slate-50">
-                            <td class="py-3 px-4 font-bold text-slate-900">
-                                {{ $item['nama'] }}
-                            </td>
-                            <td class="py-3 px-4 text-slate-700 font-medium">{{ $item['kategori'] }}</td>
-                            <td class="py-3 px-4 text-slate-600">{{ $item['pemilik'] }}</td>
-                            <td class="py-3 px-4 text-center font-medium text-slate-700">{{ $item['kondisi'] }}</td>
-                            <td class="py-3 px-4 text-center">
-                                <span class="inline-block px-2 py-0.5 text-[11px] font-semibold rounded {{ $item['status'] === 'Tersedia' || $item['status'] === 'Tersedia di Studio' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-amber-50 text-amber-700 border border-amber-200' }}">
-                                    {{ $item['status'] }}
-                                </span>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    </div>
+    @endif
 
 </div>
 @endsection

@@ -1,6 +1,6 @@
 @extends('layouts.guru')
 
-@section('title', 'Dashboard Guru — SMK Shuka (秀華高等専門学校)')
+@section('title', 'Dashboard Guru — SMK Shuka')
 @section('heading', 'Halo, ' . $guru->nama)
 @section('subheading', 'Selamat datang di panel pengajar kejuruan SMK Shuka.')
 

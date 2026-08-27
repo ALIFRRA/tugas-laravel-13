@@ -83,9 +83,17 @@
                             </td>
                             <td class="py-3 px-4 font-mono font-semibold text-slate-600 whitespace-nowrap">{{ $guru->nip }}</td>
                             <td class="py-3 px-4">
-                                <span class="inline-block px-2.5 py-1 rounded text-xs font-semibold bg-pink-50 text-pink-700 border border-pink-200">
-                                    {{ $guru->mata_pelajaran }}
-                                </span>
+                                @if($guru->mataPelajarans->count())
+                                    <div class="flex flex-wrap gap-1">
+                                        @foreach($guru->mataPelajarans as $mapel)
+                                            <span class="inline-block px-2 py-0.5 rounded text-[10px] font-semibold bg-pink-50 text-pink-700 border border-pink-200">
+                                                {{ $mapel->kode }} - {{ $mapel->nama }}
+                                            </span>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <span class="text-slate-400 text-xs italic">Belum ada mapel</span>
+                                @endif
                             </td>
                             <td class="py-3 px-4 text-slate-600">
                                 {{ $guru->user?->email ?? '—' }}

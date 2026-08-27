@@ -1,9 +1,9 @@
 @extends('layouts.public')
 
-@section('title', 'Program Keahlian (学科紹介) — SMK Shuka (秀華高等専門学校)')
+@section('title', 'Program Keahlian — SMK Shuka')
 @section('page_header', true)
-@section('page_heading', 'Program Keahlian Kejuruan (学科紹介)')
-@section('page_subheading_jp', '秀華高等専門学校 • 5学科の専門教育カリキュラム')
+@section('page_heading', 'Program Keahlian Kejuruan')
+@section('page_subheading', '秀華高等専門学校 • 5 Program Keahlian Berbasis Kompetensi')
 @section('page_description', 'Kurikulum kejuruan berbasis kompetensi industri seni musik, tata suara panggung, desain visual, rekayasa software, dan manajemen pertunjukan.')
 
 @section('content')
@@ -13,7 +13,7 @@
     <section id="smp" class="bg-white border border-slate-200 rounded-lg p-6 sm:p-8 shadow-sm border-l-4 border-l-pink-500 space-y-4">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pb-3 border-b border-slate-200">
             <div>
-                <span class="text-[10px] font-bold text-pink-600 uppercase tracking-wider">Jurusan 01 • ポピュラー音楽科</span>
+                <span class="text-[10px] font-bold text-pink-600 uppercase tracking-wider">Jurusan 01</span>
                 <h2 class="text-lg sm:text-xl font-bold text-slate-900">Seni Musik Populer & Band (SMP)</h2>
             </div>
             <span class="inline-block px-2.5 py-1 text-xs font-semibold rounded bg-pink-50 text-pink-700 border border-pink-200 self-start sm:self-auto">
@@ -27,7 +27,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs pt-2">
             <div class="p-3 bg-slate-50 border border-slate-200 rounded space-y-1">
-                <span class="font-bold text-slate-900 block text-[11px]">Kompetensi Pokok (主要カリキュラム):</span>
+                <span class="font-bold text-slate-900 block text-[11px]">Kompetensi Pokok:</span>
                 <ul class="text-slate-600 space-y-1 list-disc list-inside">
                     <li>Teknik Instrumen Gitar, Bass, Drum, dan Vokal Tingkat Mahir</li>
                     <li>Harmoni Musik Populer & Teori Akor Lanjutan</li>
@@ -37,7 +37,7 @@
             </div>
 
             <div class="p-3 bg-slate-50 border border-slate-200 rounded space-y-1">
-                <span class="font-bold text-slate-900 block text-[11px]">Peluang Karier Lulusan (進路・就職先):</span>
+                <span class="font-bold text-slate-900 block text-[11px]">Peluang Karier Lulusan:</span>
                 <ul class="text-slate-600 space-y-1 list-disc list-inside">
                     <li>Musisi Band Profesional & Recording Artist</li>
                     <li>Session Player / Musisi Pengiring Konser Live</li>
@@ -52,7 +52,7 @@
     <section id="aet" class="bg-white border border-slate-200 rounded-lg p-6 sm:p-8 shadow-sm border-l-4 border-l-sky-600 space-y-4">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pb-3 border-b border-slate-200">
             <div>
-                <span class="text-[10px] font-bold text-sky-700 uppercase tracking-wider">Jurusan 02 • 音響工学科</span>
+                <span class="text-[10px] font-bold text-sky-700 uppercase tracking-wider">Jurusan 02</span>
                 <h2 class="text-lg sm:text-xl font-bold text-slate-900">Audio Engineering & Tata Suara (AET)</h2>
             </div>
             <span class="inline-block px-2.5 py-1 text-xs font-semibold rounded bg-sky-50 text-sky-700 border border-sky-200 self-start sm:self-auto">
@@ -61,12 +61,12 @@
         </div>
 
         <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
-            Membina teknisi dan *sound engineer* andal dalam mengoperasikan digital mixing console panggung konser, tata letak mikrofon akustik instrumen (*microphone placement*), recording studio multitrack, serta mastering rekaman digital.
+            Membina teknisi dan sound engineer andal dalam mengoperasikan digital mixing console panggung konser, tata letak mikrofon akustik instrumen (microphone placement), recording studio multitrack, serta mastering rekaman digital.
         </p>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs pt-2">
             <div class="p-3 bg-slate-50 border border-slate-200 rounded space-y-1">
-                <span class="font-bold text-slate-900 block text-[11px]">Kompetensi Pokok (主要カリキュラム):</span>
+                <span class="font-bold text-slate-900 block text-[11px]">Kompetensi Pokok:</span>
                 <ul class="text-slate-600 space-y-1 list-disc list-inside">
                     <li>Pengoperasian Konsol Soundboard Digital & Analog</li>
                     <li>Akustik Ruang & Sound Reinforcement Konser</li>
@@ -76,7 +76,7 @@
             </div>
 
             <div class="p-3 bg-slate-50 border border-slate-200 rounded space-y-1">
-                <span class="font-bold text-slate-900 block text-[11px]">Peluang Karier Lulusan (進路・就職先):</span>
+                <span class="font-bold text-slate-900 block text-[11px]">Peluang Karier Lulusan:</span>
                 <ul class="text-slate-600 space-y-1 list-disc list-inside">
                     <li>Front of House (FOH) Sound Engineer Konser Live</li>
                     <li>Studio Recording & Mixing Engineer</li>
@@ -91,7 +91,7 @@
     <section id="dkv" class="bg-white border border-slate-200 rounded-lg p-6 sm:p-8 shadow-sm border-l-4 border-l-amber-500 space-y-4">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pb-3 border-b border-slate-200">
             <div>
-                <span class="text-[10px] font-bold text-amber-700 uppercase tracking-wider">Jurusan 03 • デザイン・美術科</span>
+                <span class="text-[10px] font-bold text-amber-700 uppercase tracking-wider">Jurusan 03</span>
                 <h2 class="text-lg sm:text-xl font-bold text-slate-900">Desain Komunikasi Visual & Merchandise (DKV)</h2>
             </div>
             <span class="inline-block px-2.5 py-1 text-xs font-semibold rounded bg-amber-50 text-amber-700 border border-amber-200 self-start sm:self-auto">
@@ -105,7 +105,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs pt-2">
             <div class="p-3 bg-slate-50 border border-slate-200 rounded space-y-1">
-                <span class="font-bold text-slate-900 block text-[11px]">Kompetensi Pokok (主要カリキュラム):</span>
+                <span class="font-bold text-slate-900 block text-[11px]">Kompetensi Pokok:</span>
                 <ul class="text-slate-600 space-y-1 list-disc list-inside">
                     <li>Desain Grafis Vektor & Ilustrasi Digital Karakter</li>
                     <li>Produksi Sablon Screen Printing & Cetak Merchandise</li>
@@ -115,7 +115,7 @@
             </div>
 
             <div class="p-3 bg-slate-50 border border-slate-200 rounded space-y-1">
-                <span class="font-bold text-slate-900 block text-[11px]">Peluang Karier Lulusan (進路・就職先):</span>
+                <span class="font-bold text-slate-900 block text-[11px]">Peluang Karier Lulusan:</span>
                 <ul class="text-slate-600 space-y-1 list-disc list-inside">
                     <li>Merchandise Designer & Brand Creative Director</li>
                     <li>Album Cover & Poster Visual Artist</li>
@@ -130,7 +130,7 @@
     <section id="rpl" class="bg-white border border-slate-200 rounded-lg p-6 sm:p-8 shadow-sm border-l-4 border-l-indigo-600 space-y-4">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pb-3 border-b border-slate-200">
             <div>
-                <span class="text-[10px] font-bold text-indigo-700 uppercase tracking-wider">Jurusan 04 • 情報処理・ソフトウェア科</span>
+                <span class="text-[10px] font-bold text-indigo-700 uppercase tracking-wider">Jurusan 04</span>
                 <h2 class="text-lg sm:text-xl font-bold text-slate-900">Rekayasa Perangkat Lunak & Multimedia (RPL)</h2>
             </div>
             <span class="inline-block px-2.5 py-1 text-xs font-semibold rounded bg-indigo-50 text-indigo-700 border border-indigo-200 self-start sm:self-auto">
@@ -144,7 +144,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs pt-2">
             <div class="p-3 bg-slate-50 border border-slate-200 rounded space-y-1">
-                <span class="font-bold text-slate-900 block text-[11px]">Kompetensi Pokok (主要カリキュラム):</span>
+                <span class="font-bold text-slate-900 block text-[11px]">Kompetensi Pokok:</span>
                 <ul class="text-slate-600 space-y-1 list-disc list-inside">
                     <li>Pemrograman Web Modern (PHP/Laravel, JavaScript, Tailwind)</li>
                     <li>Manajemen Basis Data Relasional (MySQL / PostgreSQL)</li>
@@ -154,7 +154,7 @@
             </div>
 
             <div class="p-3 bg-slate-50 border border-slate-200 rounded space-y-1">
-                <span class="font-bold text-slate-900 block text-[11px]">Peluang Karier Lulusan (進路・就職先):</span>
+                <span class="font-bold text-slate-900 block text-[11px]">Peluang Karier Lulusan:</span>
                 <ul class="text-slate-600 space-y-1 list-disc list-inside">
                     <li>Fullstack Web Developer & Software Engineer</li>
                     <li>Audio Plugin & DSP Software Developer</li>
@@ -169,7 +169,7 @@
     <section id="mbe" class="bg-white border border-slate-200 rounded-lg p-6 sm:p-8 shadow-sm border-l-4 border-l-emerald-600 space-y-4">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pb-3 border-b border-slate-200">
             <div>
-                <span class="text-[10px] font-bold text-emerald-700 uppercase tracking-wider">Jurusan 05 • イベントビジネス科</span>
+                <span class="text-[10px] font-bold text-emerald-700 uppercase tracking-wider">Jurusan 05</span>
                 <h2 class="text-lg sm:text-xl font-bold text-slate-900">Manajemen Bisnis Pertunjukan & Live Event (MBE)</h2>
             </div>
             <span class="inline-block px-2.5 py-1 text-xs font-semibold rounded bg-emerald-50 text-emerald-700 border border-emerald-200 self-start sm:self-auto">
@@ -183,7 +183,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs pt-2">
             <div class="p-3 bg-slate-50 border border-slate-200 rounded space-y-1">
-                <span class="font-bold text-slate-900 block text-[11px]">Kompetensi Pokok (主要カリキュラム):</span>
+                <span class="font-bold text-slate-900 block text-[11px]">Kompetensi Pokok:</span>
                 <ul class="text-slate-600 space-y-1 list-disc list-inside">
                     <li>Manajemen Operasional Konser Live & Festival Shuka-sai</li>
                     <li>Digital Marketing & Promosi Media Kreatif Band</li>
@@ -193,7 +193,7 @@
             </div>
 
             <div class="p-3 bg-slate-50 border border-slate-200 rounded space-y-1">
-                <span class="font-bold text-slate-900 block text-[11px]">Peluang Karier Lulusan (進路・就職先):</span>
+                <span class="font-bold text-slate-900 block text-[11px]">Peluang Karier Lulusan:</span>
                 <ul class="text-slate-600 space-y-1 list-disc list-inside">
                     <li>Live Event & Concert Organizer Manager</li>
                     <li>Livehouse Stage & Venue Manager</li>

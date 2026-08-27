@@ -9,6 +9,7 @@ use App\Models\Siswa;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -60,33 +61,34 @@ class SiswaController extends Controller
     {
         $validated = $request->validated();
 
-        $userId = null;
-        if (!empty($validated['email'])) {
-            $user = User::create([
-                'name' => $validated['nama'],
-                'email' => $validated['email'],
-                'password' => Hash::make($validated['password'] ?? 'password123'),
-                'role' => User::ROLE_MURID,
-            ]);
-            $userId = $user->id;
-        }
+        DB::transaction(function () use ($validated) {
+            $userId = null;
+            if (! empty($validated['email'])) {
+                $userId = User::create([
+                    'name' => $validated['nama'],
+                    'email' => $validated['email'],
+                    'password' => Hash::make($validated['password'] ?? 'password123'),
+                    'role' => User::ROLE_MURID,
+                ])->id;
+            }
 
-        Siswa::create([
-            'user_id' => $userId,
-            'nama' => $validated['nama'],
-            'nis' => $validated['nis'],
-            'kelas' => $validated['kelas'],
-            'jenis_kelamin' => $validated['jenis_kelamin'],
-            'alamat' => $validated['alamat'],
-            'tanggal_lahir' => $validated['tanggal_lahir'],
-        ]);
+            Siswa::create([
+                'user_id' => $userId,
+                'nama' => $validated['nama'],
+                'nis' => $validated['nis'],
+                'kelas' => $validated['kelas'],
+                'jenis_kelamin' => $validated['jenis_kelamin'],
+                'alamat' => $validated['alamat'],
+                'tanggal_lahir' => $validated['tanggal_lahir'],
+            ]);
+        });
 
         return redirect()->route('admin.siswa.index')->with('success', 'Data murid berhasil ditambahkan.');
     }
 
     public function show(Siswa $siswa): View
     {
-        $siswa->load(['user', 'nilais.mapel', 'pelanggarans']);
+        $siswa->load(['user', 'nilais.mapel', 'pelanggarans', 'ekskuls']);
 
         return view('admin.siswa.show', compact('siswa'));
     }
@@ -102,36 +104,34 @@ class SiswaController extends Controller
     {
         $validated = $request->validated();
 
-        if (!empty($validated['email'])) {
-            if ($siswa->user) {
-                $userData = [
-                    'name' => $validated['nama'],
-                    'email' => $validated['email'],
-                ];
-                if (!empty($validated['password'])) {
-                    $userData['password'] = Hash::make($validated['password']);
+        DB::transaction(function () use ($validated, $siswa) {
+            if (! empty($validated['email'])) {
+                if ($siswa->user) {
+                    $userData = ['name' => $validated['nama'], 'email' => $validated['email']];
+                    if (! empty($validated['password'])) {
+                        $userData['password'] = Hash::make($validated['password']);
+                    }
+                    $siswa->user->update($userData);
+                } else {
+                    $siswa->user_id = User::create([
+                        'name' => $validated['nama'],
+                        'email' => $validated['email'],
+                        'password' => Hash::make($validated['password'] ?? 'password123'),
+                        'role' => User::ROLE_MURID,
+                    ])->id;
                 }
-                $siswa->user->update($userData);
-            } else {
-                $user = User::create([
-                    'name' => $validated['nama'],
-                    'email' => $validated['email'],
-                    'password' => Hash::make($validated['password'] ?? 'password123'),
-                    'role' => User::ROLE_MURID,
-                ]);
-                $siswa->user_id = $user->id;
             }
-        }
 
-        $siswa->update([
-            'user_id' => $siswa->user_id,
-            'nama' => $validated['nama'],
-            'nis' => $validated['nis'],
-            'kelas' => $validated['kelas'],
-            'jenis_kelamin' => $validated['jenis_kelamin'],
-            'alamat' => $validated['alamat'],
-            'tanggal_lahir' => $validated['tanggal_lahir'],
-        ]);
+            $siswa->update([
+                'user_id' => $siswa->user_id,
+                'nama' => $validated['nama'],
+                'nis' => $validated['nis'],
+                'kelas' => $validated['kelas'],
+                'jenis_kelamin' => $validated['jenis_kelamin'],
+                'alamat' => $validated['alamat'],
+                'tanggal_lahir' => $validated['tanggal_lahir'],
+            ]);
+        });
 
         return redirect()->route('admin.siswa.index')->with('success', 'Data murid berhasil diperbarui.');
     }

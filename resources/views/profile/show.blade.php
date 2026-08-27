@@ -54,7 +54,7 @@
                     </div>
                     <div class="flex justify-between py-1 border-b border-slate-100">
                         <span class="text-slate-500">Mapel Utama:</span>
-                        <span class="font-semibold text-slate-800">{{ $user->guru->mata_pelajaran }}</span>
+                        <span class="font-semibold text-slate-800 text-right">{{ $user->guru->mataPelajarans->pluck('nama')->implode(', ') ?: '—' }}</span>
                     </div>
                     <div class="flex justify-between py-1">
                         <span class="text-slate-500">No. Telepon:</span>

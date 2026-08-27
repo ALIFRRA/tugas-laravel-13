@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name', 'SMK Shuka (秀華高等専門学校)') }}</title>
+    <title>{{ config('app.name', 'SMK Shuka') }}</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -12,7 +12,7 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['"Plus Jakarta Sans"', 'Inter', '"Noto Sans JP"', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
+                        sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
                     },
                     colors: {
                         pink: {
@@ -21,7 +21,7 @@
                             200: '#fbcfe8',
                             300: '#f9a8d4',
                             400: '#f472b6',
-                            500: '#ec4899', /* Solid Bocchi Pink */
+                            500: '#ec4899',
                             600: '#db2777',
                             700: '#be185d',
                             800: '#9d174d',
@@ -39,10 +39,10 @@
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; border-color: #e2e8f0; }
-        body { font-family: 'Plus Jakarta Sans', 'Noto Sans JP', Inter, system-ui, sans-serif; background-color: #f8fafc; color: #1e293b; -webkit-font-smoothing: antialiased; }
+        body { font-family: 'Plus Jakarta Sans', Inter, system-ui, sans-serif; background-color: #f8fafc; color: #1e293b; -webkit-font-smoothing: antialiased; }
         [x-cloak] { display: none !important; }
     </style>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -70,7 +70,7 @@
     </main>
 
     <footer class="mt-auto bg-white border-t border-slate-200 px-6 py-4 text-xs text-slate-500 text-center">
-        &copy; 2026 SMK Shuka (秀華高等専門学校). Seluruh Hak Cipta Dilindungi.
+        &copy; 2026 SMK Shuka. Seluruh Hak Cipta Dilindungi.
     </footer>
 
 </body>

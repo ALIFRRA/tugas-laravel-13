@@ -24,6 +24,7 @@ Route::get('/', [PublicController::class, 'index'])->name('home');
 Route::get('/profil', [PublicController::class, 'profil'])->name('public.profil');
 Route::get('/jurusan', [PublicController::class, 'jurusan'])->name('public.jurusan');
 Route::get('/guru', [PublicController::class, 'guru'])->name('public.guru');
+Route::get('/api/guru', [GuruController::class, 'apiIndex'])->name('api.guru.index');
 Route::get('/ekskul', [PublicController::class, 'ekskul'])->name('public.ekskul');
 Route::get('/agenda-pengumuman', [PublicController::class, 'agenda'])->name('public.agenda');
 Route::get('/kontak', [PublicController::class, 'kontak'])->name('public.kontak');
@@ -47,19 +48,27 @@ Route::middleware('auth')->group(function () {
 
     // Admin & Staff & Guru Shared Management Group
     Route::prefix('admin')->name('admin.')->group(function () {
-        
+
         // 1. Modul Terkait Murid / Kesiswaan (Akses Penuh untuk Admin, Staff, dan Guru)
-        Route::middleware('role:admin,staff,guru')->group(function () {
+        Route::middleware('can_access:admin,staff,guru')->group(function () {
             Route::resource('siswa', SiswaController::class);
-            Route::resource('agenda', AgendaKessokuController::class);
+            Route::resource('agenda', AgendaKessokuController::class)->except(['create', 'show', 'edit']);
+
+            // Ekskul CRUD
+            Route::resource('ekskul', EkskulController::class)->except(['index']);
             Route::get('ekskul', [EkskulController::class, 'index'])->name('ekskul.index');
-            Route::resource('pelanggaran', PelanggaranController::class);
+            Route::get('ekskul/{ekskul}/members', [EkskulController::class, 'members'])->name('ekskul.members');
+            Route::post('ekskul/{ekskul}/add-member', [EkskulController::class, 'addMember'])->name('ekskul.add-member');
+            Route::delete('ekskul/{ekskul}/remove-member/{siswa}', [EkskulController::class, 'removeMember'])->name('ekskul.remove-member');
+            Route::put('ekskul/{ekskul}/update-member/{siswa}', [EkskulController::class, 'updateMember'])->name('ekskul.update-member');
+
+            Route::resource('pelanggaran', PelanggaranController::class)->except(['create', 'show', 'edit']);
             Route::post('pengumuman/{pengumuman}/toggle', [PengumumanController::class, 'toggle'])->name('pengumuman.toggle');
-            Route::resource('pengumuman', PengumumanController::class);
+            Route::resource('pengumuman', PengumumanController::class)->except(['create', 'show', 'edit']);
         });
 
         // 2. Modul Tingkat Administrator (Kepsek, Wakepsek, Kepala TU, Staf TU IT, Super Admin)
-        Route::middleware('role:admin_level')->group(function () {
+        Route::middleware('can_access:admin_level')->group(function () {
             Route::resource('guru', GuruController::class);
             Route::resource('mapel', MapelController::class);
             Route::resource('jadwal', JadwalController::class);
@@ -70,13 +79,13 @@ Route::middleware('auth')->group(function () {
     });
 
     // Guru Group
-    Route::prefix('guru')->name('guru.')->middleware('role:guru')->group(function () {
+    Route::prefix('guru')->name('guru.')->middleware('can_access:guru')->group(function () {
         Route::get('/dashboard', GuruDashboardController::class)->name('dashboard');
         Route::resource('nilai', GuruNilaiController::class)->except(['show']);
     });
 
     // Murid Group
-    Route::prefix('murid')->name('murid.')->middleware('role:murid')->group(function () {
+    Route::prefix('murid')->name('murid.')->middleware('can_access:murid')->group(function () {
         Route::get('/dashboard', MuridDashboardController::class)->name('dashboard');
     });
 });

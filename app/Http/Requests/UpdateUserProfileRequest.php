@@ -18,6 +18,7 @@ class UpdateUserProfileRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'avatar' => ['nullable', 'string'],
             'avatar_file' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp,gif', 'max:2048'],
+            'avatar_base64' => ['nullable', 'string', 'starts_with:data:image/'],
         ];
     }
 }

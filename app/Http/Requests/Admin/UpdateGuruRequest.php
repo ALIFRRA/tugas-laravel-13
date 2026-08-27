@@ -20,7 +20,6 @@ class UpdateGuruRequest extends FormRequest
         return [
             'nama' => ['required', 'string', 'max:255'],
             'nip' => ['required', 'string', 'max:50', Rule::unique('gurus', 'nip')->ignore($guru)],
-            'mata_pelajaran' => ['required', 'string', 'max:255'],
             'no_telepon' => ['required', 'string', 'max:20'],
             'email' => ['nullable', 'email', 'max:255', Rule::unique('users', 'email')->ignore($userId)],
             'password' => ['nullable', 'string', 'min:8'],

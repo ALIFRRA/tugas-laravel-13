@@ -4,7 +4,7 @@
 @section('heading', 'Kesiswaan: Kedisiplinan & Sanksi Siswa')
 
 @section('content')
-<div class="space-y-6" x-data="{ addModalOpen: false, editModalOpen: false, currentPelanggaran: {} }">
+<div class="space-y-6" x-data="{ addModalOpen: @js(request()->filled('siswa_id')), editModalOpen: false, currentPelanggaran: {} }">
 
     <!-- Header & Action Bar -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-slate-200">
@@ -214,7 +214,7 @@
                     <select name="siswa_id" required class="w-full text-xs rounded border-slate-300 focus:border-pink-500 focus:ring-pink-500 py-2 px-3">
                         <option value="">-- Pilih Siswa (600 Siswa) --</option>
                         @foreach ($siswas as $s)
-                            <option value="{{ $s->id }}">{{ $s->nama }} (NIS: {{ $s->nis }} - Kelas: {{ $s->kelas }})</option>
+                            <option value="{{ $s->id }}" @selected((string) old('siswa_id', request('siswa_id')) === (string) $s->id)>{{ $s->nama }} (NIS: {{ $s->nis }} - Kelas: {{ $s->kelas }})</option>
                         @endforeach
                     </select>
                 </div>

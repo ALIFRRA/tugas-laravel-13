@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Masuk Portal — SMK Shuka (秀華高等専門学校)')</title>
+    <title>@yield('title', 'Masuk Portal — SMK Shuka')</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -12,7 +12,7 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['"Plus Jakarta Sans"', 'Inter', '"Noto Sans JP"', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
+                        sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
                     },
                     colors: {
                         pink: {
@@ -21,7 +21,7 @@
                             200: '#fbcfe8',
                             300: '#f9a8d4',
                             400: '#f472b6',
-                            500: '#ec4899', /* Solid Bocchi Pink */
+                            500: '#ec4899',
                             600: '#db2777',
                             700: '#be185d',
                             800: '#9d174d',
@@ -39,10 +39,10 @@
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; border-color: #e2e8f0; }
-        body { font-family: 'Plus Jakarta Sans', 'Noto Sans JP', Inter, system-ui, sans-serif; background-color: #f8fafc; color: #1e293b; -webkit-font-smoothing: antialiased; }
+        body { font-family: 'Plus Jakarta Sans', Inter, system-ui, sans-serif; background-color: #f8fafc; color: #1e293b; -webkit-font-smoothing: antialiased; }
     </style>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -50,7 +50,7 @@
 
     <div class="w-full max-w-md space-y-6">
 
-        <!-- Logo & Header Brand Khas Sekolah Jepang -->
+        <!-- Logo & Header Brand -->
         <div class="text-center space-y-2">
             <a href="{{ route('home') }}" class="inline-flex items-center gap-3 group">
                 <div class="w-12 h-12 bg-pink-500 text-white flex items-center justify-center font-bold text-xl rounded shadow-sm group-hover:bg-pink-600 transition-colors shrink-0">
@@ -58,7 +58,7 @@
                 </div>
                 <div class="text-left">
                     <span class="block text-lg font-bold tracking-tight text-slate-900 leading-tight">SMK SHUKA</span>
-                    <span class="block text-xs font-semibold text-pink-600">秀華高等専門学校 • 学生・教職員ポータル</span>
+                    <span class="block text-xs font-semibold text-pink-600">Portal Siswa & Guru</span>
                 </div>
             </a>
             <p class="text-xs text-slate-500">Sistem Informasi Akademik & Portal Siswa-Guru</p>
@@ -72,7 +72,7 @@
         <!-- Back to Home Link -->
         <div class="text-center text-xs text-slate-500">
             <a href="{{ route('home') }}" class="text-slate-600 hover:text-pink-600 hover:underline">
-                ← Kembali ke Beranda Sekolah (ホームへ戻る)
+                ← Kembali ke Beranda Sekolah
             </a>
         </div>
 

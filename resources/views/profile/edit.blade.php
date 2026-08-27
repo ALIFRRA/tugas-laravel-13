@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Pengaturan Akun — SMK Shuka (秀華高等専門学校)')
+@section('title', 'Pengaturan Akun — SMK Shuka')
 @section('heading', 'Pengaturan Akun')
 @section('subheading', 'Kelola informasi profil dasar dan kata sandi login Anda.')
 

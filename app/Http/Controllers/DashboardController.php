@@ -39,32 +39,33 @@ class DashboardController extends Controller
             7 => 'Minggu',
         ][now()->dayOfWeekIso] ?? 'Sabtu';
 
+        $programCount = Siswa::query()
+            ->whereNotNull('kelas')
+            ->pluck('kelas')
+            ->map(fn (string $kelas) => explode('-', $kelas)[1] ?? null)
+            ->filter()
+            ->unique()
+            ->count();
+
         $jadwalHariIni = Jadwal::with(['mapel', 'mapel.guru'])
             ->where('hari', $todayName)
             ->orderBy('jam_mulai')
             ->get();
 
-        // If today is Sunday or no schedule for today, fetch Saturday or sample schedule
-        if ($jadwalHariIni->isEmpty()) {
-            $jadwalHariIni = Jadwal::with(['mapel', 'mapel.guru'])
-                ->where('hari', 'Sabtu')
-                ->orderBy('jam_mulai')
-                ->take(5)
-                ->get();
-        }
-
         return view('dashboard', [
             'siswaCount' => Siswa::count(),
             'guruCount' => Guru::count(),
             'mapelCount' => MataPelajaran::count(),
+            'programCount' => $programCount,
             'nilaiCount' => Nilai::count(),
             'userCount' => User::count(),
             'agendaCount' => Agenda::count(),
             'pelanggaranCount' => Pelanggaran::count(),
             'pengumumanCount' => Pengumuman::count(),
+            'canManageAcademic' => $user->isAdministratorLevel(),
             'jadwalHariIni' => $jadwalHariIni,
             'nilaiTerbaru' => Nilai::with(['siswa', 'mapel'])->latest()->take(5)->get(),
-            'siswaTerbaru' => Siswa::orderBy('id', 'asc')->take(50)->get(),
+            'siswaTerbaru' => Siswa::latest('id')->take(50)->get(),
             'agendaTerbaru' => Agenda::latest()->take(3)->get(),
             'pengumumanTerbaru' => Pengumuman::latest()->take(3)->get(),
             'pelanggaranTerbaru' => Pelanggaran::with('siswa')->latest()->take(3)->get(),

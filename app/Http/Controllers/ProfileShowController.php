@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class ProfileShowController extends Controller
@@ -45,6 +46,29 @@ class ProfileShowController extends Controller
             // Delete old uploaded file if it was a custom file
             if ($previous && str_starts_with($previous, 'avatars/') && Storage::disk('public')->exists($previous)) {
                 Storage::disk('public')->delete($previous);
+            }
+        } elseif ($request->filled('avatar_base64')) {
+            // Handle base64 image upload
+            $base64 = $request->input('avatar_base64');
+            $data = explode(',', $base64);
+            if (count($data) === 2) {
+                $mime = explode(';', explode(':', $data[0])[1])[0];
+                $extension = match ($mime) {
+                    'image/jpeg' => 'jpg',
+                    'image/png' => 'png',
+                    'image/webp' => 'webp',
+                    'image/gif' => 'gif',
+                    default => 'png',
+                };
+                $filename = 'avatar_' . time() . '_' . Str::random(8) . '.' . $extension;
+                $path = 'avatars/' . $filename;
+                Storage::disk('public')->put($path, base64_decode($data[1]));
+                $avatar = $path;
+
+                // Delete old uploaded file if it was a custom file
+                if ($previous && str_starts_with($previous, 'avatars/') && Storage::disk('public')->exists($previous)) {
+                    Storage::disk('public')->delete($previous);
+                }
             }
         }
 

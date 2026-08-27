@@ -1,20 +1,20 @@
 @extends('layouts.public')
 
-@section('title', 'Profil Sekolah (学校案内) — SMK Shuka (秀華高等専門学校)')
+@section('title', 'Profil Sekolah — SMK Shuka')
 @section('page_header', true)
-@section('page_heading', 'Profil Sekolah (学校案内)')
-@section('page_subheading_jp', '秀華高等専門学校 • 学校概要・教育理念')
+@section('page_heading', 'Profil Sekolah')
+@section('page_subheading', '秀華高等専門学校 • Profil, Visi-Misi & Fasilitas')
 @section('page_description', 'Informasi resmi mengenai sejarah, visi-misi, sambutan pimpinan, dan fasilitas kejuruan SMK Shuka.')
 
 @section('content')
 <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10 space-y-10">
 
-    <!-- 1. SAMBUTAN PIMPINAN SEKOLAH (校長挨拶) -->
+    <!-- 1. SAMBUTAN PIMPINAN SEKOLAH -->
     <section class="bg-white border border-slate-200 rounded-lg p-6 sm:p-8 shadow-sm space-y-5">
         <div class="flex items-center gap-3 pb-4 border-b border-slate-200">
             <span class="w-2.5 h-6 bg-pink-500 rounded-sm"></span>
             <div>
-                <h2 class="text-lg sm:text-xl font-bold text-slate-900">Sambutan Pimpinan Sekolah (校長挨拶)</h2>
+                <h2 class="text-lg sm:text-xl font-bold text-slate-900">Sambutan Pimpinan Sekolah</h2>
                 <p class="text-xs text-slate-500">Membina Generasi Unggul di Industri Kreatif & Musik</p>
             </div>
         </div>
@@ -38,7 +38,7 @@
 
             <div class="md:col-span-4 bg-slate-50 border border-slate-200 rounded-lg p-4 space-y-3 text-xs">
                 <div class="font-bold text-slate-900 pb-2 border-b border-slate-200 text-xs">
-                    Identitas Institusi (学校データ)
+                    Identitas Institusi
                 </div>
                 <div class="space-y-2 text-[11px] text-slate-600">
                     <div><strong>Nama Resmi:</strong> SMK Shuka (秀華高等専門学校)</div>
@@ -52,13 +52,13 @@
         </div>
     </section>
 
-    <!-- 2. VISI & MISI SEKOLAH (教育理念・目標) -->
+    <!-- 2. VISI & MISI SEKOLAH -->
     <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
         
         <div class="bg-white border border-slate-200 rounded-lg p-6 shadow-sm space-y-3">
             <div class="flex items-center gap-2 pb-2 border-b border-slate-200">
                 <span class="w-2 h-2 bg-pink-500 rounded-full"></span>
-                <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Visi Sekolah (教育理念)</h3>
+                <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Visi Sekolah</h3>
             </div>
             <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
                 "Menjadi pusat keunggulan pendidikan kejuruan seni pertunjukan musik populer, tata suara panggung, dan multimedia kreatif berstandar industri internasional yang berakar pada integritas moral dan kerja tim."
@@ -68,10 +68,10 @@
         <div class="bg-white border border-slate-200 rounded-lg p-6 shadow-sm space-y-3">
             <div class="flex items-center gap-2 pb-2 border-b border-slate-200">
                 <span class="w-2 h-2 bg-sky-600 rounded-full"></span>
-                <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Misi Sekolah (教育目標)</h3>
+                <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Misi Sekolah</h3>
             </div>
             <ul class="text-xs text-slate-600 space-y-2 list-disc list-inside leading-relaxed">
-                <li>Menyelenggarakan pembelajaran berbasis proyek (*Project-Based Learning*) panggung konser.</li>
+                <li>Menyelenggarakan pembelajaran berbasis proyek (Project-Based Learning) panggung konser.</li>
                 <li>Membekali siswa dengan sertifikasi kompetensi audio engineering & multimedia resmi.</li>
                 <li>Membangun kerja sama magang industri dengan studio rekaman dan label musik independen.</li>
                 <li>Membentuk karakter disiplin, daya juang tinggi, dan etika profesional di dunia kerja.</li>
@@ -80,11 +80,11 @@
 
     </section>
 
-    <!-- 3. FASILITAS & LABORATORIUM KAMPUS (施設・設備) -->
+    <!-- 3. FASILITAS & LABORATORIUM KAMPUS -->
     <section class="bg-white border border-slate-200 rounded-lg p-6 sm:p-8 shadow-sm space-y-5">
         <div class="flex items-center justify-between pb-3 border-b border-slate-200">
             <div>
-                <h2 class="text-base sm:text-lg font-bold text-slate-900">Fasilitas Laboratorium & Studio (施設・設備紹介)</h2>
+                <h2 class="text-base sm:text-lg font-bold text-slate-900">Fasilitas Laboratorium & Studio</h2>
                 <p class="text-xs text-slate-500">Peralatan standar panggung dan studio rekaman industri.</p>
             </div>
         </div>

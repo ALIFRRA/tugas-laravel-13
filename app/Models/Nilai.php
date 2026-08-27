@@ -5,9 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Nilai extends Model
 {
+    use SoftDeletes;
+
     public const SORT_OPTIONS = [
         'nilai_desc' => 'Nilai tertinggi',
         'nilai_asc' => 'Nilai terendah',
@@ -26,6 +29,7 @@ class Nilai extends Model
     {
         return [
             'nilai' => 'decimal:2',
+            'deleted_at' => 'datetime',
         ];
     }
 

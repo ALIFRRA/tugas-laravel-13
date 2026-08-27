@@ -8,7 +8,9 @@ use App\Http\Requests\Admin\UpdateGuruRequest;
 use App\Models\Guru;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -16,20 +18,41 @@ class GuruController extends Controller
 {
     public function index(Request $request): View
     {
-        $query = Guru::query()->with('user');
+        $query = Guru::query()->with(['user', 'mataPelajarans']);
 
         if ($request->filled('search')) {
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
                 $q->where('nama', 'like', "%{$search}%")
                   ->orWhere('nip', 'like', "%{$search}%")
-                  ->orWhere('mata_pelajaran', 'like', "%{$search}%");
+                  ->orWhereHas('mataPelajarans', function ($mapelQuery) use ($search) {
+                      $mapelQuery->where('nama', 'like', "%{$search}%")
+                          ->orWhere('kode', 'like', "%{$search}%");
+                  });
             });
         }
 
         $gurus = $query->orderBy('nip')->paginate(15)->withQueryString();
 
         return view('admin.guru.index', compact('gurus'));
+    }
+
+    public function apiIndex(): JsonResponse
+    {
+        $gurus = Guru::query()
+            ->with(['user', 'mataPelajarans'])
+            ->orderBy('nama')
+            ->get()
+            ->map(fn (Guru $guru): array => [
+                'id' => $guru->id,
+                'nama' => $guru->nama,
+                'nip' => $guru->nip,
+                'email' => $guru->user?->email,
+                'no_telepon' => $guru->no_telepon,
+                'mata_pelajaran' => $guru->mataPelajarans->pluck('nama')->values(),
+            ]);
+
+        return response()->json(['data' => $gurus]);
     }
 
     public function create(): View
@@ -41,24 +64,24 @@ class GuruController extends Controller
     {
         $validated = $request->validated();
 
-        $userId = null;
-        if (!empty($validated['email'])) {
-            $user = User::create([
-                'name' => $validated['nama'],
-                'email' => $validated['email'],
-                'password' => Hash::make($validated['password'] ?? 'password123'),
-                'role' => User::ROLE_GURU,
-            ]);
-            $userId = $user->id;
-        }
+        DB::transaction(function () use ($validated) {
+            $userId = null;
+            if (! empty($validated['email'])) {
+                $userId = User::create([
+                    'name' => $validated['nama'],
+                    'email' => $validated['email'],
+                    'password' => Hash::make($validated['password'] ?? 'password123'),
+                    'role' => User::ROLE_GURU,
+                ])->id;
+            }
 
-        Guru::create([
-            'user_id' => $userId,
-            'nama' => $validated['nama'],
-            'nip' => $validated['nip'],
-            'mata_pelajaran' => $validated['mata_pelajaran'],
-            'no_telepon' => $validated['no_telepon'],
-        ]);
+            Guru::create([
+                'user_id' => $userId,
+                'nama' => $validated['nama'],
+                'nip' => $validated['nip'],
+                'no_telepon' => $validated['no_telepon'],
+            ]);
+        });
 
         return redirect()->route('admin.guru.index')->with('success', 'Data guru berhasil ditambahkan.');
     }
@@ -81,40 +104,41 @@ class GuruController extends Controller
     {
         $validated = $request->validated();
 
-        if (!empty($validated['email'])) {
-            if ($guru->user) {
-                $userData = [
-                    'name' => $validated['nama'],
-                    'email' => $validated['email'],
-                ];
-                if (!empty($validated['password'])) {
-                    $userData['password'] = Hash::make($validated['password']);
+        DB::transaction(function () use ($validated, $guru) {
+            if (! empty($validated['email'])) {
+                if ($guru->user) {
+                    $userData = ['name' => $validated['nama'], 'email' => $validated['email']];
+                    if (! empty($validated['password'])) {
+                        $userData['password'] = Hash::make($validated['password']);
+                    }
+                    $guru->user->update($userData);
+                } else {
+                    $guru->user_id = User::create([
+                        'name' => $validated['nama'],
+                        'email' => $validated['email'],
+                        'password' => Hash::make($validated['password'] ?? 'password123'),
+                        'role' => User::ROLE_GURU,
+                    ])->id;
                 }
-                $guru->user->update($userData);
-            } else {
-                $user = User::create([
-                    'name' => $validated['nama'],
-                    'email' => $validated['email'],
-                    'password' => Hash::make($validated['password'] ?? 'password123'),
-                    'role' => User::ROLE_GURU,
-                ]);
-                $guru->user_id = $user->id;
             }
-        }
 
-        $guru->update([
-            'user_id' => $guru->user_id,
-            'nama' => $validated['nama'],
-            'nip' => $validated['nip'],
-            'mata_pelajaran' => $validated['mata_pelajaran'],
-            'no_telepon' => $validated['no_telepon'],
-        ]);
+            $guru->update([
+                'user_id' => $guru->user_id,
+                'nama' => $validated['nama'],
+                'nip' => $validated['nip'],
+                'no_telepon' => $validated['no_telepon'],
+            ]);
+        });
 
         return redirect()->route('admin.guru.index')->with('success', 'Data guru berhasil diperbarui.');
     }
 
     public function destroy(Guru $guru): RedirectResponse
     {
+        if ($guru->mataPelajarans()->exists()) {
+            return back()->with('error', 'Guru tidak dapat dihapus selama masih memiliki mata pelajaran yang ditautkan. Pindahkan mata pelajaran tersebut terlebih dahulu.');
+        }
+
         if ($guru->user) {
             $guru->user->delete();
         }

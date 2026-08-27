@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class ProfileTest extends TestCase
@@ -19,6 +21,83 @@ class ProfileTest extends TestCase
             ->get(route('profile.show', $user->id));
 
         $response->assertOk();
+    }
+
+    public function test_user_can_update_avatar_to_preset(): void
+    {
+        $user = User::factory()->create([
+            'avatar' => 'bocchi',
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->put(route('profile.update.user', $user->id), [
+                'name' => 'Erika Sasaki, S.AP.',
+                'avatar' => 'bocchi-maid',
+            ]);
+
+        $response
+            ->assertSessionHasNoErrors()
+            ->assertRedirect(route('profile.show', $user->id));
+
+        $user->refresh();
+        $this->assertSame('bocchi-maid', $user->avatar);
+        $this->assertSame('Erika Sasaki, S.AP.', $user->name);
+    }
+
+    public function test_user_can_upload_custom_avatar_file(): void
+    {
+        $user = User::factory()->create();
+
+        $file = UploadedFile::fake()->image('custom_avatar.png', 300, 300);
+
+        $response = $this
+            ->actingAs($user)
+            ->put(route('profile.update.user', $user->id), [
+                'name' => $user->name,
+                'avatar_file' => $file,
+            ]);
+
+        $response
+            ->assertSessionHasNoErrors()
+            ->assertRedirect(route('profile.show', $user->id));
+
+        $user->refresh();
+        $this->assertStringStartsWith('avatars/', $user->avatar);
+        $this->assertTrue(Storage::disk('public')->exists($user->avatar));
+
+        // Clean up test file
+        if (Storage::disk('public')->exists($user->avatar)) {
+            Storage::disk('public')->delete($user->avatar);
+        }
+    }
+
+    public function test_user_can_upload_custom_avatar_base64(): void
+    {
+        $user = User::factory()->create();
+
+        // 1x1 transparent png in base64
+        $base64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==';
+
+        $response = $this
+            ->actingAs($user)
+            ->put(route('profile.update.user', $user->id), [
+                'name' => $user->name,
+                'avatar_base64' => $base64,
+            ]);
+
+        $response
+            ->assertSessionHasNoErrors()
+            ->assertRedirect(route('profile.show', $user->id));
+
+        $user->refresh();
+        $this->assertStringStartsWith('avatars/', $user->avatar);
+        $this->assertTrue(Storage::disk('public')->exists($user->avatar));
+
+        // Clean up test file
+        if (Storage::disk('public')->exists($user->avatar)) {
+            Storage::disk('public')->delete($user->avatar);
+        }
     }
 
     public function test_profile_information_can_be_updated(): void

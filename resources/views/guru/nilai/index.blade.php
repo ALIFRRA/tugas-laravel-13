@@ -1,6 +1,6 @@
 @extends('layouts.guru')
 
-@section('title', 'Kelola Nilai — SMK Shuka (秀華高等専門学校)')
+@section('title', 'Kelola Nilai — SMK Shuka')
 @section('heading', 'Input & Kelola Nilai Siswa')
 @section('subheading', 'Daftar rekapitulasi penilaian mata pelajaran kejuruan.')
 

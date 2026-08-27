@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Portal Guru — SMK Shuka (秀華高等専門学校)')</title>
+    <title>@yield('title', 'Portal Guru — SMK Shuka')</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -12,7 +12,7 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['"Plus Jakarta Sans"', 'Inter', '"Noto Sans JP"', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
+                        sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
                     },
                     colors: {
                         pink: {
@@ -21,7 +21,7 @@
                             200: '#fbcfe8',
                             300: '#f9a8d4',
                             400: '#f472b6',
-                            500: '#ec4899', /* Solid Bocchi Pink */
+                            500: '#ec4899',
                             600: '#db2777',
                             700: '#be185d',
                             800: '#9d174d',
@@ -39,10 +39,10 @@
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; border-color: #e2e8f0; }
-        body { font-family: 'Plus Jakarta Sans', 'Noto Sans JP', Inter, system-ui, sans-serif; background-color: #f8fafc; color: #1e293b; -webkit-font-smoothing: antialiased; }
+        body { font-family: 'Plus Jakarta Sans', Inter, system-ui, sans-serif; background-color: #f8fafc; color: #1e293b; -webkit-font-smoothing: antialiased; }
         [x-cloak] { display: none !important; }
     </style>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -72,7 +72,7 @@
                     </div>
                     <div class="flex flex-col">
                         <span class="text-sm font-bold text-slate-900 leading-tight">SMK SHUKA</span>
-                        <span class="text-[10px] font-semibold text-pink-600 font-sans">教職員ポータル (Guru)</span>
+                        <span class="text-[10px] font-semibold text-pink-600">Portal Guru</span>
                     </div>
                 </a>
                 <button type="button" @click="sidebarOpen = false" class="lg:hidden text-slate-400 hover:text-slate-600">
@@ -84,7 +84,7 @@
             <div class="p-3 space-y-6">
                 
                 <div>
-                    <span class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">Utama (メイン)</span>
+                    <span class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">Utama</span>
                     <div class="space-y-1 text-xs">
                         <a href="{{ route('guru.dashboard') }}" class="flex items-center gap-2.5 px-3 py-2 rounded font-semibold transition-colors {{ request()->routeIs('guru.dashboard') ? 'bg-pink-500 text-white shadow-sm' : 'text-slate-700 hover:bg-slate-100' }}">
                             <svg class="w-4 h-4 {{ request()->routeIs('guru.dashboard') ? 'text-white' : 'text-slate-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
@@ -99,7 +99,7 @@
                 </div>
 
                 <div>
-                    <span class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">Kesiswaan & Kegiatan (指導・行事)</span>
+                    <span class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">Kesiswaan & Kegiatan</span>
                     <div class="space-y-1 text-xs">
                         <a href="{{ route('admin.pelanggaran.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded font-semibold transition-colors {{ request()->routeIs('admin.pelanggaran.*') ? 'bg-pink-500 text-white shadow-sm' : 'text-slate-700 hover:bg-slate-100' }}">
                             <svg class="w-4 h-4 {{ request()->routeIs('admin.pelanggaran.*') ? 'text-white' : 'text-slate-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
@@ -124,7 +124,7 @@
                 </div>
 
                 <div>
-                    <span class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">Akun (アカウント)</span>
+                    <span class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">Akun</span>
                     <div class="space-y-1 text-xs">
                         <a href="{{ route('profile.show', Auth::id()) }}" class="flex items-center gap-2.5 px-3 py-2 rounded font-semibold transition-colors {{ request()->routeIs('profile.show') ? 'bg-pink-500 text-white shadow-sm' : 'text-slate-700 hover:bg-slate-100' }}">
                             <svg class="w-4 h-4 {{ request()->routeIs('profile.show') ? 'text-white' : 'text-slate-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
@@ -155,7 +155,7 @@
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button type="submit" class="w-full py-1.5 px-3 bg-white hover:bg-rose-50 text-rose-600 border border-slate-200 hover:border-rose-200 text-xs font-semibold rounded transition-colors text-center">
-                    Keluar Sesi (ログアウト)
+                    Keluar Sesi
                 </button>
             </form>
         </div>
@@ -214,7 +214,7 @@
         <!-- FOOTER HALAMAN -->
         <footer class="mt-auto bg-white border-t border-slate-200 px-6 py-4 text-xs text-slate-500 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
             <div>
-                <strong class="text-slate-700">SMK Shuka (秀華高等専門学校) — Portal Guru</strong> &copy; 2026.
+                <strong class="text-slate-700">SMK Shuka — Portal Guru</strong> &copy; 2026.
             </div>
             <div class="flex items-center gap-2 text-[11px]">
                 <span class="text-slate-500">Livehouse STARRY Partnership</span>

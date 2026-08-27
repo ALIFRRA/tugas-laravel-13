@@ -173,4 +173,22 @@ class User extends Authenticatable
 
         return $letters !== '' ? $letters : 'SH';
     }
+
+    /**
+     * Get modern avatar data with progressive loading support
+     */
+    public function avatarData(string $size = 'md'): array
+    {
+        $avatarService = app(\App\Services\AvatarService::class);
+        return $avatarService->getAvatarData($this->name, $this->email, $this->avatar, $size);
+    }
+
+    /**
+     * Get avatar URL using modern service
+     */
+    public function modernAvatarUrl(): string
+    {
+        $avatarService = app(\App\Services\AvatarService::class);
+        return $avatarService->getAvatarUrl($this->name, $this->email, $this->avatar);
+    }
 }
