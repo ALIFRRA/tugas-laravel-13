@@ -1,4 +1,16 @@
 <?php
+/**
+     * Down.
+     *
+     * @return public down
+     */
+
+    /**
+     * Up.
+     *
+     * @return public up
+     */
+
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;

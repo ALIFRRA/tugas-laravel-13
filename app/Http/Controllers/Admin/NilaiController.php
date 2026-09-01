@@ -1,4 +1,46 @@
 <?php
+/**
+     * Destroy.
+     *
+     * @return public destroy
+     */
+
+    /**
+     * Update.
+     *
+     * @return public update
+     */
+
+    /**
+     * Edit.
+     *
+     * @return public edit
+     */
+
+    /**
+     * Show.
+     *
+     * @return public show
+     */
+
+    /**
+     * Store.
+     *
+     * @return public store
+     */
+
+    /**
+     * Create.
+     *
+     * @return public create
+     */
+
+    /**
+     * Index.
+     *
+     * @return public index
+     */
+
 
 namespace App\Http\Controllers\Admin;
 
@@ -14,6 +56,7 @@ use Illuminate\View\View;
 
 class NilaiController extends Controller
 {
+    // daftar rekap nilai
     public function index(Request $request): View
     {
         $sort = $request->string('sort')->toString() ?: null;
@@ -31,14 +74,16 @@ class NilaiController extends Controller
         ]);
     }
 
+    // formulir tambah nilai
     public function create(): View
     {
-        $siswas = Siswa::orderBy('nama')->get();
-        $mapels = MataPelajaran::orderBy('nama')->get();
+        $siswas = Siswa::orderBy('kelas')->orderBy('nama')->get(['id', 'nama', 'nis', 'kelas']);
+        $mapels = MataPelajaran::orderBy('nama')->get(['id', 'nama', 'kode']);
 
         return view('admin.nilai.create', compact('siswas', 'mapels'));
     }
 
+    // simpan nilai baru
     public function store(StoreNilaiRequest $request): RedirectResponse
     {
         Nilai::create($request->validated());
@@ -46,6 +91,7 @@ class NilaiController extends Controller
         return redirect()->route('admin.nilai.index')->with('success', 'Nilai berhasil ditambahkan.');
     }
 
+    // detail nilai
     public function show(Nilai $nilai): View
     {
         $nilai->load(['siswa', 'mapel']);
@@ -53,14 +99,16 @@ class NilaiController extends Controller
         return view('admin.nilai.show', compact('nilai'));
     }
 
+    // formulir edit nilai
     public function edit(Nilai $nilai): View
     {
-        $siswas = Siswa::orderBy('nama')->get();
-        $mapels = MataPelajaran::orderBy('nama')->get();
+        $siswas = Siswa::orderBy('kelas')->orderBy('nama')->get(['id', 'nama', 'nis', 'kelas']);
+        $mapels = MataPelajaran::orderBy('nama')->get(['id', 'nama', 'kode']);
 
         return view('admin.nilai.edit', compact('nilai', 'siswas', 'mapels'));
     }
 
+    // perbarui data nilai
     public function update(UpdateNilaiRequest $request, Nilai $nilai): RedirectResponse
     {
         $nilai->update($request->validated());
@@ -68,6 +116,7 @@ class NilaiController extends Controller
         return redirect()->route('admin.nilai.index')->with('success', 'Nilai berhasil diperbarui.');
     }
 
+    // hapus data nilai
     public function destroy(Nilai $nilai): RedirectResponse
     {
         $nilai->delete();

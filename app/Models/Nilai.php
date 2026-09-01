@@ -1,4 +1,28 @@
 <?php
+/**
+     * Scopeapplysort.
+     *
+     * @return public scopeApplySort
+     */
+
+    /**
+     * Mapel.
+     *
+     * @return public mapel
+     */
+
+    /**
+     * Siswa.
+     *
+     * @return public siswa
+     */
+
+    /**
+     * Casts.
+     *
+     * @return protected casts
+     */
+
 
 namespace App\Models;
 
@@ -33,14 +57,14 @@ class Nilai extends Model
         ];
     }
 
-    public function siswa(): BelongsTo
-    {
-        return $this->belongsTo(Siswa::class);
-    }
-
     public function mapel(): BelongsTo
     {
         return $this->belongsTo(MataPelajaran::class, 'mapel_id');
+    }
+
+    public function siswa(): BelongsTo
+    {
+        return $this->belongsTo(Siswa::class);
     }
 
     public function scopeApplySort(Builder $query, ?string $sort): Builder

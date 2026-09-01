@@ -1,3 +1,4 @@
+<?php
 @extends('layouts.admin')
 
 @section('title', 'Agenda Sekolah — SMK Shuka')
@@ -12,6 +13,7 @@
             <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">Agenda & Kalender Kegiatan SMK Shuka</h1>
             <p class="text-xs sm:text-sm text-slate-500 mt-1">Kelola jadwal latihan band, persiapan festival Shuka-sai, ujian kompetensi kejuruan (UKK), dan workshop industri.</p>
         </div>
+        @if(Auth::user()->canManageAgenda())
         <div class="flex items-center gap-2">
             <button 
                 type="button" 
@@ -22,6 +24,7 @@
                 <span>Tambah Agenda Baru</span>
             </button>
         </div>
+        @endif
     </div>
 
     <!-- Ringkasan Status Widget -->
@@ -99,6 +102,7 @@
                             <span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded {{ $a->status === 'Aktif' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : ($a->status === 'Persiapan' ? 'bg-amber-50 text-amber-700 border border-amber-200' : 'bg-pink-50 text-pink-700 border border-pink-200') }}">
                                 {{ $a->status }}
                             </span>
+                            @if(Auth::user()->canManageAgenda())
                             <button 
                                 type="button" 
                                 @click="currentAgenda = {{ json_encode($a) }}; editModalOpen = true"
@@ -113,6 +117,7 @@
                                     Hapus
                                 </button>
                             </form>
+                            @endif
                         </div>
                     </div>
 

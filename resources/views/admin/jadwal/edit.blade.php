@@ -1,3 +1,4 @@
+<?php
 @extends('layouts.admin')
 
 @section('title', 'Edit Jadwal — Shuka Highschool')

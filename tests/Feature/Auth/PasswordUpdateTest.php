@@ -1,4 +1,16 @@
 <?php
+/**
+     * Test correct password must be provided to update password.
+     *
+     * @return public test_correct_password_must_be_provided_to_update_password
+     */
+
+    /**
+     * Test password can be updated.
+     *
+     * @return public test_password_can_be_updated
+     */
+
 
 namespace Tests\Feature\Auth;
 

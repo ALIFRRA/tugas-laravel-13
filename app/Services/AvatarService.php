@@ -1,4 +1,28 @@
 <?php
+/**
+     * Generateplaceholder.
+     *
+     * @return protected generatePlaceholder
+     */
+
+    /**
+     * Getinitials.
+     *
+     * @return protected getInitials
+     */
+
+    /**
+     * Getavatardata.
+     *
+     * @return public getAvatarData
+     */
+
+    /**
+     * Getavatarurl.
+     *
+     * @return public getAvatarUrl
+     */
+
 
 namespace App\Services;
 
@@ -9,23 +33,34 @@ use Illuminate\Support\Str;
 class AvatarService
 {
     public const BOCCI_CHARACTERS = [
-        'hitori gotoh' => 'https://api.dicebear.com/9.x/avataaars/svg?seed=hitori-gotoh&backgroundColor=ffe7f3&hairColor=1e1e1e&clothesColor=ec4899&clothesType=blazerShirt',
-        'ikuyo kita' => 'https://api.dicebear.com/9.x/avataaars/svg?seed=ikuyo-kita&backgroundColor=ffe7f3&hairColor=1e1e1e&clothesColor=f472b6&clothesType=blazerShirt',
-        'nijika ijichi' => 'https://api.dicebear.com/9.x/avataaars/svg?seed=nijika-ijichi&backgroundColor=ffe7f3&hairColor=1e1e1e&clothesColor=db2777&clothesType=blazerShirt',
-        'ryo yamada' => 'https://api.dicebear.com/9.x/avataaars/svg?seed=ryo-yamada&backgroundColor=ffe7f3&hairColor=1e1e1e&clothesColor=be185d&clothesType=blazerShirt',
-        'futari gotoh' => 'https://api.dicebear.com/9.x/avataaars/svg?seed=futari-gotoh&backgroundColor=ffe7f3&hairColor=1e1e1e&clothesColor=ec4899&clothesType=blazerShirt',
-        'yoyoko ohtsuki' => 'https://api.dicebear.com/9.x/avataaars/svg?seed=yoyoko-ohtsuki&backgroundColor=ffe7f3&hairColor=1e1e1e&clothesColor=f472b6&clothesType=blazerShirt',
-        'eliza shimizu' => 'https://api.dicebear.com/9.x/avataaars/svg?seed=eliza-shimizu&backgroundColor=ffe7f3&hairColor=1e1e1e&clothesColor=db2777&clothesType=blazerShirt',
-        'shima iwashita' => 'https://api.dicebear.com/9.x/avataaars/svg?seed=shima-iwashita&backgroundColor=ffe7f3&hairColor=1e1e1e&clothesColor=be185d&clothesType=blazerShirt',
-        'akebi hasegawa' => 'https://api.dicebear.com/9.x/avataaars/svg?seed=akebi-hasegawa&backgroundColor=ffe7f3&hairColor=1e1e1e&clothesColor=ec4899&clothesType=blazerShirt',
-        'fumi honjo' => 'https://api.dicebear.com/9.x/avataaars/svg?seed=fumi-honjo&backgroundColor=ffe7f3&hairColor=1e1e1e&clothesColor=f472b6&clothesType=blazerShirt',
-        'kana koyama' => 'https://api.dicebear.com/9.x/avataaars/svg?seed=kana-koyama&backgroundColor=ffe7f3&hairColor=1e1e1e&clothesColor=db2777&clothesType=blazerShirt',
+        'hitori gotoh' => 'https://api.dicebear.com/9.x/bottts/svg?seed=hitori-gotoh&backgroundColor=ffe7f3',
+        'ikuyo kita' => 'https://api.dicebear.com/9.x/icons/svg?seed=ikuyo-kita&backgroundColor=fce7f3',
+        'nijika ijichi' => 'https://api.dicebear.com/9.x/shapes/svg?seed=nijika-ijichi&backgroundColor=f3e8ff',
+        'ryo yamada' => 'https://api.dicebear.com/9.x/identicon/svg?seed=ryo-yamada&backgroundColor=e0f2fe',
+        'seika ijichi' => 'https://api.dicebear.com/9.x/thumbs/svg?seed=seika-ijichi&backgroundColor=dcfce7',
+        'futari gotoh' => 'https://api.dicebear.com/9.x/fun-emoji/svg?seed=futari-gotoh&backgroundColor=ffe7f3',
+        'yoyoko ohtsuki' => 'https://api.dicebear.com/9.x/rings/svg?seed=yoyoko-ohtsuki&backgroundColor=fce7f3',
+        'eliza shimizu' => 'https://api.dicebear.com/9.x/bottts/svg?seed=eliza-shimizu&backgroundColor=e0f2fe',
+        'shima iwashita' => 'https://api.dicebear.com/9.x/icons/svg?seed=shima-iwashita&backgroundColor=f3e8ff',
+        'akebi hasegawa' => 'https://api.dicebear.com/9.x/shapes/svg?seed=akebi-hasegawa&backgroundColor=dcfce7',
+        'fumi honjo' => 'https://api.dicebear.com/9.x/identicon/svg?seed=fumi-honjo&backgroundColor=ffe7f3',
+        'kana koyama' => 'https://api.dicebear.com/9.x/thumbs/svg?seed=kana-koyama&backgroundColor=fce7f3',
     ];
 
     public const EXTERNAL_SOURCES = [
-        'dicebear' => 'https://api.dicebear.com/7.x/avataaars/svg',
+        'dicebear' => 'https://api.dicebear.com/9.x/bottts/svg',
         'ui-avatars' => 'https://ui-avatars.com/api',
         'robohash' => 'https://robohash.org',
+    ];
+
+    public const NON_HUMAN_STYLES = [
+        'bottts',
+        'icons',
+        'shapes',
+        'identicon',
+        'thumbs',
+        'fun-emoji',
+        'rings',
     ];
 
     /**
@@ -38,17 +73,26 @@ class AvatarService
             return $avatar;
         }
 
-        // 2. If user has custom uploaded avatar
-        if ($avatar && (str_starts_with($avatar, 'avatars/') || str_contains($avatar, '/'))) {
+        // 2. If user has custom uploaded avatar or relative path
+        if ($avatar && (str_starts_with($avatar, 'avatars/') || str_starts_with($avatar, 'images/') || str_contains($avatar, '/'))) {
             if (Storage::disk('public')->exists($avatar)) {
-                return Storage::disk('public')->url($avatar);
+                return route('avatar.show', ['filename' => basename($avatar)]);
             }
             if (file_exists(public_path($avatar))) {
                 return asset($avatar);
             }
         }
 
-        // 3. Check for known characters before generic presets so home avatars match names.
+        // 3. Preset avatar explicitly selected by user (bocchi, bocchi-shy, bocchi-maid, etc.)
+        if ($avatar && array_key_exists($avatar, User::AVATAR_PRESETS)) {
+            $preset = User::AVATAR_PRESETS[$avatar];
+            if (filter_var($preset, FILTER_VALIDATE_URL)) {
+                return $preset;
+            }
+            return asset($preset);
+        }
+
+        // 4. Check for known characters before generic presets so home avatars match names.
         if ($name) {
             $normalizedName = Str::lower(trim($name));
 
@@ -56,43 +100,58 @@ class AvatarService
             $cleanName = preg_replace('/\s*\([^)]+\)/', '', $normalizedName);
 
             if (isset(self::BOCCI_CHARACTERS[$cleanName])) {
-                return self::BOCCI_CHARACTERS[$cleanName];
+                $charUrl = self::BOCCI_CHARACTERS[$cleanName];
+                return filter_var($charUrl, FILTER_VALIDATE_URL) ? $charUrl : asset($charUrl);
             }
 
             // Try fuzzy matching for partial names
             foreach (self::BOCCI_CHARACTERS as $charName => $url) {
                 if (str_contains($cleanName, $charName) || str_contains($charName, $cleanName)) {
-                    return $url;
+                    return filter_var($url, FILTER_VALIDATE_URL) ? $url : asset($url);
                 }
             }
         }
 
-        // 4. Generate a deterministic remote avatar for every named user.
-        // avoids making an HTTP request for every avatar rendered by the server.
+        // 5. Generate a deterministic remote avatar for every named user.
         if ($name || $email) {
             $seed = $email ?: $name;
             return $this->getDiceBearAvatar($seed);
         }
 
-        // 5. Keep local presets only as a fallback for anonymous components.
-        if ($avatar && array_key_exists($avatar, User::AVATAR_PRESETS)) {
-            return asset(User::AVATAR_PRESETS[$avatar]);
-        }
-
-        // 6. Default fallback
-        return asset('images/bocchi.png');
+        // 6. Default fallback (remote internet avatar)
+        return User::AVATAR_PRESETS[User::DEFAULT_AVATAR];
     }
 
-    /** Generate a deterministic DiceBear URL for a name or email address. */
+    public const CARICATURE_STYLES = [
+        'adventurer',
+        'micah',
+        'lorelei',
+        'bottts',
+        'big-smile',
+        'croodles',
+        'open-peeps',
+        'personas',
+        'fun-emoji',
+        'icons',
+    ];
+
+    /** Generate a deterministic instant local SVG Data URI avatar with matching palette. */
     protected function getDiceBearAvatar(string $seed): string
     {
-        return str_replace('/7.x/', '/9.x/', self::EXTERNAL_SOURCES['dicebear']) . '?' . http_build_query([
-            'seed' => $seed,
-            'backgroundColor' => 'ffe7f3',
-            'hairColor' => '1e1e1e',
-            'clothesColor' => 'ec4899',
-            'radius' => 50,
-        ]);
+        $hash = abs(crc32($seed));
+        $bgColors = ['#fce7f3', '#e0f2fe', '#fef3c7', '#dcfce7', '#f3e8ff', '#ffe4e6'];
+        $textColors = ['#be185d', '#0369a1', '#b45309', '#15803d', '#7e22ce', '#e11d48'];
+        $idx = $hash % count($bgColors);
+        $bg = $bgColors[$idx];
+        $text = $textColors[$idx];
+
+        // Clean initial letters from seed
+        $clean = preg_replace('/[^a-zA-Z0-9]/', '', $seed);
+        $initials = mb_strtoupper(mb_substr($clean !== '' ? $clean : $seed, 0, 2));
+
+        $svg = "<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='{$bg}'/><text x='50' y='55' font-family='Plus Jakarta Sans, Inter, sans-serif' font-size='36' font-weight='800' fill='{$text}' text-anchor='middle' dominant-baseline='middle'>{$initials}</text></svg>";
+
+        return 'data:image/svg+xml;utf8,' . rawurlencode($svg);
     }
 
     /**

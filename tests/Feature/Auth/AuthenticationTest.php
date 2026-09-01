@@ -1,4 +1,28 @@
 <?php
+/**
+     * Test users can logout.
+     *
+     * @return public test_users_can_logout
+     */
+
+    /**
+     * Test users can not authenticate with invalid password.
+     *
+     * @return public test_users_can_not_authenticate_with_invalid_password
+     */
+
+    /**
+     * Test users can authenticate using the login screen.
+     *
+     * @return public test_users_can_authenticate_using_the_login_screen
+     */
+
+    /**
+     * Test login screen can be rendered.
+     *
+     * @return public test_login_screen_can_be_rendered
+     */
+
 
 namespace Tests\Feature\Auth;
 

@@ -1,3 +1,4 @@
+<?php
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full">
 <head>
@@ -47,7 +48,7 @@
     </style>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-slate-50 min-h-screen flex text-slate-800 antialiased" x-data="{ sidebarOpen: false }">
+<body class="app-shell bg-slate-50 min-h-screen flex text-slate-800 antialiased" x-data="{ sidebarOpen: false }">
 
     <!-- BACKDROP MOBILE -->
     <div 

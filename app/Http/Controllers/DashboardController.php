@@ -1,31 +1,16 @@
 <?php
-
-namespace App\Http\Controllers;
-
-use App\Models\Agenda;
-use App\Models\Guru;
-use App\Models\Jadwal;
-use App\Models\MataPelajaran;
-use App\Models\Nilai;
-use App\Models\Pelanggaran;
-use App\Models\Pengumuman;
-use App\Models\Siswa;
-use App\Models\User;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\View\View;
-
 class DashboardController extends Controller
 {
-    public function __invoke(Request $request): View|RedirectResponse
+    /** Handle an incoming request. */
+    public function index(Request $request): View|RedirectResponse
     {
         $user = $request->user();
 
-        if ($user->isGuru()) {
+        if ($user->isAdministratorLevel()) {
+            // akses dashboard pimpinan
+        } elseif ($user->isGuru()) {
             return redirect()->route('guru.dashboard');
-        }
-
-        if ($user->isMurid()) {
+        } elseif ($user->isMurid()) {
             return redirect()->route('murid.dashboard');
         }
 
@@ -39,15 +24,9 @@ class DashboardController extends Controller
             7 => 'Minggu',
         ][now()->dayOfWeekIso] ?? 'Sabtu';
 
-        $programCount = Siswa::query()
-            ->whereNotNull('kelas')
-            ->pluck('kelas')
-            ->map(fn (string $kelas) => explode('-', $kelas)[1] ?? null)
-            ->filter()
-            ->unique()
-            ->count();
+        $programCount = 5; // 5 kejuruan unggulan
 
-        $jadwalHariIni = Jadwal::with(['mapel', 'mapel.guru'])
+        $jadwalHariIni = Jadwal::with(['mapel:id,nama,guru_id', 'mapel.guru:id,nama'])
             ->where('hari', $todayName)
             ->orderBy('jam_mulai')
             ->get();
@@ -59,16 +38,24 @@ class DashboardController extends Controller
             'programCount' => $programCount,
             'nilaiCount' => Nilai::count(),
             'userCount' => User::count(),
+            'staffCount' => User::where('role', User::ROLE_STAFF)->count(),
             'agendaCount' => Agenda::count(),
             'pelanggaranCount' => Pelanggaran::count(),
             'pengumumanCount' => Pengumuman::count(),
             'canManageAcademic' => $user->isAdministratorLevel(),
             'jadwalHariIni' => $jadwalHariIni,
-            'nilaiTerbaru' => Nilai::with(['siswa', 'mapel'])->latest()->take(5)->get(),
-            'siswaTerbaru' => Siswa::latest('id')->take(50)->get(),
+            'nilaiTerbaru' => Nilai::with(['siswa:id,nama', 'mapel:id,nama'])->latest()->take(5)->get(),
+            'siswaTerbaru' => Siswa::latest('id')->take(20)->get(),
+            'guruTerbaru' => Guru::with(['user:id,name,email,avatar', 'mataPelajarans:id,nama,guru_id'])->latest('id')->take(20)->get(),
             'agendaTerbaru' => Agenda::latest()->take(3)->get(),
             'pengumumanTerbaru' => Pengumuman::latest()->take(3)->get(),
-            'pelanggaranTerbaru' => Pelanggaran::with('siswa')->latest()->take(3)->get(),
+            'pelanggaranTerbaru' => Pelanggaran::with('siswa:id,nama')->latest()->take(3)->get(),
         ]);
+    }
+
+    /** Handle an incoming request. */
+    public function __invoke(Request $request): View|RedirectResponse
+    {
+        return $this->index($request);
     }
 }

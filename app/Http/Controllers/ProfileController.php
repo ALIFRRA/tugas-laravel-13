@@ -1,4 +1,22 @@
 <?php
+/**
+     * Destroy.
+     *
+     * @return public destroy
+     */
+
+    /**
+     * Update.
+     *
+     * @return public update
+     */
+
+    /**
+     * Edit.
+     *
+     * @return public edit
+     */
+
 
 namespace App\Http\Controllers;
 

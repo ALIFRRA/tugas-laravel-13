@@ -1,4 +1,16 @@
 <?php
+/**
+     * Down.
+     *
+     * @return public down
+     */
+
+    /**
+     * Up.
+     *
+     * @return public up
+     */
+
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -15,6 +27,7 @@ return new class extends Migration
             $table->string('hari');
             $table->time('jam_mulai');
             $table->time('jam_selesai');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -1,4 +1,16 @@
 <?php
+/**
+     * Unverified.
+     *
+     * @return public unverified
+     */
+
+    /**
+     * Definition.
+     *
+     * @return public definition
+     */
+
 
 namespace Database\Factories;
 
@@ -31,7 +43,7 @@ class UserFactory extends Factory
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
             'role' => User::ROLE_MURID,
-            'avatar' => User::DEFAULT_AVATAR,
+            'avatar' => null,
         ];
     }
 

@@ -1,3 +1,4 @@
+<?php
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full scroll-smooth">
 <head>
@@ -57,7 +58,7 @@
     </style>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-slate-50 min-h-screen flex flex-col text-slate-800 antialiased" x-data="{ mobileMenuOpen: false }">
+<body class="app-shell bg-slate-50 min-h-screen flex flex-col text-slate-800 antialiased" x-data="{ mobileMenuOpen: false }">
 
     <!-- 1. TOP UTILITY BAR -->
     <div class="bg-slate-900 text-slate-300 text-xs py-1.5 px-4 border-b border-slate-800">
@@ -65,7 +66,7 @@
             <div class="flex items-center gap-3">
                 <span class="font-bold text-white tracking-wide">秀華高等専門学校</span>
                 <span class="text-slate-600">|</span>
-                <span class="text-slate-400">SMK Shuka Tokyo (Shimokitazawa Campus)</span>
+                <span class="text-slate-400">SMK Shuka Tokyo (Shimokitazawa)</span>
             </div>
             <div class="flex items-center gap-4 text-slate-400">
                 <span class="text-pink-400 font-semibold">T.A. 2026/2027 Semester 1</span>
@@ -237,7 +238,7 @@
                     <li><a href="{{ route('public.guru') }}" class="hover:text-white">• Tenaga Pendidik</a></li>
                     <li><a href="{{ route('public.ekskul') }}" class="hover:text-white">• Klub Ekstrakurikuler</a></li>
                     <li><a href="{{ route('public.agenda') }}" class="hover:text-white">• Agenda & Pengumuman</a></li>
-                    <li><a href="{{ route('public.kontak') }}" class="hover:text-white">• Akses Kampus</a></li>
+                    <li><a href="{{ route('public.kontak') }}" class="hover:text-white">• Akses Sekolah</a></li>
                     <li><a href="{{ route('login') }}" class="text-pink-400 font-semibold hover:underline">• Portal SIA</a></li>
                 </ul>
             </div>
@@ -245,8 +246,8 @@
         </div>
 
         <div class="max-w-6xl mx-auto px-4 sm:px-6 pt-6 mt-6 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500 gap-2">
-            <div>&copy; 2026 秀華高等専門学校 (SMK Shuka). All Rights Reserved.</div>
-            <div class="text-slate-400">Livehouse STARRY Partnership Campus</div>
+            <div>&copy; 2026 秀華高等専門学校 (SMK Shuka). Hak Cipta Dilindungi.</div>
+            <div class="text-slate-400">Livehouse STARRY Strategic Partner</div>
         </div>
     </footer>
 

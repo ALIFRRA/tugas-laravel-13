@@ -1,3 +1,4 @@
+<?php
 @extends('layouts.admin')
 
 @section('title', 'Tambah Ekstrakurikuler — SMK Shuka')

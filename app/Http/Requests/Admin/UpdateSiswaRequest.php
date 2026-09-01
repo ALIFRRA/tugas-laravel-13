@@ -1,4 +1,16 @@
 <?php
+/**
+     * Rules.
+     *
+     * @return public rules
+     */
+
+    /**
+     * Authorize.
+     *
+     * @return public authorize
+     */
+
 
 namespace App\Http\Requests\Admin;
 
@@ -25,7 +37,12 @@ class UpdateSiswaRequest extends FormRequest
             'alamat' => ['required', 'string'],
             'tanggal_lahir' => ['required', 'date'],
             'email' => ['nullable', 'email', 'max:255', Rule::unique('users', 'email')->ignore($userId)],
-            'password' => ['nullable', 'string', 'min:8'],
+            'password' => [
+                'nullable',
+                'string',
+                'min:8',
+                Rule::requiredIf(fn (): bool => $this->filled('email') && ! $userId),
+            ],
         ];
     }
 }

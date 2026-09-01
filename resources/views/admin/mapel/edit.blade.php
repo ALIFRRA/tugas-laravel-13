@@ -1,3 +1,4 @@
+<?php
 @extends('layouts.admin')
 
 @section('title', 'Edit Mapel — Shuka Highschool')

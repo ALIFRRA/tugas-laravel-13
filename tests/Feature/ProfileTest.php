@@ -1,4 +1,58 @@
 <?php
+/**
+     * Test correct password must be provided to delete account.
+     *
+     * @return public test_correct_password_must_be_provided_to_delete_account
+     */
+
+    /**
+     * Test user can delete their account.
+     *
+     * @return public test_user_can_delete_their_account
+     */
+
+    /**
+     * Test email verification status is unchanged when the email address is unchanged.
+     *
+     * @return public test_email_verification_status_is_unchanged_when_the_email_address_is_unchanged
+     */
+
+    /**
+     * Test profile information can be updated.
+     *
+     * @return public test_profile_information_can_be_updated
+     */
+
+    /**
+     * Test user can upload custom avatar base64.
+     *
+     * @return public test_user_can_upload_custom_avatar_base64
+     */
+
+    /**
+     * Test uploaded avatar is served by avatar route.
+     *
+     * @return public test_uploaded_avatar_is_served_by_avatar_route
+     */
+
+    /**
+     * Test user can upload custom avatar file.
+     *
+     * @return public test_user_can_upload_custom_avatar_file
+     */
+
+    /**
+     * Test user can update avatar to preset.
+     *
+     * @return public test_user_can_update_avatar_to_preset
+     */
+
+    /**
+     * Test profile page is displayed.
+     *
+     * @return public test_profile_page_is_displayed
+     */
+
 
 namespace Tests\Feature;
 
@@ -70,6 +124,26 @@ class ProfileTest extends TestCase
         if (Storage::disk('public')->exists($user->avatar)) {
             Storage::disk('public')->delete($user->avatar);
         }
+    }
+
+    public function test_uploaded_avatar_is_served_by_avatar_route(): void
+    {
+        $user = User::factory()->create();
+
+        $file = UploadedFile::fake()->image('custom_avatar.png', 300, 300);
+
+        $this->actingAs($user)->put(route('profile.update.user', $user->id), [
+            'name' => $user->name,
+            'avatar_file' => $file,
+        ])->assertRedirect(route('profile.show', $user->id));
+
+        $user->refresh();
+
+        $response = $this->get(route('avatar.show', ['filename' => basename($user->avatar)]));
+
+        $response->assertOk();
+
+        Storage::disk('public')->delete($user->avatar);
     }
 
     public function test_user_can_upload_custom_avatar_base64(): void

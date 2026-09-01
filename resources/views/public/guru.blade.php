@@ -1,3 +1,4 @@
+<?php
 @extends('layouts.public')
 
 @section('title', 'Tenaga Pendidik — SMK Shuka')
@@ -42,9 +43,7 @@
         @forelse ($gurus as $guru)
             <div class="bg-white border border-slate-200 rounded-lg p-4 shadow-sm hover:border-pink-300 transition-colors flex flex-col justify-between space-y-3">
                 <div class="flex items-start gap-3">
-                    <div class="w-10 h-10 rounded bg-slate-100 text-slate-700 flex items-center justify-center font-bold text-xs border border-slate-200 shrink-0">
-                        {{ strtoupper(substr($guru->nama, 0, 2)) }}
-                    </div>
+                    <x-avatar :user="$guru->user" :name="$guru->nama" size="md" class="shrink-0" />
                     <div class="min-w-0">
                         <h3 class="text-xs font-bold text-slate-900 leading-snug">{{ $guru->nama }}</h3>
                         <p class="text-[11px] font-semibold text-pink-600 mt-0.5 line-clamp-2">
@@ -53,9 +52,9 @@
                     </div>
                 </div>
 
-                <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-500 font-mono">
-                    <span>NIP: {{ $guru->nip }}</span>
-                    <span class="text-slate-400">SMK Shuka</span>
+                <div class="pt-2 border-t border-slate-100 flex items-center justify-between gap-2 text-[10px] text-slate-500">
+                    <span class="truncate">{{ $guru->user?->jabatan ?? 'Tenaga Pendidik' }}</span>
+                    <span class="text-slate-400 shrink-0">Guru</span>
                 </div>
             </div>
         @empty

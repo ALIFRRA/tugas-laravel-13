@@ -1,4 +1,16 @@
 <?php
+/**
+     * Mapel.
+     *
+     * @return public mapel
+     */
+
+    /**
+     * Casts.
+     *
+     * @return protected casts
+     */
+
 
 namespace App\Models;
 
@@ -25,8 +37,13 @@ class Jadwal extends Model
         ];
     }
 
+    /**
+     * Get the mata pelajaran for this jadwal.
+     *
+     * @return \App\Models\MataPelajaran
+     */
     public function mapel(): BelongsTo
-    {
-        return $this->belongsTo(MataPelajaran::class, 'mapel_id');
+        {
+            return $this->belongsTo(MataPelajaran::class, 'mapel_id');
     }
 }

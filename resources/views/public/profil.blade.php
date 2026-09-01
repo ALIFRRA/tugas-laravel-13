@@ -1,3 +1,4 @@
+<?php
 @extends('layouts.public')
 
 @section('title', 'Profil Sekolah — SMK Shuka')
@@ -43,7 +44,7 @@
                 <div class="space-y-2 text-[11px] text-slate-600">
                     <div><strong>Nama Resmi:</strong> SMK Shuka (秀華高等専門学校)</div>
                     <div><strong>Status:</strong> Sekolah Menengah Kejuruan Swasta Terakreditasi A</div>
-                    <div><strong>Kampus Utama:</strong> Shimokitazawa, Setagaya-ku, Tokyo</div>
+                    <div><strong>Lokasi Sekolah:</strong> Shimokitazawa, Setagaya-ku, Tokyo</div>
                     <div><strong>Mitra Industri:</strong> Livehouse STARRY & Tokyo Sound Lab</div>
                     <div><strong>Total Siswa:</strong> 600 Murid (18 Rombel)</div>
                     <div><strong>Tenaga Pendidik:</strong> 45 Guru Bersertifikasi</div>
@@ -52,7 +53,7 @@
         </div>
     </section>
 
-    <!-- 2. VISI & MISI SEKOLAH -->
+    <!-- visi dan misi sekolah -->
     <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
         
         <div class="bg-white border border-slate-200 rounded-lg p-6 shadow-sm space-y-3">
@@ -80,7 +81,7 @@
 
     </section>
 
-    <!-- 3. FASILITAS & LABORATORIUM KAMPUS -->
+    <!-- fasilitas dan laboratorium sekolah -->
     <section class="bg-white border border-slate-200 rounded-lg p-6 sm:p-8 shadow-sm space-y-5">
         <div class="flex items-center justify-between pb-3 border-b border-slate-200">
             <div>

@@ -1,4 +1,22 @@
 <?php
+/**
+     * Test email is not verified with invalid hash.
+     *
+     * @return public test_email_is_not_verified_with_invalid_hash
+     */
+
+    /**
+     * Test email can be verified.
+     *
+     * @return public test_email_can_be_verified
+     */
+
+    /**
+     * Test email verification screen can be rendered.
+     *
+     * @return public test_email_verification_screen_can_be_rendered
+     */
+
 
 namespace Tests\Feature\Auth;
 

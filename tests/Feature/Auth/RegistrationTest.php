@@ -1,4 +1,16 @@
 <?php
+/**
+     * Test new users can register.
+     *
+     * @return public test_new_users_can_register
+     */
+
+    /**
+     * Test registration screen can be rendered.
+     *
+     * @return public test_registration_screen_can_be_rendered
+     */
+
 
 namespace Tests\Feature\Auth;
 

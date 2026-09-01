@@ -1,4 +1,16 @@
 <?php
+/**
+     * Down.
+     *
+     * @return public down
+     */
+
+    /**
+     * Up.
+     *
+     * @return public up
+     */
+
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -14,6 +26,7 @@ return new class extends Migration
             $table->string('nip')->unique();
             $table->string('mata_pelajaran');
             $table->string('no_telepon');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -1,4 +1,28 @@
 <?php
+/**
+     * Test password can be reset with valid token.
+     *
+     * @return public test_password_can_be_reset_with_valid_token
+     */
+
+    /**
+     * Test reset password screen can be rendered.
+     *
+     * @return public test_reset_password_screen_can_be_rendered
+     */
+
+    /**
+     * Test reset password link can be requested.
+     *
+     * @return public test_reset_password_link_can_be_requested
+     */
+
+    /**
+     * Test reset password link screen can be rendered.
+     *
+     * @return public test_reset_password_link_screen_can_be_rendered
+     */
+
 
 namespace Tests\Feature\Auth;
 

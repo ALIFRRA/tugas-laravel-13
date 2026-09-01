@@ -1,4 +1,10 @@
 <?php
+/**
+     * Casts.
+     *
+     * @return protected casts
+     */
+
 
 namespace App\Models;
 

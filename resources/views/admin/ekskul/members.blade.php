@@ -1,3 +1,4 @@
+<?php
 @extends('layouts.admin')
 
 @section('title', 'Kelola Anggota - {{ $ekskul->nama }} — SMK Shuka')
@@ -119,17 +120,8 @@
                 </button>
             </div>
             <div class="p-5 space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">Pilih Siswa</label>
-                    <select name="siswa_id" required class="w-full text-xs rounded border-slate-300 focus:border-pink-500 focus:ring-pink-500 py-2 px-3 bg-white">
-                        <option value="">-- Pilih Siswa --</option>
-                        @foreach ($siswas as $siswa)
-                            @unless($ekskul->siswas->contains($siswa->id))
-                                <option value="{{ $siswa->id }}">{{ $siswa->nama }} (NIS: {{ $siswa->nis }} - {{ $siswa->kelas }})</option>
-                            @endunless
-                        @endforeach
-                    </select>
-                </div>
+                <!-- komponen pencarian siswa -->
+                <x-siswa-picker :siswas="$siswas" label="Pilih Siswa Calon Anggota" />
                 <div>
                     <label class="block text-xs font-semibold text-slate-700 mb-1">Posisi</label>
                     <select name="posisi" class="w-full text-xs rounded border-slate-300 focus:border-pink-500 focus:ring-pink-500 py-2 px-3 bg-white">

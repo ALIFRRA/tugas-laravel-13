@@ -1,3 +1,4 @@
+<?php
 @extends('layouts.admin')
 
 @section('title', 'Kedisiplinan & Pelanggaran Siswa — SMK Shuka')
@@ -157,6 +158,7 @@
                             </td>
                             <td class="py-3.5 px-4 text-center">
                                 <div class="flex items-center justify-center gap-1.5">
+                                    @if(Auth::user()->isAdministratorLevel())
                                     <button 
                                         type="button" 
                                         @click="currentPelanggaran = {{ json_encode($pel) }}; editModalOpen = true"
@@ -171,6 +173,9 @@
                                             Hapus
                                         </button>
                                     </form>
+                                    @else
+                                        <span class="text-[11px] text-slate-500">Read-only</span>
+                                    @endif
                                 </div>
                             </td>
                         </tr>
@@ -209,15 +214,8 @@
             <form method="POST" action="{{ route('admin.pelanggaran.store') }}" class="space-y-3.5 text-xs">
                 @csrf
 
-                <div>
-                    <label class="block font-semibold text-slate-700 mb-1">Pilih Siswa *</label>
-                    <select name="siswa_id" required class="w-full text-xs rounded border-slate-300 focus:border-pink-500 focus:ring-pink-500 py-2 px-3">
-                        <option value="">-- Pilih Siswa (600 Siswa) --</option>
-                        @foreach ($siswas as $s)
-                            <option value="{{ $s->id }}" @selected((string) old('siswa_id', request('siswa_id')) === (string) $s->id)>{{ $s->nama }} (NIS: {{ $s->nis }} - Kelas: {{ $s->kelas }})</option>
-                        @endforeach
-                    </select>
-                </div>
+                <!-- komponen pencarian siswa -->
+                <x-siswa-picker :siswas="$siswas" label="Pilih Siswa Terkait" :selected="old('siswa_id', request('siswa_id'))" />
 
                 <div>
                     <label class="block font-semibold text-slate-700 mb-1">Jenis / Bentuk Pelanggaran *</label>
@@ -303,13 +301,16 @@
                 @csrf
                 @method('PUT')
 
-                <div>
-                    <label class="block font-semibold text-slate-700 mb-1">Pilih Siswa *</label>
-                    <select name="siswa_id" x-model="currentPelanggaran.siswa_id" required class="w-full text-xs rounded border-slate-300 focus:border-pink-500 focus:ring-pink-500 py-2 px-3">
-                        @foreach ($siswas as $s)
-                            <option value="{{ $s->id }}">{{ $s->nama }} (NIS: {{ $s->nis }} - Kelas: {{ $s->kelas }})</option>
-                        @endforeach
-                    </select>
+                <!-- informasi siswa terkait -->
+                <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg">
+                    <label class="block font-semibold text-slate-700 mb-1">Peserta Didik Terkait</label>
+                    <input type="hidden" name="siswa_id" :value="currentPelanggaran.siswa_id" required>
+                    <div class="flex items-center gap-2">
+                        <span class="font-bold text-slate-900" x-text="currentPelanggaran.siswa ? currentPelanggaran.siswa.nama : 'Memuat data...'"></span>
+                        <span class="text-slate-400">•</span>
+                        <span class="text-slate-500 font-mono" x-text="currentPelanggaran.siswa ? 'NIS: ' + currentPelanggaran.siswa.nis : ''"></span>
+                        <span class="px-1.5 py-0.5 rounded bg-white border border-slate-200 text-slate-700 text-[10px] font-semibold" x-text="currentPelanggaran.siswa ? currentPelanggaran.siswa.kelas : ''"></span>
+                    </div>
                 </div>
 
                 <div>

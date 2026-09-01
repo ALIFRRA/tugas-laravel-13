@@ -1,4 +1,16 @@
 <?php
+/**
+     * Down.
+     *
+     * @return public down
+     */
+
+    /**
+     * Up.
+     *
+     * @return public up
+     */
+
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -13,6 +25,7 @@ return new class extends Migration
             $table->string('nama');
             $table->string('kode')->unique();
             $table->foreignId('guru_id')->constrained('gurus')->cascadeOnDelete();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -1,4 +1,52 @@
 <?php
+/**
+     * Kontak.
+     *
+     * @return public kontak
+     */
+
+    /**
+     * Agenda.
+     *
+     * @return public agenda
+     */
+
+    /**
+     * Ekskul.
+     *
+     * @return public ekskul
+     */
+
+    /**
+     * Guru.
+     *
+     * @return public guru
+     */
+
+    /**
+     * Jurusan.
+     *
+     * @return public jurusan
+     */
+
+    /**
+     * Profil.
+     *
+     * @return public profil
+     */
+
+    /**
+     * Index.
+     *
+     * @return public index
+     */
+
+    /**
+     * Getteacherquotes.
+     *
+     * @return private getTeacherQuotes
+     */
+
 
 namespace App\Http\Controllers;
 
@@ -7,7 +55,6 @@ use App\Models\Ekskul;
 use App\Models\Guru;
 use App\Models\Jadwal;
 use App\Models\MataPelajaran;
-use App\Models\Nilai;
 use App\Models\Pengumuman;
 use App\Models\Siswa;
 use App\Models\User;
@@ -23,32 +70,32 @@ class PublicController extends Controller
                 'text' => 'Musik bukan hanya tentang nada, tapi tentang jiwa yang berbicara melalui melodi.',
                 'author' => 'Gin Sasaki, S.Pd.',
                 'role' => 'Wakil Kepala Sekolah Bidang Kesiswaan',
-                'avatar' => 'bocchi-maid'
+                'avatar' => 'bocchi-maid',
             ],
             [
                 'text' => 'Sound engineering adalah seni mengubah suara menjadi emosi yang tersentuh hati pendengar.',
                 'author' => 'PA-san, S.T., M.Kom.',
                 'role' => 'Wakil Kepala Sekolah Bidang Kurikulum & IT',
-                'avatar' => 'bocchi-shy'
+                'avatar' => 'bocchi-shy',
             ],
             [
                 'text' => 'Desain visual yang baik tidak hanya indah, tapi bercerita dan menggerakkan hati.',
                 'author' => 'Yoko Sasaki, S.Sn.',
                 'role' => 'Pembina DKV & Desain Merchandise',
-                'avatar' => 'bocchi'
+                'avatar' => 'bocchi',
             ],
             [
                 'text' => 'Kode yang bersih adalah puisi bagi mesin, dan fondasi bagi inovasi teknologi.',
                 'author' => 'Daisuke Suzuki, M.Kom.',
                 'role' => 'Pembina Web Dev & Audio Software Lab',
-                'avatar' => 'bocchi-shy'
+                'avatar' => 'bocchi-shy',
             ],
             [
                 'text' => 'Manajemen event adalah orkestrasi di balik layar agar panggung bersinar maksimal.',
                 'author' => 'Michiyo Gotoh, S.Pd.',
                 'role' => 'Pembina STARRY Cafe & Hospitality',
-                'avatar' => 'bocchi'
-            ]
+                'avatar' => 'bocchi',
+            ],
         ];
     }
 
@@ -64,33 +111,15 @@ class PublicController extends Controller
         ];
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index(): View
-    {
-        $teacherQuotes = $this->getTeacherQuotes();
-        $programCount = Siswa::query()
-            ->whereNotNull('kelas')
-            ->pluck('kelas')
-            ->map(fn (string $kelas) => explode('-', $kelas)[1] ?? null)
-            ->filter()
-            ->unique()
-            ->count();
-
-        // Get top 5 students by average grade (current students)
-        $topStudents = Siswa::with(['user', 'nilais'])
-            ->where('kelas', 'not like', '%Lulus%')
-            ->whereHas('nilais')
-            ->get()
-            ->map(function ($siswa) {
-                $avgNilai = $siswa->nilais->avg('nilai');
-                return [
-                    'siswa' => $siswa,
-                    'avg_nilai' => $avgNilai ? round($avgNilai, 1) : 0,
-                    'nilai_count' => $siswa->nilais->count(),
-                ];
-            })
-            ->sortByDesc('avg_nilai')
-            ->take(5)
-            ->values();
+        {
+            $teacherQuotes = $this->getTeacherQuotes();
+        $programCount = 5; // 5 Program Kejuruan: SMP, AET, DKV, RPL, MBE
 
         $topAlumni = $this->getFeaturedAlumni();
         $staff = User::query()
@@ -98,48 +127,26 @@ class PublicController extends Controller
             ->orderBy('jabatan')
             ->get();
 
-        // Get high achieving current students (with awards/prestasi - using high grades as proxy)
-        $highAchievers = Siswa::with(['user', 'nilais'])
-            ->where('kelas', 'not like', '%Lulus%')
-            ->whereHas('nilais')
-            ->get()
-            ->filter(function ($siswa) {
-                $avgNilai = $siswa->nilais->avg('nilai');
-                return $avgNilai >= 95;
-            })
-            ->map(function ($siswa) {
-                $avgNilai = $siswa->nilais->avg('nilai');
-                return [
-                    'siswa' => $siswa,
-                    'avg_nilai' => round($avgNilai, 1),
-                ];
-            })
-            ->sortByDesc('avg_nilai')
-            ->take(5)
-            ->values();
+        $siswaCount = Siswa::count();
+        $guruCount = Guru::count();
+        $staffCount = $staff->count();
 
-        // Fallback empty collections if no data
-        if ($highAchievers->isEmpty()) {
-            $highAchievers = collect();
-        }
         return view('public.home', [
-            'siswaCount' => Siswa::count(),
-            'guruCount' => Guru::count(),
-            'staffCount' => $staff->count(),
-            'tenagaCount' => Guru::count() + $staff->count(),
+            'siswaCount' => $siswaCount,
+            'guruCount' => $guruCount,
+            'staffCount' => $staffCount,
+            'tenagaCount' => $guruCount + $staffCount,
             'mapelCount' => MataPelajaran::count(),
             'programCount' => $programCount,
             'ekskulCount' => Ekskul::active()->count(),
             'jadwalCount' => Jadwal::count(),
-            'gurus' => Guru::with(['user', 'mataPelajarans'])->whereHas('mataPelajarans')->take(6)->get(),
+            'gurus' => Guru::with(['user', 'mataPelajarans'])->take(6)->get(),
             'staff' => $staff,
             'agendas' => Agenda::where('status', '!=', 'Selesai')->latest()->take(4)->get(),
             'pengumumans' => Pengumuman::active()->latest()->take(3)->get(),
             'ekskuls' => Ekskul::active()->withCount('siswas')->take(6)->get(),
             'teacherQuotes' => $teacherQuotes,
-            'topStudents' => $topStudents,
             'topAlumni' => $topAlumni,
-            'highAchievers' => $highAchievers,
         ]);
     }
 
@@ -167,11 +174,11 @@ class PublicController extends Controller
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
                 $q->where('nama', 'like', "%{$search}%")
-                  ->orWhere('nip', 'like', "%{$search}%")
-                  ->orWhereHas('mataPelajarans', function ($mapelQuery) use ($search) {
-                      $mapelQuery->where('nama', 'like', "%{$search}%")
-                          ->orWhere('kode', 'like', "%{$search}%");
-                  });
+                    ->orWhere('nip', 'like', "%{$search}%")
+                    ->orWhereHas('mataPelajarans', function ($mapelQuery) use ($search) {
+                        $mapelQuery->where('nama', 'like', "%{$search}%")
+                            ->orWhere('kode', 'like', "%{$search}%");
+                    });
             });
         }
 

@@ -1,4 +1,46 @@
 <?php
+/**
+     * Destroy.
+     *
+     * @return public destroy
+     */
+
+    /**
+     * Update.
+     *
+     * @return public update
+     */
+
+    /**
+     * Edit.
+     *
+     * @return public edit
+     */
+
+    /**
+     * Show.
+     *
+     * @return public show
+     */
+
+    /**
+     * Store.
+     *
+     * @return public store
+     */
+
+    /**
+     * Create.
+     *
+     * @return public create
+     */
+
+    /**
+     * Index.
+     *
+     * @return public index
+     */
+
 
 namespace App\Http\Controllers\Admin;
 
@@ -12,9 +54,14 @@ use Illuminate\View\View;
 
 class MapelController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index(): View
-    {
-        $mapels = MataPelajaran::with('guru')->latest()->paginate(10);
+        {
+            $mapels = MataPelajaran::with('guru')->latest()->paginate(10);
 
         return view('admin.mapel.index', compact('mapels'));
     }

@@ -1,4 +1,22 @@
 <?php
+/**
+     * Prepareforvalidation.
+     *
+     * @return protected prepareForValidation
+     */
+
+    /**
+     * Rules.
+     *
+     * @return public rules
+     */
+
+    /**
+     * Authorize.
+     *
+     * @return public authorize
+     */
+
 
 namespace App\Http\Requests\Admin;
 

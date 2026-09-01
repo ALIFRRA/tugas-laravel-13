@@ -1,4 +1,22 @@
 <?php
+/**
+     * Destroy.
+     *
+     * @return public destroy
+     */
+
+    /**
+     * Store.
+     *
+     * @return public store
+     */
+
+    /**
+     * Create.
+     *
+     * @return public create
+     */
+
 
 namespace App\Http\Controllers\Auth;
 

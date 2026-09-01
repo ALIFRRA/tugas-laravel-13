@@ -1,4 +1,46 @@
 <?php
+/**
+     * Destroy.
+     *
+     * @return public destroy
+     */
+
+    /**
+     * Update.
+     *
+     * @return public update
+     */
+
+    /**
+     * Edit.
+     *
+     * @return public edit
+     */
+
+    /**
+     * Show.
+     *
+     * @return public show
+     */
+
+    /**
+     * Store.
+     *
+     * @return public store
+     */
+
+    /**
+     * Create.
+     *
+     * @return public create
+     */
+
+    /**
+     * Index.
+     *
+     * @return public index
+     */
+
 
 namespace App\Http\Controllers\Admin;
 

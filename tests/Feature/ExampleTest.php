@@ -1,4 +1,10 @@
 <?php
+/**
+     * Test the application returns a successful response.
+     *
+     * @return public test_the_application_returns_a_successful_response
+     */
+
 
 namespace Tests\Feature;
 

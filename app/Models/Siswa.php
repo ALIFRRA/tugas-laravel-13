@@ -1,4 +1,40 @@
 <?php
+/**
+     * Ekskuls.
+     *
+     * @return public ekskuls
+     */
+
+    /**
+     * Totalpoinpelanggaran.
+     *
+     * @return public totalPoinPelanggaran
+     */
+
+    /**
+     * Pelanggarans.
+     *
+     * @return public pelanggarans
+     */
+
+    /**
+     * Nilais.
+     *
+     * @return public nilais
+     */
+
+    /**
+     * User.
+     *
+     * @return public user
+     */
+
+    /**
+     * Casts.
+     *
+     * @return protected casts
+     */
+
 
 namespace App\Models;
 
@@ -30,9 +66,11 @@ class Siswa extends Model
         ];
     }
 
-    public function user(): BelongsTo
+    public function ekskuls(): BelongsToMany
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsToMany(Ekskul::class, 'ekskul_siswa')
+            ->withPivot('posisi', 'tahun_bergabung', 'is_active')
+            ->withTimestamps();
     }
 
     public function nilais(): HasMany
@@ -50,10 +88,8 @@ class Siswa extends Model
         return (int) $this->pelanggarans()->sum('poin');
     }
 
-    public function ekskuls(): BelongsToMany
+    public function user(): BelongsTo
     {
-        return $this->belongsToMany(Ekskul::class, 'ekskul_siswa')
-            ->withPivot('posisi', 'tahun_bergabung', 'is_active')
-            ->withTimestamps();
+        return $this->belongsTo(User::class);
     }
 }

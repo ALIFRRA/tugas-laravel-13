@@ -1,7 +1,30 @@
+<?php
 <x-guest-layout>
-    <div class="mb-5 border-b border-slate-200 pb-3">
-        <h1 class="text-lg font-bold text-slate-900">Masuk ke Akun Portal</h1>
-        <p class="text-xs text-slate-500 mt-0.5">Gunakan email dan kata sandi yang telah terdaftar.</p>
+    <div class="mb-6">
+        <h1 class="text-2xl font-bold tracking-tight text-slate-900">Masuk ke Akun Portal</h1>
+        <p class="text-xs text-slate-500 mt-1">Masukkan kredensial akun Anda untuk mengakses sistem akademik SMK Shuka.</p>
+    </div>
+
+    <!-- Quick Role Switcher Chips (Mobile & Form Level) -->
+    <div class="mb-5 p-3 bg-slate-50 border border-slate-200 rounded-lg">
+        <span class="text-[11px] font-semibold text-slate-600 block mb-2">Autofill Role Cepat:</span>
+        <div class="flex flex-wrap gap-1.5">
+            <button type="button" onclick="fillLogin('admin@shuka.test', 'password')" class="px-2.5 py-1 text-[11px] font-semibold rounded bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 transition-colors shadow-2xs">
+                Admin
+            </button>
+            <button type="button" onclick="fillLogin('seika@shuka.test', 'password')" class="px-2.5 py-1 text-[11px] font-semibold rounded bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 transition-colors shadow-2xs">
+                Kepsek
+            </button>
+            <button type="button" onclick="fillLogin('tu@shuka.test', 'password')" class="px-2.5 py-1 text-[11px] font-semibold rounded bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 transition-colors shadow-2xs">
+                Tata Usaha
+            </button>
+            <button type="button" onclick="fillLogin('guru10@shuka.test', 'password')" class="px-2.5 py-1 text-[11px] font-semibold rounded bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 transition-colors shadow-2xs">
+                Guru
+            </button>
+            <button type="button" onclick="fillLogin('student1@murid.shuka.test', 'password')" class="px-2.5 py-1 text-[11px] font-semibold rounded bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 transition-colors shadow-2xs">
+                Siswa
+            </button>
+        </div>
     </div>
 
     <x-auth-session-status class="mb-4 text-xs font-semibold text-emerald-700 bg-emerald-50 p-2.5 rounded border border-emerald-200" :status="session('status')" />
@@ -14,7 +37,7 @@
             <label for="email" class="block text-xs font-semibold text-slate-700 mb-1">Alamat Email</label>
             <input 
                 id="email" 
-                class="w-full text-xs rounded border-slate-300 focus:border-pink-500 focus:ring-pink-500 py-2 px-3 text-slate-900" 
+                class="w-full text-xs rounded border-slate-300 focus:border-pink-500 focus:ring-pink-500 py-2.5 px-3 text-slate-900 transition-colors shadow-2xs" 
                 type="email" 
                 name="email" 
                 value="{{ old('email', 'admin@shuka.test') }}" 
@@ -31,7 +54,7 @@
             <label for="password" class="block text-xs font-semibold text-slate-700 mb-1">Kata Sandi (Password)</label>
             <input 
                 id="password" 
-                class="w-full text-xs rounded border-slate-300 focus:border-pink-500 focus:ring-pink-500 py-2 px-3 text-slate-900" 
+                class="w-full text-xs rounded border-slate-300 focus:border-pink-500 focus:ring-pink-500 py-2.5 px-3 text-slate-900 transition-colors shadow-2xs" 
                 type="password" 
                 name="password" 
                 value="password"
@@ -42,41 +65,32 @@
             <x-input-error :messages="$errors->get('password')" class="mt-1.5 text-xs text-rose-600" />
         </div>
 
-        <!-- Remember Me -->
-        <div class="flex items-center justify-between text-xs">
-            <label for="remember_me" class="inline-flex items-center">
+        <!-- Remember Me & Forgot Password -->
+        <div class="flex items-center justify-between text-xs pt-1">
+            <label for="remember_me" class="inline-flex items-center cursor-pointer">
                 <input id="remember_me" type="checkbox" class="rounded border-slate-300 text-pink-600 focus:ring-pink-500" name="remember">
                 <span class="ms-2 text-slate-600">Ingat sesi saya</span>
             </label>
 
             @if (Route::has('password.request'))
-                <a class="text-pink-600 hover:text-pink-700 font-medium" href="{{ route('password.request') }}">
+                <a class="text-pink-600 hover:text-pink-700 font-medium transition-colors" href="{{ route('password.request') }}">
                     Lupa kata sandi?
                 </a>
             @endif
         </div>
 
         <!-- Submit Button -->
-        <div class="pt-2">
+        <div class="pt-3">
             <button type="submit" class="w-full py-2.5 px-4 bg-pink-500 hover:bg-pink-600 text-white font-bold text-xs rounded transition-colors shadow-sm text-center">
                 Masuk ke Sistem SIA
             </button>
         </div>
     </form>
 
-    <!-- Quick Credentials Hint -->
-    <div class="mt-6 pt-4 border-t border-slate-100 text-xs text-slate-500">
-        <span class="font-semibold text-slate-700 block mb-1.5">Akun Demo Berdasarkan Jabatan:</span>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-1 text-[11px]">
-            <div>• <strong class="text-slate-700">Kepala Sekolah:</strong> <span class="font-mono text-pink-600">seika@shuka.test</span></div>
-            <div>• <strong class="text-slate-700">Wakepsek (Kurikulum):</strong> <span class="font-mono text-pink-600">pasan@shuka.test</span></div>
-            <div>• <strong class="text-slate-700">Kepala Tata Usaha:</strong> <span class="font-mono text-pink-600">tu@shuka.test</span></div>
-            <div>• <strong class="text-slate-700">Staf TU Bagian IT:</strong> <span class="font-mono text-pink-600">it@shuka.test</span></div>
-            <div>• <strong class="text-slate-700">Staf Kesiswaan:</strong> <span class="font-mono text-slate-600">kesiswaan@shuka.test</span></div>
-            <div>• <strong class="text-slate-700">Guru Umum:</strong> <span class="font-mono text-slate-600">guru10@shuka.test</span></div>
-            <div>• <strong class="text-slate-700">Murid (Siswa):</strong> <span class="font-mono text-slate-600">student1@murid.shuka.test</span></div>
-            <div>• <strong class="text-slate-700">Super Administrator:</strong> <span class="font-mono text-pink-600">admin@shuka.test</span></div>
-        </div>
-        <div class="text-[10px] text-slate-400 mt-1">Semua password: <span class="font-mono text-slate-600 font-semibold">password</span></div>
+    <div class="mt-8 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+        <span>Belum memiliki akun?</span>
+        <a href="{{ route('register') }}" class="font-bold text-pink-600 hover:text-pink-700 hover:underline">
+            Daftar Akun Baru →
+        </a>
     </div>
 </x-guest-layout>

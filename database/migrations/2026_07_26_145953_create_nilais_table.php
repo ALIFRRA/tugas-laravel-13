@@ -1,4 +1,16 @@
 <?php
+/**
+     * Down.
+     *
+     * @return public down
+     */
+
+    /**
+     * Up.
+     *
+     * @return public up
+     */
+
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -14,6 +26,7 @@ return new class extends Migration
             $table->foreignId('mapel_id')->constrained('mata_pelajarans')->cascadeOnDelete();
             $table->string('jenis_nilai');
             $table->decimal('nilai', 5, 2);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

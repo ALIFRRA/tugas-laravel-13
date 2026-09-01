@@ -1,4 +1,28 @@
 <?php
+/**
+     * Destroy.
+     *
+     * @return public destroy
+     */
+
+    /**
+     * Update.
+     *
+     * @return public update
+     */
+
+    /**
+     * Store.
+     *
+     * @return public store
+     */
+
+    /**
+     * Index.
+     *
+     * @return public index
+     */
+
 
 namespace App\Http\Controllers\Admin;
 
@@ -11,40 +35,56 @@ use Illuminate\View\View;
 
 class PelanggaranController extends Controller
 {
+    /**
+     * menampilkan daftar rekapitulasi kedisiplinan dan sanksi siswa
+     */
     public function index(Request $request): View
     {
         $query = Pelanggaran::with('siswa');
+        $user = $request->user();
 
+        // filter kelas khusus jika dipilih
+        if ($request->filled('kelas') && $request->input('kelas') !== 'all') {
+            $kelas = $request->input('kelas');
+            $query->whereHas('siswa', fn ($sq) => $sq->where('kelas', $kelas));
+        }
+
+        // filter siswa spesifik
         if ($request->filled('siswa_id')) {
             $query->where('siswa_id', $request->integer('siswa_id'));
         }
 
+        // filter kategori pelanggaran
         if ($request->filled('kategori') && $request->input('kategori') !== 'all') {
             $query->where('kategori', $request->input('kategori'));
         }
 
+        // filter status tindak lanjut
         if ($request->filled('status') && $request->input('status') !== 'all') {
             $query->where('status', $request->input('status'));
         }
 
+        // pencarian multi-kriteria
         if ($request->filled('search')) {
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
                 $q->where('jenis_pelanggaran', 'like', "%{$search}%")
-                  ->orWhere('sanksi', 'like', "%{$search}%")
-                  ->orWhere('guru_pencatat', 'like', "%{$search}%")
-                  ->orWhereHas('siswa', function ($sq) use ($search) {
-                      $sq->where('nama', 'like', "%{$search}%")
-                         ->orWhere('nis', 'like', "%{$search}%")
-                         ->orWhere('kelas', 'like', "%{$search}%");
-                  });
+                    ->orWhere('sanksi', 'like', "%{$search}%")
+                    ->orWhere('guru_pencatat', 'like', "%{$search}%")
+                    ->orWhereHas('siswa', function ($sq) use ($search) {
+                        $sq->where('nama', 'like', "%{$search}%")
+                            ->orWhere('nis', 'like', "%{$search}%")
+                            ->orWhere('kelas', 'like', "%{$search}%");
+                    });
             });
         }
 
-        $pelanggarans = $query->latest()->paginate(15)->withQueryString();
-        $siswas = Siswa::orderBy('nama')->get(['id', 'nama', 'nis', 'kelas']);
+        $pelanggarans = $query->latest('tanggal')->paginate(15)->withQueryString();
 
-        // Ringkasan Statistik Kedisiplinan
+        // daftar siswa untuk modal input pelanggaran baru
+        $siswas = Siswa::query()->orderBy('kelas')->orderBy('nama')->get(['id', 'nama', 'nis', 'kelas']);
+
+        // ringkasan metrik statistik kedisiplinan sekolah
         $totalPelanggaran = Pelanggaran::count();
         $ringanCount = Pelanggaran::where('kategori', 'Ringan')->count();
         $sedangCount = Pelanggaran::where('kategori', 'Sedang')->count();
@@ -62,6 +102,9 @@ class PelanggaranController extends Controller
         ));
     }
 
+    /**
+     * menyimpan data catatan pelanggaran baru
+     */
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
@@ -82,9 +125,12 @@ class PelanggaranController extends Controller
 
         return redirect()
             ->route('admin.pelanggaran.index')
-            ->with('success', 'Catatan pelanggaran & sanksi kesiswaan berhasil dicatat.');
+            ->with('success', 'Catatan pelanggaran kesiswaan berhasil dicatat.');
     }
 
+    /**
+     * memperbarui data catatan pelanggaran
+     */
     public function update(Request $request, Pelanggaran $pelanggaran): RedirectResponse
     {
         $validated = $request->validate([
@@ -106,6 +152,9 @@ class PelanggaranController extends Controller
             ->with('success', 'Catatan kedisiplinan berhasil diperbarui.');
     }
 
+    /**
+     * menghapus catatan pelanggaran
+     */
     public function destroy(Pelanggaran $pelanggaran): RedirectResponse
     {
         $pelanggaran->delete();

@@ -1,3 +1,4 @@
+<?php
 @extends('layouts.public')
 
 @section('title', 'Ekstrakurikuler & Klub — SMK Shuka')

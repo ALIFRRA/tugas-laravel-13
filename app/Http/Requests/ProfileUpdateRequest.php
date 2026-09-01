@@ -1,4 +1,10 @@
 <?php
+/**
+     * Rules.
+     *
+     * @return public rules
+     */
+
 
 namespace App\Http\Requests;
 

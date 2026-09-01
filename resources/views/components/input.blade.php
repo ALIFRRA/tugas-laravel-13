@@ -1,3 +1,4 @@
+<?php
 @props([
     'type' => 'text',
     'name',

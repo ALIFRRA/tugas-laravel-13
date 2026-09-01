@@ -1,3 +1,4 @@
+<?php
 <x-guest-layout>
     <div class="mb-5 border-b border-slate-200 pb-3">
         <h1 class="text-lg font-bold text-slate-900">Buat Akun Baru</h1>

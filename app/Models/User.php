@@ -1,21 +1,151 @@
 <?php
+/**
+     * Modernavatarurl.
+     *
+     * @return public modernAvatarUrl
+     */
+
+    /**
+     * Avatardata.
+     *
+     * @return public avatarData
+     */
+
+    /**
+     * Initials.
+     *
+     * @return public initials
+     */
+
+    /**
+     * Avatarurl.
+     *
+     * @return public avatarUrl
+     */
+
+    /**
+     * Avatarkey.
+     *
+     * @return public avatarKey
+     */
+
+    /**
+     * Rolelabel.
+     *
+     * @return public roleLabel
+     */
+
+    /**
+     * Walikelas.
+     *
+     * @return public waliKelas
+     */
+
+    /**
+     * Iswalikelas.
+     *
+     * @return public isWaliKelas
+     */
+
+    /**
+     * Ismurid.
+     *
+     * @return public isMurid
+     */
+
+    /**
+     * Canmanageagenda.
+     *
+     * @return public canManageAgenda
+     */
+
+    /**
+     * Canrecorddiscipline.
+     *
+     * @return public canRecordDiscipline
+     */
+
+    /**
+     * Canviewschooltables.
+     *
+     * @return public canViewSchoolTables
+     */
+
+    /**
+     * Canmanagestudents.
+     *
+     * @return public canManageStudents
+     */
+
+    /**
+     * Canmanageteachers.
+     *
+     * @return public canManageTeachers
+     */
+
+    /**
+     * Isadministratorlevel.
+     *
+     * @return public isAdministratorLevel
+     */
+
+    /**
+     * Isguru.
+     *
+     * @return public isGuru
+     */
+
+    /**
+     * Isadminorstaff.
+     *
+     * @return public isAdminOrStaff
+     */
+
+    /**
+     * Isstaff.
+     *
+     * @return public isStaff
+     */
+
+    /**
+     * Isadmin.
+     *
+     * @return public isAdmin
+     */
+
+    /**
+     * Siswa.
+     *
+     * @return public siswa
+     */
+
+    /**
+     * Guru.
+     *
+     * @return public guru
+     */
+
+    /**
+     * Casts.
+     *
+     * @return protected casts
+     */
+
 
 namespace App\Models;
 
-use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Storage;
 
 #[Fillable(['name', 'email', 'password', 'avatar', 'role', 'jabatan'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
-    /** @use HasFactory<UserFactory> */
+    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
     public const ROLE_ADMIN = 'admin';
@@ -78,24 +208,30 @@ class User extends Authenticatable
             return true;
         }
 
-        if (! empty($this->jabatan)) {
-            $jabatanLower = mb_strtolower($this->jabatan);
-            $adminKeywords = [
-                'kepala sekolah',
-                'kepsek',
-                'wakil kepala sekolah',
-                'wakepsek',
-                'kepala tata usaha',
-                'kepala tu',
-                'it',
-                'administrator',
-                'sistem',
-            ];
+        if (empty($this->jabatan)) {
+            return false;
+        }
 
-            foreach ($adminKeywords as $keyword) {
-                if (str_contains($jabatanLower, $keyword)) {
-                    return true;
-                }
+        $jabatan = mb_strtolower(trim($this->jabatan));
+        foreach ([
+            'kepala sekolah',
+            'wakil kepala sekolah',
+        ] as $position) {
+            if (str_starts_with($jabatan, $position)) {
+                return true;
+            }
+        }
+
+        if (! $this->isStaff()) {
+            return false;
+        }
+
+        foreach ([
+            'kepala tata usaha',
+            'staf tu bagian it',
+        ] as $position) {
+            if (str_starts_with($jabatan, $position)) {
+                return true;
             }
         }
 
@@ -109,12 +245,46 @@ class User extends Authenticatable
 
     public function canManageStudents(): bool
     {
-        return $this->isAdmin() || $this->isStaff() || $this->isGuru();
+        return $this->isAdministratorLevel();
+    }
+
+    public function canViewSchoolTables(): bool
+    {
+        return $this->isAdminOrStaff() || $this->isGuru();
+    }
+
+    public function canRecordDiscipline(): bool
+    {
+        return $this->isAdminOrStaff() || $this->isGuru();
+    }
+
+    public function canManageAgenda(): bool
+    {
+        if ($this->isAdmin() || $this->isAdministratorLevel()) {
+            return true;
+        }
+
+        $jabatan = mb_strtolower((string) $this->jabatan);
+
+        return ($this->isStaff() || $this->isGuru()) && preg_match(
+            '/kepala|wakil|kesiswaan|kurikulum|pembina|wali kelas|koordinator/',
+            $jabatan
+        ) === 1;
     }
 
     public function isMurid(): bool
     {
         return $this->role === self::ROLE_MURID;
+    }
+
+    public function isWaliKelas(): bool
+    {
+        return $this->isGuru() && ($this->guru?->isWaliKelas() ?? false);
+    }
+
+    public function waliKelas(): ?string
+    {
+        return $this->guru?->wali_kelas;
     }
 
     public function roleLabel(): string
@@ -144,22 +314,8 @@ class User extends Authenticatable
 
     public function avatarUrl(): string
     {
-        if ($this->avatar) {
-            if (str_starts_with($this->avatar, 'avatars/') || str_contains($this->avatar, '/')) {
-                if (Storage::disk('public')->exists($this->avatar)) {
-                    return Storage::disk('public')->url($this->avatar);
-                }
-                if (file_exists(public_path($this->avatar))) {
-                    return asset($this->avatar);
-                }
-            }
-
-            if (array_key_exists($this->avatar, self::AVATAR_PRESETS)) {
-                return asset(self::AVATAR_PRESETS[$this->avatar]);
-            }
-        }
-
-        return asset(self::AVATAR_PRESETS[self::DEFAULT_AVATAR]);
+        return app(\App\Services\AvatarService::class)
+            ->getAvatarUrl($this->name, $this->email, $this->avatar);
     }
 
     public function initials(): string

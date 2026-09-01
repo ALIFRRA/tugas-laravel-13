@@ -2,9 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --shuka-ink: #1e293b;
+    --shuka-muted: #64748b;
+    --shuka-mist: #f8fafc;
+    --shuka-line: #e2e8f0;
+    --shuka-pink: #ec4899;
+    --shuka-radius: 8px;
+}
+
 @layer base {
     body {
         @apply bg-shuka-mist text-shuka-ink antialiased;
+    }
+
+    .app-shell {
+        font-family: 'Plus Jakarta Sans', Nunito, system-ui, sans-serif;
+        background-color: var(--shuka-mist);
+        color: var(--shuka-ink);
+        border-color: var(--shuka-line);
+        -webkit-font-smoothing: antialiased;
     }
 }
 

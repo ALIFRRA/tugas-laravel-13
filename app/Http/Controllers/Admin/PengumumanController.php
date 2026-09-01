@@ -1,4 +1,34 @@
 <?php
+/**
+     * Destroy.
+     *
+     * @return public destroy
+     */
+
+    /**
+     * Toggle.
+     *
+     * @return public toggle
+     */
+
+    /**
+     * Update.
+     *
+     * @return public update
+     */
+
+    /**
+     * Store.
+     *
+     * @return public store
+     */
+
+    /**
+     * Index.
+     *
+     * @return public index
+     */
+
 
 namespace App\Http\Controllers\Admin;
 
@@ -26,8 +56,8 @@ class PengumumanController extends Controller
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
                 $q->where('judul', 'like', "%{$search}%")
-                  ->orWhere('isi', 'like', "%{$search}%")
-                  ->orWhere('penulis', 'like', "%{$search}%");
+                    ->orWhere('isi', 'like', "%{$search}%")
+                    ->orWhere('penulis', 'like', "%{$search}%");
             });
         }
 

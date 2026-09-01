@@ -1,4 +1,10 @@
 <?php
+/**
+     * Run.
+     *
+     * @return public run
+     */
+
 
 namespace Database\Seeders;
 
@@ -20,7 +26,7 @@ class AcademicSeeder extends Seeder
 {
     public function run(): void
     {
-        // Disable foreign key constraints while truncating for clean re-seeding
+        // reset tabel
         if (DB::getDriverName() === 'mysql') {
             DB::statement('SET FOREIGN_KEY_CHECKS=0;');
             Pelanggaran::truncate();
@@ -49,50 +55,61 @@ class AcademicSeeder extends Seeder
             User::query()->delete();
         }
 
-        $avatars = User::avatarPresetKeys();
+        $avatars = [
+            'https://api.dicebear.com/9.x/bottts/svg?seed=hitori-gotoh&backgroundColor=ffe7f3',
+            'https://api.dicebear.com/9.x/icons/svg?seed=ikuyo-kita&backgroundColor=fce7f3',
+            'https://api.dicebear.com/9.x/shapes/svg?seed=nijika-ijichi&backgroundColor=f3e8ff',
+            'https://api.dicebear.com/9.x/identicon/svg?seed=ryo-yamada&backgroundColor=e0f2fe',
+            'https://api.dicebear.com/9.x/thumbs/svg?seed=seika-ijichi&backgroundColor=dcfce7',
+            'https://api.dicebear.com/9.x/fun-emoji/svg?seed=futari-gotoh&backgroundColor=ffe7f3',
+            'https://api.dicebear.com/9.x/bottts/svg?seed=kikuri-hiroi&backgroundColor=fef3c7',
+            'https://api.dicebear.com/9.x/icons/svg?seed=yoyoko-ohtsuki&backgroundColor=fce7f3',
+            'https://api.dicebear.com/9.x/shapes/svg?seed=eliza-shimizu&backgroundColor=e0f2fe',
+            'https://api.dicebear.com/9.x/rings/svg?seed=pa-san&backgroundColor=f3e8ff',
+        ];
         $password = Hash::make('password');
 
-        // 1. Admin Account (Hitori Admin)
+        // akun admin
         $admin = User::create([
             'email' => 'admin@shuka.test',
             'name' => 'Hitori Admin',
             'password' => $password,
             'email_verified_at' => now(),
-            'avatar' => 'bocchi-shy',
+            'avatar' => 'https://api.dicebear.com/9.x/bottts/svg?seed=hitori-gotoh&backgroundColor=ffe7f3',
             'role' => User::ROLE_ADMIN,
             'jabatan' => 'Super Administrator SIA',
         ]);
 
-        // 1b. Staff Tenaga Kependidikan & Tata Usaha / Koperasi / IT
+        // staf tenaga kependidikan & tu
         $staffMembers = [
             [
                 'email' => 'tu@shuka.test',
                 'name' => 'Erika Sasaki, S.AP.',
-                'avatar' => 'bocchi',
+                'avatar' => 'https://api.dicebear.com/9.x/icons/svg?seed=tu-erika&backgroundColor=ffe7f3',
                 'jabatan' => 'Kepala Tata Usaha & Administrasi',
             ],
             [
                 'email' => 'it@shuka.test',
                 'name' => 'Daisuke Suzuki, M.Kom.',
-                'avatar' => 'bocchi',
+                'avatar' => 'https://api.dicebear.com/9.x/bottts/svg?seed=daisuke-suzuki&backgroundColor=ffe7f3',
                 'jabatan' => 'Staf TU Bagian IT & Administrator Sistem',
             ],
             [
                 'email' => 'kesiswaan@shuka.test',
                 'name' => 'Kazutoshi Sawada, S.Sos.',
-                'avatar' => 'bocchi-maid',
+                'avatar' => 'https://api.dicebear.com/9.x/shapes/svg?seed=kazutoshi-sawada&backgroundColor=ffe7f3',
                 'jabatan' => 'Staf TU Kesiswaan & Kedisiplinan',
             ],
             [
                 'email' => 'koperasi@shuka.test',
                 'name' => 'Yoko Yoshida, A.Md.',
-                'avatar' => 'bocchi-shy',
+                'avatar' => 'https://api.dicebear.com/9.x/thumbs/svg?seed=yoko-yoshida&backgroundColor=ffe7f3',
                 'jabatan' => 'Pengelola Koperasi Sekolah & Sarpras',
             ],
             [
                 'email' => 'studio@shuka.test',
                 'name' => 'Kenji Ishida, S.T.',
-                'avatar' => 'bocchi',
+                'avatar' => 'https://api.dicebear.com/9.x/icons/svg?seed=kenji-ishida&backgroundColor=ffe7f3',
                 'jabatan' => 'Teknisi Studio STARRY & Lab Audio',
             ],
         ];
@@ -109,15 +126,15 @@ class AcademicSeeder extends Seeder
             ]);
         }
 
-        // 2. Seed 45 Guru SMK Shuka (with Bocchi the Rock! Character Faculty & Leadership)
+        // data guru dan staf pengajar
         $easterEggTeachers = [
-            ['name' => 'Seika Ijichi, S.Sn., M.Pd.', 'email' => 'seika@shuka.test', 'nip' => '198504122008012001', 'mapel' => 'Manajemen Event & Livehouse STARRY', 'phone' => '0812-3344-9001', 'avatar' => 'bocchi', 'jabatan' => 'Kepala Sekolah & Pembina STARRY'],
-            ['name' => 'PA-san, S.T., M.Kom.', 'email' => 'pasan@shuka.test', 'nip' => '198809222010012002', 'mapel' => 'Audio Engineering & Live Sound Mixing', 'phone' => '0812-3344-9002', 'avatar' => 'bocchi-shy', 'jabatan' => 'Wakil Kepala Sekolah Bidang Kurikulum & IT'],
-            ['name' => 'Gin Sasaki, S.Pd.', 'email' => 'sasaki@shuka.test', 'nip' => '198205152005011003', 'mapel' => 'Seni Musik Populer: Gitar & Vokal', 'phone' => '0812-3344-9003', 'avatar' => 'bocchi-maid', 'jabatan' => 'Wakil Kepala Sekolah Bidang Kesiswaan'],
-            ['name' => 'Naoki Gotoh, M.Sc.', 'email' => 'naoki@shuka.test', 'nip' => '198001102003011004', 'mapel' => 'Fisika Gelombang Akustik & Bunyi', 'phone' => '0812-3344-9004', 'avatar' => 'bocchi', 'jabatan' => 'Guru Fisika & Akustik'],
-            ['name' => 'Michiyo Gotoh, S.Pd.', 'email' => 'michiyo@shuka.test', 'nip' => '198103192004012005', 'mapel' => 'Bahasa Jepang & Lirik Lagu', 'phone' => '0812-3344-9005', 'avatar' => 'bocchi-shy', 'jabatan' => 'Guru Bahasa Jepang'],
-            ['name' => 'Jimihen Sensei, M.M.', 'email' => 'jimihen@shuka.test', 'nip' => '197906202002011006', 'mapel' => 'Pendidikan Jasmani & Kebugaran Panggung', 'phone' => '0812-3344-9006', 'avatar' => 'bocchi-maid', 'jabatan' => 'Guru PJOK & Pelatih Fisik'],
-            ['name' => 'Kikuri Hiroi, S.Sn.', 'email' => 'kikuri@shuka.test', 'nip' => '198711302011012007', 'mapel' => 'Harmoni Bass Eksperimental & Slap', 'phone' => '0812-3344-9007', 'avatar' => 'bocchi', 'jabatan' => 'Guru Tamu Spesialis Bass'],
+            ['name' => 'Seika Ijichi, S.Sn., M.Pd.', 'email' => 'seika@shuka.test', 'nip' => '198504122008012001', 'mapel' => 'Manajemen Event & Livehouse STARRY', 'phone' => '0812-3344-9001', 'avatar' => 'https://api.dicebear.com/9.x/bottts/svg?seed=seika-ijichi&backgroundColor=ffe7f3', 'jabatan' => 'Kepala Sekolah & Pembina STARRY'],
+            ['name' => 'PA-san, S.T., M.Kom.', 'email' => 'pasan@shuka.test', 'nip' => '198809222010012002', 'mapel' => 'Audio Engineering & Live Sound Mixing', 'phone' => '0812-3344-9002', 'avatar' => 'https://api.dicebear.com/9.x/icons/svg?seed=pa-san&backgroundColor=ffe7f3', 'jabatan' => 'Wakil Kepala Sekolah Bidang Kurikulum & IT'],
+            ['name' => 'Gin Sasaki, S.Pd.', 'email' => 'sasaki@shuka.test', 'nip' => '198205152005011003', 'mapel' => 'Seni Musik Populer: Gitar & Vokal', 'phone' => '0812-3344-9003', 'avatar' => 'https://api.dicebear.com/9.x/shapes/svg?seed=gin-sasaki&backgroundColor=ffe7f3', 'jabatan' => 'Wakil Kepala Sekolah Bidang Kesiswaan'],
+            ['name' => 'Naoki Gotoh, M.Sc.', 'email' => 'naoki@shuka.test', 'nip' => '198001102003011004', 'mapel' => 'Fisika Gelombang Akustik & Bunyi', 'phone' => '0812-3344-9004', 'avatar' => 'https://api.dicebear.com/9.x/bottts/svg?seed=naoki-gotoh&backgroundColor=ffe7f3', 'jabatan' => 'Guru Fisika & Akustik'],
+            ['name' => 'Michiyo Gotoh, S.Pd.', 'email' => 'michiyo@shuka.test', 'nip' => '198103192004012005', 'mapel' => 'Bahasa Jepang & Lirik Lagu', 'phone' => '0812-3344-9005', 'avatar' => 'https://api.dicebear.com/9.x/fun-emoji/svg?seed=michiyo-gotoh&backgroundColor=ffe7f3', 'jabatan' => 'Guru Bahasa Jepang'],
+            ['name' => 'Jimihen Sensei, M.M.', 'email' => 'jimihen@shuka.test', 'nip' => '197906202002011006', 'mapel' => 'Pendidikan Jasmani & Kebugaran Panggung', 'phone' => '0812-3344-9006', 'avatar' => 'https://api.dicebear.com/9.x/thumbs/svg?seed=jimihen&backgroundColor=ffe7f3', 'jabatan' => 'Guru PJOK & Pelatih Fisik'],
+            ['name' => 'Kikuri Hiroi, S.Sn.', 'email' => 'kikuri@shuka.test', 'nip' => '198711302011012007', 'mapel' => 'Harmoni Bass Eksperimental & Slap', 'phone' => '0812-3344-9007', 'avatar' => 'https://api.dicebear.com/9.x/bottts/svg?seed=kikuri-hiroi&backgroundColor=ffe7f3', 'jabatan' => 'Guru Tamu Spesialis Bass'],
         ];
 
         $teacherFirstNames = ['Kenji', 'Daisuke', 'Satoshi', 'Hiroshi', 'Takumi', 'Kazuki', 'Yuji', 'Shinji', 'Taro', 'Ryota', 'Emi', 'Yoko', 'Ayumi', 'Kaori', 'Mayumi', 'Shizuka', 'Tomoko', 'Akiko', 'Noriko', 'Keiko'];
@@ -132,7 +149,7 @@ class AcademicSeeder extends Seeder
                 'password' => $password,
                 'email_verified_at' => now(),
                 'avatar' => $gt['avatar'],
-                'role' => User::ROLE_GURU,
+                'role' => $gt['email'] === 'seika@shuka.test' ? User::ROLE_ADMIN : User::ROLE_GURU,
                 'jabatan' => $gt['jabatan'] ?? 'Tenaga Pendidik (Guru)',
             ]);
 
@@ -143,6 +160,28 @@ class AcademicSeeder extends Seeder
                 'no_telepon' => $gt['phone'],
             ]);
         }
+
+        // pemetaan 18 guru wali kelas
+        $waliKelasMap = [
+            10 => 'X-SMP-1', // yoshida emi, s.pd.
+            11 => 'X-SMP-2',
+            12 => 'X-AET-1',
+            13 => 'X-DKV-1',
+            14 => 'X-RPL-1',
+            15 => 'X-MBE-1',
+            16 => 'XI-SMP-1',
+            17 => 'XI-SMP-2',
+            18 => 'XI-AET-1',
+            19 => 'XI-DKV-1',
+            20 => 'XI-RPL-1',
+            21 => 'XI-MBE-1',
+            22 => 'XII-SMP-1',
+            23 => 'XII-SMP-2',
+            24 => 'XII-AET-1',
+            25 => 'XII-DKV-1',
+            26 => 'XII-RPL-1',
+            27 => 'XII-MBE-1',
+        ];
 
         for ($i = count($guruModels) + 1; $i <= 45; $i++) {
             $fname = $teacherFirstNames[$i % count($teacherFirstNames)];
@@ -157,7 +196,7 @@ class AcademicSeeder extends Seeder
                 'email_verified_at' => now(),
                 'avatar' => $avatars[$i % count($avatars)],
                 'role' => User::ROLE_GURU,
-                'jabatan' => 'Tenaga Pendidik (Guru)',
+                'jabatan' => isset($waliKelasMap[$i]) ? 'Tenaga Pendidik & Wali Kelas ' . $waliKelasMap[$i] : 'Tenaga Pendidik (Guru)',
             ]);
 
             $guruModels[] = Guru::create([
@@ -165,10 +204,11 @@ class AcademicSeeder extends Seeder
                 'nama' => $name,
                 'nip' => '198' . (70 + ($i % 25)) . sprintf('%04d', $i) . '200' . ($i % 9) . '01',
                 'no_telepon' => '0812-8899-' . (1000 + $i),
+                'wali_kelas' => $waliKelasMap[$i] ?? null,
             ]);
         }
 
-        // 3. Seed 28 Mata Pelajaran SMK (Muatan Kejuruan & Umum)
+        // data mata pelajaran
         $subjectNames = [
             ['code' => 'SMK-SMP01', 'name' => 'Seni Musik Populer: Gitar & Melodi', 'sks' => 3],
             ['code' => 'SMK-SMP02', 'name' => 'Seni Musik Populer: Bass & Drum', 'sks' => 3],
@@ -234,7 +274,7 @@ class AcademicSeeder extends Seeder
             ]);
         }
 
-        // 4. Seed 600 active students. Alumni are editorial content on the home page only.
+        // data siswa aktif
         $easterEggStudents = [
             ['name' => 'Hitori Gotoh (後藤 ひとり)', 'kelas' => 'X-SMP-1', 'gender' => 'P', 'alamat' => 'Yokohama / Shimokitazawa'],
             ['name' => 'Ikuyo Kita (喜多 郁代)', 'kelas' => 'X-SMP-1', 'gender' => 'P', 'alamat' => 'Tokyo / Shimokitazawa'],
@@ -249,21 +289,41 @@ class AcademicSeeder extends Seeder
             ['name' => 'Kana Koyama', 'kelas' => 'XI-MBE-1', 'gender' => 'P', 'alamat' => 'Shinjuku, Tokyo'],
         ];
 
-        $studentPoolF = ['Aoi', 'Hina', 'Yui', 'Mio', 'Ritsu', 'Tsumugi', 'Azusa', 'Akari', 'Mei', 'Sakura', 'Koharu', 'Nanami', 'Rin', 'Kanna', 'Chika', 'Honoka', 'Kotori', 'Umi', 'Maki', 'Nozomi'];
-        $studentPoolM = ['Ren', 'Haruto', 'Sota', 'Yuto', 'Riku', 'Kaito', 'Asahi', 'Taiki', 'Daiki', 'Kensuke', 'Shin', 'Shota', 'Kazuma', 'Takashi', 'Hayato', 'Minato', 'Ryusei', 'Koki', 'Yuuki', 'Sho'];
-        $studentLastNames = ['Sato', 'Suzuki', 'Takahashi', 'Tanaka', 'Watanabe', 'Ito', 'Yamamoto', 'Nakamura', 'Kobayashi', 'Kato', 'Yoshida', 'Yamada', 'Sasaki', 'Yamaguchi', 'Saito', 'Matsumoto', 'Inoue', 'Kimura', 'Hayashi', 'Shimizu'];
+        $studentPoolF = [
+            'Aoi', 'Hina', 'Yui', 'Mio', 'Ritsu', 'Tsumugi', 'Azusa', 'Akari', 'Mei', 'Sakura',
+            'Koharu', 'Nanami', 'Rin', 'Kanna', 'Chika', 'Honoka', 'Kotori', 'Umi', 'Maki', 'Nozomi',
+            'Ayaka', 'Haruka', 'Misaki', 'Sora', 'Yuna', 'Momoka', 'Saki', 'Kaede', 'Chihiro', 'Yuki',
+            'Kana', 'Shiori', 'Rena', 'Miku', 'Miyu', 'Sayaka', 'Erika', 'Natsuki', 'Riko', 'Yuriko',
+            'Megumi', 'Rei', 'Asuka', 'Hinata', 'Kagami', 'Tsukasa', 'Tomoyo', 'Nagisa', 'Kyouko', 'Madoka'
+        ];
 
-        // 18 Rombel Kelas SMK Shuka
+        $studentPoolM = [
+            'Ren', 'Haruto', 'Sota', 'Yuto', 'Riku', 'Kaito', 'Asahi', 'Taiki', 'Daiki', 'Kensuke',
+            'Shin', 'Shota', 'Kazuma', 'Takashi', 'Hayato', 'Minato', 'Ryusei', 'Koki', 'Yuuki', 'Sho',
+            'Kenta', 'Ryo', 'Hiroto', 'Tatsuya', 'Kohei', 'Masaki', 'Tomoya', 'Kento', 'Shunsuke', 'Yuma',
+            'Keisuke', 'Naoto', 'Taiga', 'Kazuya', 'Sosuke', 'Katsuki', 'Kenji', 'Shinji', 'Taro', 'Ryota',
+            'Arata', 'Itsuki', 'Shoma', 'Haruki', 'Sora', 'Gaku', 'Kazuki', 'Yamato', 'Soma', 'Reo'
+        ];
+
+        $studentLastNames = [
+            'Sato', 'Suzuki', 'Takahashi', 'Tanaka', 'Watanabe', 'Ito', 'Yamamoto', 'Nakamura', 'Kobayashi', 'Kato',
+            'Yoshida', 'Yamada', 'Sasaki', 'Yamaguchi', 'Saito', 'Matsumoto', 'Inoue', 'Kimura', 'Hayashi', 'Shimizu',
+            'Yamazaki', 'Mori', 'Abe', 'Ikeda', 'Hashimoto', 'Yamashita', 'Ishikawa', 'Nakajima', 'Maeda', 'Fujita',
+            'Ogawa', 'Goto', 'Okada', 'Hasegawa', 'Murakami', 'Kondo', 'Ishii', 'Sakamoto', 'Endo', 'Aoki',
+            'Fujii', 'Nishimura', 'Fukuda', 'Ota', 'Miura', 'Fujiwara', 'Okamoto', 'Matsuda', 'Nakagawa', 'Harada'
+        ];
+
+        // 18 rombel kelas
         $kelasList = [
             'X-SMP-1', 'X-SMP-2', 'X-AET-1', 'X-DKV-1', 'X-RPL-1', 'X-MBE-1',
             'XI-SMP-1', 'XI-SMP-2', 'XI-AET-1', 'XI-DKV-1', 'XI-RPL-1', 'XI-MBE-1',
             'XII-SMP-1', 'XII-SMP-2', 'XII-AET-1', 'XII-DKV-1', 'XII-RPL-1', 'XII-MBE-1'
         ];
-        $alamatList = ['Shimokitazawa', 'Tokyo', 'Shibuya', 'Kichijoji', 'Nakano', 'Shinjuku', 'Yokohama'];
+        $alamatList = ['Shimokitazawa', 'Tokyo', 'Shibuya', 'Kichijoji', 'Nakano', 'Shinjuku', 'Yokohama', 'Setagaya', 'Suginami'];
 
-        $siswaModels = [];
-
+        $usedNames = [];
         foreach ($easterEggStudents as $idx => $st) {
+            $usedNames[$st['name']] = true;
             $email = "student" . ($idx + 1) . "@murid.shuka.test";
             $user = User::create([
                 'name' => $st['name'],
@@ -285,12 +345,23 @@ class AcademicSeeder extends Seeder
             ]);
         }
 
-        // Create remaining regular students before the dedicated high-achiever records.
+        // generate siswa reguler dengan nama 100% unik
         for ($i = count($siswaModels) + 1; $i <= 590; $i++) {
             $isFemale = ($i % 2 === 0);
-            $fname = $isFemale ? $studentPoolF[$i % count($studentPoolF)] : $studentPoolM[$i % count($studentPoolM)];
-            $lname = $studentLastNames[($i * 7) % count($studentLastNames)];
-            $name = "{$lname} {$fname}";
+            $pool = $isFemale ? $studentPoolF : $studentPoolM;
+
+            // cari kombinasi nama unik tanpa duplikasi
+            $attempt = 0;
+            do {
+                $fIdx = ($i * 7 + $attempt * 3 + (int) floor($i / 13)) % count($pool);
+                $lIdx = ($i * 19 + $attempt * 11 + (int) floor($i / 7)) % count($studentLastNames);
+                $fname = $pool[$fIdx];
+                $lname = $studentLastNames[$lIdx];
+                $name = "{$lname} {$fname}";
+                $attempt++;
+            } while (isset($usedNames[$name]) && $attempt < 300);
+
+            $usedNames[$name] = true;
             $kelas = $kelasList[$i % count($kelasList)];
             $alamat = $alamatList[$i % count($alamatList)];
 
@@ -384,7 +455,7 @@ class AcademicSeeder extends Seeder
             ],
         ];
 
-        // 4c. Seed Siswa Berprestasi (High-Achieving Current Students) - 10 students with awards
+        // siswa berprestasi
         $highAchievers = [
             ['name' => 'Kimura Yuki', 'kelas' => 'XII-SMP-1', 'gender' => 'P', 'nilai' => 99.2, 'prestasi' => 'Juara 1 Solo Gitar Festival Shuka-sai 2026', 'penghargaan' => 'Best Guitarist Award, Scholarship Yamaha Music'],
             ['name' => 'Sato Haruki', 'kelas' => 'XII-AET-1', 'gender' => 'L', 'nilai' => 98.7, 'prestasi' => 'Best Live Mix Engineer Shuka-sai 2026', 'penghargaan' => 'Pro Tools Certification, Internship di Avex Studio'],
@@ -392,10 +463,10 @@ class AcademicSeeder extends Seeder
             ['name' => 'Yamamoto Ken', 'kelas' => 'XII-RPL-1', 'gender' => 'L', 'nilai' => 97.9, 'prestasi' => 'Membangun Portal Alumni SMK Shuka v2.0', 'penghargaan' => 'Hackathon Winner Tokyo Tech 2026, GitHub Student Developer'],
             ['name' => 'Watanabe Sora', 'kelas' => 'XII-MBE-1', 'gender' => 'P', 'nilai' => 97.5, 'prestasi' => 'Project Manager Festival Shuka-sai 2026', 'penghargaan' => 'Leadership Award, Magang di Live Nation Japan'],
             ['name' => 'Suzuki Rina', 'kelas' => 'XI-SMP-2', 'gender' => 'P', 'nilai' => 99.0, 'prestasi' => 'Juara 2 Vokal Solo Kompetisi Antar SMK Se-Jabodetabek', 'penghargaan' => 'Vocal Excellence Scholarship'],
-            ['name' => 'Nakamura Daiki', 'kelas' => 'XI-AET-2', 'gender' => 'L', 'nilai' => 98.5, 'prestasi' => 'Sound Design Game Indie "Echoes of Shibuya"', 'penghargaan' => 'Unity Audio Implementation Certified'],
-            ['name' => 'Kobayashi Yui', 'kelas' => 'XI-DKV-2', 'gender' => 'P', 'nilai' => 97.8, 'prestasi' => 'Illustrator Cover Album Band "Midnight Train"', 'penghargaan' => 'Pixiv Contest Winner, Komisi dari Major Label'],
-            ['name' => 'Matsumoto Ryo', 'kelas' => 'XI-RPL-2', 'gender' => 'L', 'nilai' => 97.2, 'prestasi' => 'Developer Aplikasi "ShukaSchedule" untuk Siswa', 'penghargaan' => 'Apple Swift Student Challenge Finalist'],
-            ['name' => 'Inoue Aya', 'kelas' => 'XI-MBE-2', 'gender' => 'P', 'nilai' => 96.8, 'prestasi' => 'Marketing Campaign "Shuka-sai 2026" Viral di TikTok', 'penghargaan' => 'Social Media Marketing Certified, 1M+ Views'],
+            ['name' => 'Nakamura Daiki', 'kelas' => 'XI-AET-1', 'gender' => 'L', 'nilai' => 98.5, 'prestasi' => 'Sound Design Game Indie "Echoes of Shibuya"', 'penghargaan' => 'Unity Audio Implementation Certified'],
+            ['name' => 'Kobayashi Yui', 'kelas' => 'XI-DKV-1', 'gender' => 'P', 'nilai' => 97.8, 'prestasi' => 'Illustrator Cover Album Band "Midnight Train"', 'penghargaan' => 'Pixiv Contest Winner, Komisi dari Major Label'],
+            ['name' => 'Matsumoto Ryo', 'kelas' => 'XI-RPL-1', 'gender' => 'L', 'nilai' => 97.2, 'prestasi' => 'Developer Aplikasi "ShukaSchedule" untuk Siswa', 'penghargaan' => 'Apple Swift Student Challenge Finalist'],
+            ['name' => 'Inoue Aya', 'kelas' => 'XI-MBE-1', 'gender' => 'P', 'nilai' => 96.8, 'prestasi' => 'Marketing Campaign "Shuka-sai 2026" Viral di TikTok', 'penghargaan' => 'Social Media Marketing Certified, 1M+ Views'],
         ];
 
         foreach ($highAchievers as $idx => $achiever) {
@@ -638,7 +709,7 @@ class AcademicSeeder extends Seeder
         $jenisNilaiList = ['Tugas', 'UH', 'UTS', 'UAS'];
         $nilaiRows = [];
         $gradeStudents = Siswa::query()->orderBy('id')->get();
-        $gradeSubjects = MataPelajaran::query()->orderBy('id')->take(6)->get();
+        $gradeSubjects = MataPelajaran::query()->orderBy('id')->take(12)->get();
         $highAchieverNames = collect($highAchievers)->pluck('name')->all();
 
         foreach ($gradeStudents as $studentIndex => $siswa) {
@@ -775,51 +846,172 @@ class AcademicSeeder extends Seeder
             Pengumuman::create($peng);
         }
 
-        // 11. Seed Catatan Kedisiplinan & Pelanggaran Kesiswaan
+        // data pelanggaran kesiswaan
         $samplePelanggarans = [
             [
-                'siswa_id' => $siswaModels[0]->id, // Hitori Gotoh
+                'siswa_id' => $siswaModels[0]->id, // Hitori Gotoh (X-SMP-1)
                 'jenis_pelanggaran' => 'Terlambat Masuk Jam Pelajaran Pertama (15 Menit)',
                 'kategori' => 'Ringan',
                 'poin' => 5,
                 'sanksi' => 'Teguran lisan & menyusun partitur lagu wajib',
                 'tanggal' => '2026-08-12',
-                'guru_pencatat' => 'Gin Sasaki, S.Pd.',
+                'guru_pencatat' => 'Yoshida Emi, S.Pd.',
                 'status' => 'Selesai',
                 'catatan' => 'Terhambat kereta komuter dari arah Yokohama.',
             ],
             [
-                'siswa_id' => $siswaModels[3]->id, // Ryo Yamada
-                'jenis_pelanggaran' => 'Tidur di Jam Pelajaran Matematika Terapan',
+                'siswa_id' => $siswaModels[1]->id, // Ikuyo Kita (X-SMP-2)
+                'jenis_pelanggaran' => 'Lupa Mengembalikan Mikrofon Studio 2 ke Lemari Inventaris',
                 'kategori' => 'Ringan',
                 'poin' => 5,
-                'sanksi' => 'Mengerjakan 10 soal latihan kalkulus di papan tulis',
+                'sanksi' => 'Merapikan rak mikrofon dan kabel audio lab',
+                'tanggal' => '2026-08-14',
+                'guru_pencatat' => 'PA-san, S.T., M.Kom.',
+                'status' => 'Selesai',
+                'catatan' => 'Segera merapikan setelah diingatkan.',
+            ],
+            [
+                'siswa_id' => $siswaModels[2]->id, // Nijika Ijichi (X-SMP-1)
+                'jenis_pelanggaran' => 'Menggunakan Ruang Studio Drum Melebihi Jadwal Sesi',
+                'kategori' => 'Ringan',
+                'poin' => 5,
+                'sanksi' => 'Teguran lisan & pembagian jadwal ulang',
+                'tanggal' => '2026-08-16',
+                'guru_pencatat' => 'Yoshida Emi, S.Pd.',
+                'status' => 'Selesai',
+                'catatan' => 'Antusias latihan fills drum lagu baru.',
+            ],
+            [
+                'siswa_id' => $siswaModels[3]->id, // Ryo Yamada (XI-SMP-1)
+                'jenis_pelanggaran' => 'Tidur di Jam Pelajaran Teori Harmoni Musik',
+                'kategori' => 'Ringan',
+                'poin' => 5,
+                'sanksi' => 'Mengerjakan 10 soal aransemen akord di papan tulis',
                 'tanggal' => '2026-08-13',
                 'guru_pencatat' => 'Kenji Tanaka, S.Pd.',
                 'status' => 'Selesai',
                 'catatan' => 'Kelelahan setelah lembur aransemen lagu bass.',
             ],
             [
-                'siswa_id' => $siswaModels[1]->id, // Ikuyo Kita
-                'jenis_pelanggaran' => 'Lupa Mengembalikan Mikrofon Studio 2 ke Lemari Inventaris',
+                'siswa_id' => $siswaModels[10]->id, // X-SMP-1
+                'jenis_pelanggaran' => 'Atribut Seragam Praktik Studio Tidak Lengkap',
                 'kategori' => 'Ringan',
                 'poin' => 5,
-                'sanksi' => 'Merapikan rak mikrofon dan kabel audio lab',
-                'tanggal' => '2026-08-14',
-                'guru_pencatat' => 'PA-san, S.T.',
+                'sanksi' => 'Membeli badge resmi di koperasi sekolah',
+                'tanggal' => '2026-08-18',
+                'guru_pencatat' => 'Yoshida Emi, S.Pd.',
                 'status' => 'Selesai',
-                'catatan' => 'Segera merapikan setelah diingatkan.',
+                'catatan' => 'Badge hilang saat mencuci pakaian.',
             ],
             [
-                'siswa_id' => $siswaModels[20]->id,
+                'siswa_id' => $siswaModels[15]->id, // X-AET-1
+                'jenis_pelanggaran' => 'Menyimpan Kabel Audio Tidak Menggulung dengan Teknik Over-Under',
+                'kategori' => 'Ringan',
+                'poin' => 5,
+                'sanksi' => 'Praktik ulang penggulungan 10 kabel XLR studio',
+                'tanggal' => '2026-08-19',
+                'guru_pencatat' => 'PA-san, S.T., M.Kom.',
+                'status' => 'Selesai',
+                'catatan' => 'Sudah lulus evaluasi ulang teknis kabel.',
+            ],
+            [
+                'siswa_id' => $siswaModels[20]->id, // X-DKV-1
                 'jenis_pelanggaran' => 'Meninggalkan Sampah Botol Minuman di Ruang Studio',
                 'kategori' => 'Sedang',
                 'poin' => 15,
                 'sanksi' => 'Piket membersihkan seluruh ruang studio musik selama 3 hari',
-                'tanggal' => '2026-08-15',
+                'tanggal' => '2026-08-20',
                 'guru_pencatat' => 'Seika Ijichi, S.Sn.',
                 'status' => 'Dalam Pembinaan',
                 'catatan' => 'Sedang menjalani masa sanksi piket.',
+            ],
+            [
+                'siswa_id' => $siswaModels[25]->id, // X-RPL-1
+                'jenis_pelanggaran' => 'Bermain Game Daring saat Jam Praktik Basis Data',
+                'kategori' => 'Sedang',
+                'poin' => 10,
+                'sanksi' => 'Membuat resume materi query SQL 5 halaman tulisan tangan',
+                'tanggal' => '2026-08-21',
+                'guru_pencatat' => 'Daisuke Suzuki, M.Kom.',
+                'status' => 'Ditindaklanjuti',
+                'catatan' => 'Tugas resume telah diserahkan dan diperiksa.',
+            ],
+            [
+                'siswa_id' => $siswaModels[30]->id, // X-MBE-1
+                'jenis_pelanggaran' => 'Terlambat Menyerahkan Laporan Anggaran Kas Booth Festival',
+                'kategori' => 'Sedang',
+                'poin' => 10,
+                'sanksi' => 'Revisi pembukuan kas didampingi guru pembina',
+                'tanggal' => '2026-08-22',
+                'guru_pencatat' => 'Gin Sasaki, S.Pd.',
+                'status' => 'Selesai',
+                'catatan' => 'Laporan keuangan telah diverifikasi akurat.',
+            ],
+            [
+                'siswa_id' => $siswaModels[45]->id, // XI-SMP-1
+                'jenis_pelanggaran' => 'Tidak Mengikuti Gladi Resik Panggung Tanpa Keterangan Izin',
+                'kategori' => 'Sedang',
+                'poin' => 15,
+                'sanksi' => 'Membantu tim logistik panggung menyiapkan amplifier festival',
+                'tanggal' => '2026-08-23',
+                'guru_pencatat' => 'Gin Sasaki, S.Pd.',
+                'status' => 'Dalam Pembinaan',
+                'catatan' => 'Sedang melaksanakan tugas piket logistik.',
+            ],
+            [
+                'siswa_id' => $siswaModels[60]->id, // XI-AET-2
+                'jenis_pelanggaran' => 'Mengoperasikan Fader Audio Mixer Melebihi Batas Desibel Aman (>105dB)',
+                'kategori' => 'Sedang',
+                'poin' => 15,
+                'sanksi' => 'Ujian ulang kalibrasi sound level meter & hearing safety',
+                'tanggal' => '2026-08-24',
+                'guru_pencatat' => 'PA-san, S.T., M.Kom.',
+                'status' => 'Selesai',
+                'catatan' => 'Telah memahami batas aman pendengaran akustik.',
+            ],
+            [
+                'siswa_id' => $siswaModels[75]->id, // XI-DKV-2
+                'jenis_pelanggaran' => 'Mencetak Poster Pribadi Menggunakan Kertas Art Paper Sekolah',
+                'kategori' => 'Sedang',
+                'poin' => 15,
+                'sanksi' => 'Mengganti rim kertas inventaris dan membuat poster edukasi kebersihan',
+                'tanggal' => '2026-08-25',
+                'guru_pencatat' => 'Akiko Matsumoto, S.Pd.',
+                'status' => 'Ditindaklanjuti',
+                'catatan' => 'Kertas pengganti telah diserahkan ke ruang inventaris.',
+            ],
+            [
+                'siswa_id' => $siswaModels[90]->id, // XII-SMP-1
+                'jenis_pelanggaran' => 'Mengabaikan Panggilan Konseling Karier Seni Semester Akhir',
+                'kategori' => 'Ringan',
+                'poin' => 5,
+                'sanksi' => 'Penjadwalan ulang sesi bimbingan konseling dan menyusun CV portofolio',
+                'tanggal' => '2026-08-26',
+                'guru_pencatat' => 'Seika Ijichi, S.Sn.',
+                'status' => 'Selesai',
+                'catatan' => 'Konseling karier telah diselesaikan dengan baik.',
+            ],
+            [
+                'siswa_id' => $siswaModels[110]->id, // XII-RPL-1
+                'jenis_pelanggaran' => 'Mengubah Konfigurasi IP Gateway Lab Komputer Tanpa Izin',
+                'kategori' => 'Berat',
+                'poin' => 30,
+                'sanksi' => 'Pemanggilan orang tua & skorsing penggunaan lab mandiri 1 pekan',
+                'tanggal' => '2026-08-27',
+                'guru_pencatat' => 'Daisuke Suzuki, M.Kom.',
+                'status' => 'Dalam Pembinaan',
+                'catatan' => 'Orang tua telah hadir dan menandatangani surat komitmen.',
+            ],
+            [
+                'siswa_id' => $siswaModels[130]->id, // XII-MBE-1
+                'jenis_pelanggaran' => 'Menjual Tiket Panggung Festival di Luar Saluran Loket Resmi',
+                'kategori' => 'Berat',
+                'poin' => 35,
+                'sanksi' => 'Audit seluruh dana tiket, pembinaan khusus wakasek kesiswaan',
+                'tanggal' => '2026-08-28',
+                'guru_pencatat' => 'Gin Sasaki, S.Pd.',
+                'status' => 'Ditindaklanjuti',
+                'catatan' => 'Dana telah disetor utuh ke kas bendahara sekolah.',
             ],
         ];
 

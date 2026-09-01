@@ -1,4 +1,10 @@
 <?php
+/**
+     * Update.
+     *
+     * @return public update
+     */
+
 
 namespace App\Http\Controllers\Auth;
 

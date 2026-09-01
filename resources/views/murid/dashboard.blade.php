@@ -1,3 +1,4 @@
+<?php
 @extends('layouts.murid')
 
 @section('title', 'Dashboard Siswa — SMK Shuka')

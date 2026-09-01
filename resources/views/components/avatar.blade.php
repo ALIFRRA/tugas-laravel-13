@@ -1,6 +1,7 @@
+<?php
 @props([
-    'user' => null, 
-    'size' => 'md', 
+    'user' => null,
+    'size' => 'md',
     'name' => null,
     'email' => null,
     'avatar' => null,
@@ -8,70 +9,49 @@
 ])
 
 @php
-    $user = $user ?? Auth::user();
+    // Fallback to Auth::user() ONLY if no user, name, email, or avatar was explicitly specified
+    if ($user === null && $name === null && $email === null && $avatar === null) {
+        $user = Auth::user();
+    }
     $avatarService = app(\App\Services\AvatarService::class);
-    
+
     // Resolve avatar data
     $resolvedName = $name ?? $user?->name;
     $resolvedEmail = $email ?? $user?->email;
     $resolvedAvatar = $avatar ?? $user?->avatar;
-    
-    $avatarData = $avatarService->getAvatarData($resolvedName, $resolvedEmail, $resolvedAvatar, $size);
-    
+
+    $avatarUrl = $avatarService->getAvatarUrl($resolvedName, $resolvedEmail, $resolvedAvatar);
+
+    $parts = preg_split('/\s+/', trim($resolvedName ?? '')) ?: [];
+    $initials = collect($parts)
+        ->filter()
+        ->take(2)
+        ->map(fn (string $part) => mb_strtoupper(mb_substr($part, 0, 1)))
+        ->implode('');
+    if ($initials === '') {
+        $initials = 'SH';
+    }
+
     $sizes = [
-        'xs' => 'h-6 w-6',
-        'sm' => 'h-8 w-8',
-        'md' => 'h-10 w-10',
-        'lg' => 'h-16 w-16',
-        'xl' => 'h-24 w-24',
+        'xs' => 'h-6 w-6 text-[10px]',
+        'sm' => 'h-8 w-8 text-xs',
+        'md' => 'h-10 w-10 text-sm',
+        'lg' => 'h-16 w-16 text-xl',
+        'xl' => 'h-24 w-24 text-3xl',
     ];
     $sizeClass = $sizes[$size] ?? $sizes['md'];
-    
-    // Generate fallback SVG for error handling
-    $fallbackSvg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#fce7f3"/><text x="50" y="55" font-size="40" text-anchor="middle" fill="#ec4899">' . $avatarData['initials'] . '</text></svg>';
-    $fallbackSrc = 'data:image/svg+xml;base64,' . base64_encode($fallbackSvg);
 @endphp
 
-<div 
-    class="relative inline-block {{ $class }}"
-    x-data="{ loaded: false }"
-    style="width: {{ explode(' ', $sizeClass)[1] }}; height: {{ explode(' ', $sizeClass)[0] }};"
->
-    <!-- Blur placeholder (loads instantly) -->
+<div class="relative inline-flex items-center justify-center shrink-0 rounded-full overflow-hidden border border-pink-200 bg-pink-50 shadow-sm {{ $sizeClass }} {{ $class }}">
     <img
-        src="{{ $avatarData['placeholder'] }}"
-        alt=""
-        class="absolute inset-0 w-full h-full rounded-full object-cover blur-[20px] scale-110 transition-opacity duration-500"
-        :class="{ 'opacity-0': loaded, 'opacity-100': !loaded }"
-        aria-hidden="true"
-    >
-    
-    <!-- Actual avatar image (progressive load) -->
-    <img
-        src="{{ $avatarData['url'] }}"
-        alt="{{ $avatarData['alt'] }}"
-        class="absolute inset-0 w-full h-full rounded-full object-cover border border-slate-200 bg-slate-50 transition-all duration-500"
-        :class="{ 'opacity-100 scale-100': loaded, 'opacity-0 scale-95': !loaded }"
-        @load="loaded = true"
-        onerror="this.onerror=null; this.src='{{ $fallbackSrc }}'; loaded=true;"
+        src="{{ $avatarUrl }}"
+        alt="{{ $resolvedName ?? 'Avatar' }}"
+        class="w-full h-full object-cover rounded-full"
         loading="lazy"
         decoding="async"
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
     >
-    
-    <!-- Fallback initials (shown if both images fail) -->
-    <div 
-        x-show="!loaded" 
-        class="absolute inset-0 w-full h-full rounded-full flex items-center justify-center font-bold text-pink-600 bg-pink-50 border border-slate-200"
-        :style="{
-            'font-size': {
-                'xs': '0.6rem',
-                'sm': '0.75rem', 
-                'md': '0.875rem',
-                'lg': '1.5rem',
-                'xl': '2rem'
-            }['{{ $size }}'] || '0.875rem'
-        }"
-    >
-        {{ $avatarData['initials'] }}
+    <div class="hidden w-full h-full rounded-full items-center justify-center font-bold text-pink-700 bg-pink-100 uppercase">
+        {{ $initials }}
     </div>
 </div>

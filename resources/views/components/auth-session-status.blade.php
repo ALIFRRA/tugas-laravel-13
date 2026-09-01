@@ -1,3 +1,4 @@
+<?php
 @props(['status'])
 
 @if ($status)

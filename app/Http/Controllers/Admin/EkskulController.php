@@ -1,4 +1,76 @@
 <?php
+/**
+     * Syncmembercount.
+     *
+     * @return private syncMemberCount
+     */
+
+    /**
+     * Updatemember.
+     *
+     * @return public updateMember
+     */
+
+    /**
+     * Removemember.
+     *
+     * @return public removeMember
+     */
+
+    /**
+     * Addmember.
+     *
+     * @return public addMember
+     */
+
+    /**
+     * Members.
+     *
+     * @return public members
+     */
+
+    /**
+     * Destroy.
+     *
+     * @return public destroy
+     */
+
+    /**
+     * Update.
+     *
+     * @return public update
+     */
+
+    /**
+     * Edit.
+     *
+     * @return public edit
+     */
+
+    /**
+     * Show.
+     *
+     * @return public show
+     */
+
+    /**
+     * Store.
+     *
+     * @return public store
+     */
+
+    /**
+     * Create.
+     *
+     * @return public create
+     */
+
+    /**
+     * Index.
+     *
+     * @return public index
+     */
+
 
 namespace App\Http\Controllers\Admin;
 
@@ -21,8 +93,8 @@ class EkskulController extends Controller
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
                 $q->where('nama', 'like', "%{$search}%")
-                  ->orWhere('kategori', 'like', "%{$search}%")
-                  ->orWhere('pembina', 'like', "%{$search}%");
+                    ->orWhere('kategori', 'like', "%{$search}%")
+                    ->orWhere('pembina', 'like', "%{$search}%");
             });
         }
 
@@ -58,6 +130,7 @@ class EkskulController extends Controller
     public function show(Ekskul $ekskul): View
     {
         $ekskul->loadCount('siswas');
+
         return view('admin.ekskul.show', compact('ekskul'));
     }
 
@@ -89,11 +162,12 @@ class EkskulController extends Controller
     {
         $ekskul->load(['siswas' => function ($query) {
             $query->withPivot('posisi', 'tahun_bergabung', 'is_active')
-                  ->orderBy('ekskul_siswa.posisi')
-                  ->orderBy('nama');
+                ->orderBy('ekskul_siswa.posisi')
+                ->orderBy('nama');
         }])->loadCount('siswas');
 
-        $siswas = Siswa::orderBy('nama')->get();
+        // data siswa untuk picker anggota
+        $siswas = Siswa::orderBy('kelas')->orderBy('nama')->get(['id', 'nama', 'nis', 'kelas']);
 
         return view('admin.ekskul.members', compact('ekskul', 'siswas'));
     }

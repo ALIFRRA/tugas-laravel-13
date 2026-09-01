@@ -1,4 +1,10 @@
 <?php
+/**
+     * Render.
+     *
+     * @return public render
+     */
+
 
 namespace App\View\Components;
 

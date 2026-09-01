@@ -1,3 +1,4 @@
+<?php
 @if (session('success'))
     <div class="mb-6 border border-shuka-pink/40 bg-shuka-soft px-4 py-3 text-sm text-pink-700">
         {{ session('success') }}

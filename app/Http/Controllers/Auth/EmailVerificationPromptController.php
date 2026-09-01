@@ -1,4 +1,10 @@
 <?php
+/**
+     *   invoke.
+     *
+     * @return public __invoke
+     */
+
 
 namespace App\Http\Controllers\Auth;
 

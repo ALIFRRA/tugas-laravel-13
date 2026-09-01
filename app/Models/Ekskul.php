@@ -1,4 +1,22 @@
 <?php
+/**
+     * Getroutekeyname.
+     *
+     * @return public getRouteKeyName
+     */
+
+    /**
+     * Scopeactive.
+     *
+     * @return public scopeActive
+     */
+
+    /**
+     * Siswas.
+     *
+     * @return public siswas
+     */
+
 
 namespace App\Models;
 

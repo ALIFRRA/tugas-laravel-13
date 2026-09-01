@@ -1,4 +1,10 @@
 <?php
+/**
+     * Handle.
+     *
+     * @return public handle
+     */
+
 
 namespace App\Http\Middleware;
 
@@ -17,6 +23,21 @@ class EnsureUserHasRole
 
         if (! $user) {
             abort(403, 'Anda tidak memiliki akses ke halaman ini.');
+        }
+
+        $permissions = [
+            'school_tables' => $user->canViewSchoolTables(),
+            'discipline_write' => $user->canRecordDiscipline(),
+            'agenda_write' => $user->canManageAgenda(),
+            'academic_write' => $user->isAdministratorLevel(),
+        ];
+
+        foreach ($permissions as $permission => $allowed) {
+            if (in_array($permission, $roles, true)) {
+                abort_unless($allowed, 403, 'Anda tidak memiliki akses ke halaman ini.');
+
+                return $next($request);
+            }
         }
 
         // Check if administrator level is specified in allowed roles

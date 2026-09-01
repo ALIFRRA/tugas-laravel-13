@@ -1,3 +1,4 @@
+<?php
 @extends('layouts.admin')
 
 @section('title', 'Pengumuman Sekolah — SMK Shuka')
@@ -12,6 +13,7 @@
             <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">Pengumuman & Notifikasi Resmi</h1>
             <p class="text-xs sm:text-sm text-slate-500 mt-1">Kelola pemberitahuan resmi SMK Shuka yang otomatis tampil sebagai banner notifikasi di dasbor.</p>
         </div>
+        @if(Auth::user()->isAdministratorLevel())
         <div class="flex items-center gap-2">
             <button 
                 type="button" 
@@ -22,6 +24,7 @@
                 <span>Buat Pengumuman Baru</span>
             </button>
         </div>
+        @endif
     </div>
 
     <!-- Filter Bar -->
@@ -111,6 +114,7 @@
                                 <div class="text-[11px] text-slate-400">{{ $p->created_at->format('d M Y, H:i') }}</div>
                             </td>
                             <td class="py-3.5 px-4 text-center">
+                                @if(Auth::user()->isAdministratorLevel())
                                 <form action="{{ route('admin.pengumuman.toggle', $p->id) }}" method="POST">
                                     @csrf
                                     <button 
@@ -121,9 +125,13 @@
                                         {{ $p->is_active ? '● Aktif' : '○ Non-Aktif' }}
                                     </button>
                                 </form>
+                                @else
+                                    <span class="text-[11px] text-slate-500">{{ $p->is_active ? 'Aktif' : 'Nonaktif' }}</span>
+                                @endif
                             </td>
                             <td class="py-3.5 px-4 text-center">
                                 <div class="flex items-center justify-center gap-1.5">
+                                    @if(Auth::user()->isAdministratorLevel())
                                     <button 
                                         type="button" 
                                         @click="currentPengumuman = {{ json_encode($p) }}; editModalOpen = true"
@@ -138,6 +146,7 @@
                                             Hapus
                                         </button>
                                     </form>
+                                    @endif
                                 </div>
                             </td>
                         </tr>

@@ -1,4 +1,16 @@
 <?php
+/**
+     * Siswa.
+     *
+     * @return public siswa
+     */
+
+    /**
+     * Casts.
+     *
+     * @return protected casts
+     */
+
 
 namespace App\Models;
 

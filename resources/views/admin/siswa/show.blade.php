@@ -1,3 +1,4 @@
+<?php
 @extends('layouts.admin')
 
 @section('title', 'Detail Data Murid — Shuka Highschool')
@@ -9,13 +10,7 @@
     <!-- Header Card -->
     <div class="rounded-2xl border border-pink-100 bg-white p-6 shadow-sm max-w-4xl space-y-4">
         <div class="flex items-center gap-4 pb-4 border-b border-slate-100">
-            @if($siswa->user)
-                <x-avatar :user="$siswa->user" size="md" />
-            @else
-                <div class="h-12 w-12 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center font-bold text-base">
-                    {{ strtoupper(substr($siswa->nama, 0, 2)) }}
-                </div>
-            @endif
+            <x-avatar :user="$siswa->user" :name="$siswa->nama" size="md" class="shrink-0" />
             <div>
                 <h3 class="font-extrabold text-slate-800 text-lg">{{ $siswa->nama }}</h3>
                 <p class="text-xs text-pink-600 font-semibold">Kelas {{ $siswa->kelas }}</p>
@@ -50,7 +45,9 @@
         </div>
 
         <div class="flex flex-wrap gap-2 pt-3">
+            @if(Auth::user()->isAdministratorLevel())
             <x-button class="bg-pink-500 hover:bg-pink-600 text-white font-semibold" href="{{ route('admin.siswa.edit', $siswa) }}">Edit Data Murid</x-button>
+            @endif
             <x-button variant="secondary" href="{{ route('admin.siswa.index') }}">Kembali</x-button>
         </div>
     </div>
@@ -58,6 +55,7 @@
     <!-- Quick Action Shortcuts -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <!-- Nilai Shortcut -->
+        @if(Auth::user()->isAdministratorLevel())
         <a href="{{ route('admin.nilai.create') }}?siswa_id={{ $siswa->id }}" class="group bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:border-pink-300 hover:shadow-lg transition-all duration-300">
             <div class="flex items-center gap-3">
                 <div class="w-12 h-12 bg-pink-100 text-pink-600 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
@@ -69,6 +67,7 @@
                 </div>
             </div>
         </a>
+        @endif
 
         <!-- Ekskul Shortcut -->
         <a href="{{ route('admin.ekskul.index') }}" class="group bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:border-sky-300 hover:shadow-lg transition-all duration-300">

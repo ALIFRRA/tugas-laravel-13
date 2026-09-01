@@ -1,3 +1,4 @@
+<?php
 @extends('layouts.admin')
 
 @section('title', 'Detail Data Guru — Shuka Highschool')
@@ -7,13 +8,7 @@
 @section('content')
     <x-card class="max-w-xl space-y-4 border-pink-100 p-6 rounded-2xl">
         <div class="flex items-center gap-4 pb-4 border-b border-slate-100">
-            @if($guru->user)
-                <x-avatar :user="$guru->user" size="md" />
-            @else
-                <div class="h-12 w-12 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center font-bold text-base">
-                    {{ strtoupper(substr($guru->nama, 0, 2)) }}
-                </div>
-            @endif
+            <x-avatar :user="$guru->user" :name="$guru->nama" size="md" class="shrink-0" />
             <div>
                 <h3 class="font-extrabold text-slate-800 text-lg">{{ $guru->nama }}</h3>
                 @if($guru->mataPelajarans->count())

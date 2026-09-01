@@ -1,4 +1,16 @@
 <?php
+/**
+     * Down.
+     *
+     * @return public down
+     */
+
+    /**
+     * Up.
+     *
+     * @return public up
+     */
+
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -11,9 +23,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('gurus', function (Blueprint $table) {
-            $table->dropColumn('mata_pelajaran');
-        });
+        if (Schema::hasTable('gurus') && Schema::hasColumn('gurus', 'mata_pelajaran')) {
+            Schema::table('gurus', function (Blueprint $table) {
+                $table->dropColumn('mata_pelajaran');
+            });
+        }
     }
 
     /**
@@ -21,8 +35,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('gurus', function (Blueprint $table) {
-            $table->string('mata_pelajaran');
-        });
+        if (Schema::hasTable('gurus') && ! Schema::hasColumn('gurus', 'mata_pelajaran')) {
+            Schema::table('gurus', function (Blueprint $table) {
+                $table->string('mata_pelajaran')->nullable();
+            });
+        }
     }
 };

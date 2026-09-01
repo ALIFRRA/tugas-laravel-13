@@ -1,4 +1,34 @@
 <?php
+/**
+     * Getmatapelajaranattribute.
+     *
+     * @return public getMataPelajaranAttribute
+     */
+
+    /**
+     * Matapelajarans.
+     *
+     * @return public mataPelajarans
+     */
+
+    /**
+     * User.
+     *
+     * @return public user
+     */
+
+    /**
+     * Casts.
+     *
+     * @return protected casts
+     */
+
+    /**
+     * Iswalikelas.
+     *
+     * @return public isWaliKelas
+     */
+
 
 namespace App\Models;
 
@@ -9,14 +39,20 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Guru extends Model
 {
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'user_id',
         'nama',
         'nip',
         'no_telepon',
+        'wali_kelas',
     ];
+
+    public function isWaliKelas(): bool
+    {
+        return ! empty($this->wali_kelas);
+    }
 
     protected function casts(): array
     {

@@ -1,9 +1,76 @@
 <?php
+/**
+     * Test wali kelas module authorization and class access.
+     *
+     * @return public test_wali_kelas_module_authorization_and_class_access
+     */
+
+    /**
+     * Test operational staff and teachers have full student access but blocked from guru management.
+     *
+     * @return public test_operational_staff_and_teachers_have_full_student_access_but_blocked_from_guru_management
+     */
+
+    /**
+     * Test leadership and tu head and it staff have administrator access.
+     *
+     * @return public test_leadership_and_tu_head_and_it_staff_have_administrator_access
+     */
+
+    /**
+     * Test guru can access shared admin modules and record violations.
+     *
+     * @return public test_guru_can_access_shared_admin_modules_and_record_violations
+     */
+
+    /**
+     * Test guest can access login and register pages.
+     *
+     * @return public test_guest_can_access_login_and_register_pages
+     */
+
+    /**
+     * Test murid can access dashboard and view report.
+     *
+     * @return public test_murid_can_access_dashboard_and_view_report
+     */
+
+    /**
+     * Test teacher search uses the subject relation.
+     *
+     * @return public test_teacher_search_uses_the_subject_relation
+     */
+
+    /**
+     * Test guru can access dashboard and manage grades.
+     *
+     * @return public test_guru_can_access_dashboard_and_manage_grades
+     */
+
+    /**
+     * Test admin dashboard and modules walkthrough.
+     *
+     * @return public test_admin_dashboard_and_modules_walkthrough
+     */
+
+    /**
+     * Test public state vocational school routes are accessible.
+     *
+     * @return public test_public_state_vocational_school_routes_are_accessible
+     */
+
+    /**
+     * Setup.
+     *
+     * @return protected setUp
+     */
+
 
 namespace Tests\Feature;
 
 use App\Models\Agenda;
 use App\Models\Guru;
+use App\Models\Jadwal;
 use App\Models\MataPelajaran;
 use App\Models\Pelanggaran;
 use App\Models\Pengumuman;
@@ -22,7 +89,7 @@ class SmkShukaPortalWalkthroughTest extends TestCase
         $this->seed();
     }
 
-public function test_public_japanese_vocational_school_routes_are_accessible(): void
+    public function test_public_state_vocational_school_routes_are_accessible(): void
     {
         // 1. Beranda / Top Page
         $responseHome = $this->get('/');
@@ -46,7 +113,7 @@ public function test_public_japanese_vocational_school_routes_are_accessible(): 
         $responseJurusan->assertSeeText('Manajemen Bisnis Pertunjukan & Live Event (MBE)');
 
         // 4. Tenaga Pendidik
-        $responseGuru = $this->get('/guru');
+        $responseGuru = $this->get(route('public.guru'));
         $responseGuru->assertStatus(200);
         $responseGuru->assertSee('Tenaga Pendidik & Instruktur');
 
@@ -76,7 +143,7 @@ public function test_public_japanese_vocational_school_routes_are_accessible(): 
         // 1. Admin Dashboard
         $responseDash = $this->actingAs($admin)->get('/dashboard');
         $responseDash->assertStatus(200);
-        $responseDash->assertSee('Dasbor Akademik SMK Shuka');
+        $responseDash->assertSee('Dasbor Akademik');
 
         // 2. Data Siswa with Multi-Criteria Dropdown Filter
         $responseSiswa = $this->actingAs($admin)->get('/admin/siswa?jurusan=SMP&tingkat=X&gender=P');
@@ -138,7 +205,7 @@ public function test_public_japanese_vocational_school_routes_are_accessible(): 
 
     public function test_guru_can_access_dashboard_and_manage_grades(): void
     {
-        $guruUser = User::where('role', 'guru')->first();
+        $guruUser = User::where('email', 'guru10@shuka.test')->first();
         $this->assertNotNull($guruUser);
 
         // Dashboard Guru
@@ -198,16 +265,21 @@ public function test_public_japanese_vocational_school_routes_are_accessible(): 
 
     public function test_guru_can_access_shared_admin_modules_and_record_violations(): void
     {
-        $guruUser = User::where('role', 'guru')->first();
+        $guruUser = User::where('email', 'guru10@shuka.test')->first();
         $this->assertNotNull($guruUser);
 
-        // 1. Guru can access Pelanggaran & Sanksi
+        // Guru can read student-related tables without edit access.
         $responsePelanggaran = $this->actingAs($guruUser)->get(route('admin.pelanggaran.index'));
         $responsePelanggaran->assertStatus(200);
 
         // 2. Guru can record violation
-        $siswa = Siswa::first();
-        $this->actingAs($guruUser)->post(route('admin.pelanggaran.store'), [
+        $kelasYangDiajar = Jadwal::whereIn('mapel_id', $guruUser->guru->mataPelajarans()->pluck('id'))
+            ->pluck('kelas')
+            ->unique();
+        $siswa = Siswa::whereIn('kelas', $kelasYangDiajar)->first();
+        $this->assertNotNull($siswa);
+
+        $responseStore = $this->actingAs($guruUser)->post(route('admin.pelanggaran.store'), [
             'siswa_id' => $siswa->id,
             'jenis_pelanggaran' => 'Tidak Membawa Partitur Not Balok',
             'kategori' => 'Ringan',
@@ -217,6 +289,7 @@ public function test_public_japanese_vocational_school_routes_are_accessible(): 
             'guru_pencatat' => $guruUser->name,
             'status' => 'Selesai',
         ]);
+        $responseStore->assertRedirect(route('admin.pelanggaran.index'));
 
         $this->assertDatabaseHas('pelanggarans', [
             'siswa_id' => $siswa->id,
@@ -227,13 +300,14 @@ public function test_public_japanese_vocational_school_routes_are_accessible(): 
         $responseAgenda = $this->actingAs($guruUser)->get(route('admin.agenda.index'));
         $responseAgenda->assertStatus(200);
 
-        // 4. Guru can access Ekstrakurikuler
+        // Read-only access to extracurricular and student directories.
         $responseEkskul = $this->actingAs($guruUser)->get(route('admin.ekskul.index'));
         $responseEkskul->assertStatus(200);
 
-        // 5. Guru can access Data Siswa
+        // Guru can view but cannot create student records.
         $responseSiswa = $this->actingAs($guruUser)->get(route('admin.siswa.index'));
         $responseSiswa->assertStatus(200);
+        $this->actingAs($guruUser)->get(route('admin.siswa.create'))->assertStatus(403);
     }
 
     public function test_leadership_and_tu_head_and_it_staff_have_administrator_access(): void
@@ -252,6 +326,7 @@ public function test_public_japanese_vocational_school_routes_are_accessible(): 
         $this->assertTrue($itStaff->isAdministratorLevel());
         $this->assertTrue($kepsek->isAdministratorLevel());
         $this->assertTrue($wakepsek->isAdministratorLevel());
+        $this->assertSame(User::ROLE_ADMIN, $kepsek->role);
 
         // 1. Kepala TU can access Data Guru and Mapel
         $this->actingAs($tuHead)->get(route('admin.guru.index'))->assertStatus(200);
@@ -261,9 +336,16 @@ public function test_public_japanese_vocational_school_routes_are_accessible(): 
         $this->actingAs($itStaff)->get(route('admin.guru.index'))->assertStatus(200);
         $this->actingAs($itStaff)->get(route('admin.jadwal.index'))->assertStatus(200);
 
-        // 3. Kepsek and Wakepsek can access Data Guru
+        // 3. Kepsek and Wakepsek can access Data Guru and Pengguna directories
         $this->actingAs($kepsek)->get(route('admin.guru.index'))->assertStatus(200);
         $this->actingAs($wakepsek)->get(route('admin.guru.index'))->assertStatus(200);
+        $this->actingAs($kepsek)->get(route('admin.pengguna.guru'))->assertStatus(200);
+        $this->actingAs($kepsek)->get(route('admin.pengguna.murid'))->assertStatus(200);
+        $this->actingAs($kepsek)->get(route('dashboard'))->assertSeeText('Dasbor Akademik');
+
+        // 4. Leadership can view other user profiles
+        $otherStudent = User::where('role', User::ROLE_MURID)->first();
+        $this->actingAs($tuHead)->get(route('profile.show', $otherStudent->id))->assertStatus(200);
     }
 
     public function test_operational_staff_and_teachers_have_full_student_access_but_blocked_from_guru_management(): void
@@ -289,11 +371,76 @@ public function test_public_japanese_vocational_school_routes_are_accessible(): 
         // 2. Full student-related access for general teacher
         $this->actingAs($guruUmum)->get(route('admin.siswa.index'))->assertStatus(200);
         $this->actingAs($guruUmum)->get(route('admin.pelanggaran.index'))->assertStatus(200);
+        $this->actingAs($guruUmum)->get(route('admin.ekskul.index'))->assertStatus(200);
+        $this->actingAs($guruUmum)->get(route('admin.mapel.index'))->assertStatus(200);
+        $this->actingAs($guruUmum)->get(route('admin.jadwal.index'))->assertStatus(200);
+        $this->actingAs($guruUmum)->get(route('admin.mapel.create'))->assertStatus(403);
+        $this->actingAs($guruUmum)->get(route('admin.jadwal.create'))->assertStatus(403);
 
         // 3. Blocked from Data Guru (403 Forbidden)
         $this->actingAs($kesiswaan)->get(route('admin.guru.index'))->assertStatus(403);
         $this->actingAs($koperasi)->get(route('admin.guru.index'))->assertStatus(403);
         $this->actingAs($guruUmum)->get(route('admin.guru.index'))->assertStatus(403);
+    }
+
+    public function test_wali_kelas_module_authorization_and_class_access(): void
+    {
+        $admin = User::where('email', 'admin@shuka.test')->first();
+        $guruWali = User::where('email', 'guru10@shuka.test')->first(); // Wali Kelas X-SMP-1
+        $guruNonWali = User::where('email', 'guru30@shuka.test')->first(); // Non-wali
+        $murid = User::where('email', 'student1@murid.shuka.test')->first();
+
+        $this->assertNotNull($admin);
+        $this->assertNotNull($guruWali);
+        $this->assertNotNull($guruNonWali);
+        $this->assertNotNull($murid);
+
+        // 1. Admin can access with dropdown and view any class
+        $resAdmin = $this->actingAs($admin)->get(route('admin.walikelas.index', ['kelas' => 'X-SMP-1']));
+        $resAdmin->assertStatus(200);
+        $resAdmin->assertSee('Kelas Binaan X-SMP-1');
+        $resAdmin->assertSee('Pilih Rombel:');
+
+        $resAdmin2 = $this->actingAs($admin)->get(route('admin.walikelas.index', ['kelas' => 'XI-DKV-1']));
+        $resAdmin2->assertStatus(200);
+        $resAdmin2->assertSee('Kelas Binaan XI-DKV-1');
+
+        // 2. Guru Wali Kelas is locked to own class (X-SMP-1)
+        $this->assertTrue($guruWali->isWaliKelas());
+        $resGuruWali = $this->actingAs($guruWali)->get(route('admin.walikelas.index'));
+        $resGuruWali->assertStatus(200);
+        $resGuruWali->assertSee('Kelas Binaan X-SMP-1');
+
+        // Even if trying to pass another class query parameter, locked to X-SMP-1
+        $resGuruWaliTamper = $this->actingAs($guruWali)->get(route('admin.walikelas.index', ['kelas' => 'XII-RPL-1']));
+        $resGuruWaliTamper->assertStatus(200);
+        $resGuruWaliTamper->assertSee('Kelas Binaan X-SMP-1');
+
+        // 3. Guru Non-Wali is blocked (403 Forbidden)
+        $this->assertFalse($guruNonWali->isWaliKelas());
+        $resGuruNonWali = $this->actingAs($guruNonWali)->get(route('admin.walikelas.index'));
+        $resGuruNonWali->assertStatus(403);
+
+        // 5. Verifikasi seluruh 18 rombel kelas terisi penuh dan memiliki wali kelas valid
+        $all18Classes = [
+            'X-SMP-1', 'X-SMP-2', 'X-AET-1', 'X-DKV-1', 'X-RPL-1', 'X-MBE-1',
+            'XI-SMP-1', 'XI-SMP-2', 'XI-AET-1', 'XI-DKV-1', 'XI-RPL-1', 'XI-MBE-1',
+            'XII-SMP-1', 'XII-SMP-2', 'XII-AET-1', 'XII-DKV-1', 'XII-RPL-1', 'XII-MBE-1',
+        ];
+
+        foreach ($all18Classes as $kelasName) {
+            $wali = Guru::where('wali_kelas', $kelasName)->first();
+            $this->assertNotNull($wali, "Wali kelas untuk {$kelasName} harus terdaftar.");
+            
+            $count = Siswa::where('kelas', $kelasName)->count();
+            $this->assertGreaterThanOrEqual(25, $count, "Kelas {$kelasName} harus memiliki minimal 25 siswa aktif.");
+
+            $res = $this->actingAs($admin)->get(route('admin.walikelas.index', ['kelas' => $kelasName]));
+            $res->assertStatus(200);
+            $res->assertSee("Kelas Binaan {$kelasName}");
+            $res->assertSee($wali->nama);
+            $res->assertDontSee('Belum ada data peserta didik di kelas ini.');
+        }
     }
 }
 

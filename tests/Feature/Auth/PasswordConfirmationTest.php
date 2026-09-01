@@ -1,4 +1,22 @@
 <?php
+/**
+     * Test password is not confirmed with invalid password.
+     *
+     * @return public test_password_is_not_confirmed_with_invalid_password
+     */
+
+    /**
+     * Test password can be confirmed.
+     *
+     * @return public test_password_can_be_confirmed
+     */
+
+    /**
+     * Test confirm password screen can be rendered.
+     *
+     * @return public test_confirm_password_screen_can_be_rendered
+     */
+
 
 namespace Tests\Feature\Auth;
 

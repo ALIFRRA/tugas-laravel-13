@@ -1,4 +1,28 @@
 <?php
+/**
+     * Destroy.
+     *
+     * @return public destroy
+     */
+
+    /**
+     * Update.
+     *
+     * @return public update
+     */
+
+    /**
+     * Store.
+     *
+     * @return public store
+     */
+
+    /**
+     * Index.
+     *
+     * @return public index
+     */
+
 
 namespace App\Http\Controllers\Admin;
 
@@ -26,9 +50,9 @@ class AgendaKessokuController extends Controller
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
                 $q->where('judul', 'like', "%{$search}%")
-                  ->orWhere('lokasi', 'like', "%{$search}%")
-                  ->orWhere('penanggung_jawab', 'like', "%{$search}%")
-                  ->orWhere('personel', 'like', "%{$search}%");
+                    ->orWhere('lokasi', 'like', "%{$search}%")
+                    ->orWhere('penanggung_jawab', 'like', "%{$search}%")
+                    ->orWhere('personel', 'like', "%{$search}%");
             });
         }
 

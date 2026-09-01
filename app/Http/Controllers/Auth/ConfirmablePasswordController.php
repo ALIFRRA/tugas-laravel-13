@@ -1,4 +1,16 @@
 <?php
+/**
+     * Store.
+     *
+     * @return public store
+     */
+
+    /**
+     * Show.
+     *
+     * @return public show
+     */
+
 
 namespace App\Http\Controllers\Auth;
 

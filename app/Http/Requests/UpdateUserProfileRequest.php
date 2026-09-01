@@ -1,8 +1,19 @@
 <?php
+/**
+     * Rules.
+     *
+     * @return public rules
+     */
+
+    /**
+     * Authorize.
+     *
+     * @return public authorize
+     */
+
 
 namespace App\Http\Requests;
 
-use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateUserProfileRequest extends FormRequest
@@ -18,7 +29,12 @@ class UpdateUserProfileRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'avatar' => ['nullable', 'string'],
             'avatar_file' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp,gif', 'max:2048'],
-            'avatar_base64' => ['nullable', 'string', 'starts_with:data:image/'],
+            'avatar_base64' => [
+                'nullable',
+                'string',
+                'max:4194304',
+                'regex:/^data:image\/(?:jpeg|png|webp|gif);base64,[A-Za-z0-9+\/\r\n]+=*$/',
+            ],
         ];
     }
 }

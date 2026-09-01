@@ -1,4 +1,46 @@
 <?php
+/**
+     * Destroy.
+     *
+     * @return public destroy
+     */
+
+    /**
+     * Update.
+     *
+     * @return public update
+     */
+
+    /**
+     * Edit.
+     *
+     * @return public edit
+     */
+
+    /**
+     * Show.
+     *
+     * @return public show
+     */
+
+    /**
+     * Store.
+     *
+     * @return public store
+     */
+
+    /**
+     * Create.
+     *
+     * @return public create
+     */
+
+    /**
+     * Index.
+     *
+     * @return public index
+     */
+
 
 namespace App\Http\Controllers\Admin;
 
@@ -8,9 +50,9 @@ use App\Http\Requests\Admin\UpdateSiswaRequest;
 use App\Models\Siswa;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 
 class SiswaController extends Controller
@@ -23,8 +65,8 @@ class SiswaController extends Controller
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
                 $q->where('nama', 'like', "%{$search}%")
-                  ->orWhere('nis', 'like', "%{$search}%")
-                  ->orWhere('alamat', 'like', "%{$search}%");
+                    ->orWhere('nis', 'like', "%{$search}%")
+                    ->orWhere('alamat', 'like', "%{$search}%");
             });
         }
 
@@ -67,7 +109,7 @@ class SiswaController extends Controller
                 $userId = User::create([
                     'name' => $validated['nama'],
                     'email' => $validated['email'],
-                    'password' => Hash::make($validated['password'] ?? 'password123'),
+                    'password' => Hash::make($validated['password']),
                     'role' => User::ROLE_MURID,
                 ])->id;
             }
@@ -116,7 +158,7 @@ class SiswaController extends Controller
                     $siswa->user_id = User::create([
                         'name' => $validated['nama'],
                         'email' => $validated['email'],
-                        'password' => Hash::make($validated['password'] ?? 'password123'),
+                        'password' => Hash::make($validated['password']),
                         'role' => User::ROLE_MURID,
                     ])->id;
                 }

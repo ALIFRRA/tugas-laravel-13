@@ -1,3 +1,4 @@
+<?php
 @php
     $layout = match (true) {
         Auth::user()->isGuru() => 'layouts.guru',
@@ -29,10 +30,10 @@
         <section class="lg:col-span-5 bg-white border border-slate-200 rounded-lg p-5 sm:p-6 shadow-sm space-y-6">
             <div class="flex flex-col items-center text-center pb-4 border-b border-slate-200">
                 <div class="relative w-24 h-24 rounded-full overflow-hidden border-2 border-pink-500 bg-pink-50 shadow-sm mb-3">
-                    <img 
-                        id="current-avatar-preview" 
-                        src="{{ $user->avatarUrl() }}" 
-                        alt="{{ $user->name }}" 
+                    <img
+                        id="current-avatar-preview"
+                        src="{{ $user->avatarUrl() }}"
+                        alt="{{ $user->name }}"
                         class="w-full h-full object-cover"
                     >
                 </div>
@@ -109,12 +110,12 @@
                     <!-- Input Nama -->
                     <div>
                         <label for="name" class="block text-xs font-semibold text-slate-700 mb-1">Nama Lengkap</label>
-                        <input 
-                            id="name" 
-                            type="text" 
-                            name="name" 
-                            value="{{ old('name', $user->name) }}" 
-                            required 
+                        <input
+                            id="name"
+                            type="text"
+                            name="name"
+                            value="{{ old('name', $user->name) }}"
+                            required
                             class="w-full text-xs rounded border-slate-300 focus:border-pink-500 focus:ring-pink-500 py-2 px-3 text-slate-900"
                         >
                         @error('name')
@@ -130,11 +131,11 @@
                         <p class="text-[11px] text-slate-500">
                             Unggah foto dari perangkat Anda (format: JPG, PNG, WEBP, maks 2MB). Foto yang diunggah akan otomatis menggantikan avatar preset.
                         </p>
-                        
+
                         <div class="flex items-center gap-3">
-                            <input 
-                                type="file" 
-                                name="avatar_file" 
+                            <input
+                                type="file"
+                                name="avatar_file"
                                 id="avatar_file_input"
                                 accept="image/jpeg,image/png,image/webp,image/gif"
                                 class="text-xs text-slate-600 file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-pink-50 file:text-pink-700 hover:file:bg-pink-100"
@@ -153,17 +154,17 @@
                             @foreach ($avatarPresets as $key => $path)
                                 @php $selected = old('avatar', $user->avatarKey()) === $key; @endphp
                                 <label class="cursor-pointer">
-                                    <input 
-                                        type="radio" 
-                                        name="avatar" 
-                                        value="{{ $key }}" 
-                                        class="peer sr-only" 
+                                    <input
+                                        type="radio"
+                                        name="avatar"
+                                        value="{{ $key }}"
+                                        class="peer sr-only"
                                         @checked($selected)
-                                        onchange="previewPresetImage('{{ asset($path) }}')"
+                                        onchange="previewPresetImage('{{ filter_var($path, FILTER_VALIDATE_URL) ? $path : asset($path) }}')"
                                     >
                                     <div class="flex flex-col items-center gap-2 border border-slate-200 bg-slate-50 rounded-lg p-2.5 transition peer-checked:border-pink-500 peer-checked:bg-pink-50 peer-checked:ring-2 peer-checked:ring-pink-500 hover:border-pink-300">
                                         <div class="h-20 w-full flex items-center justify-center overflow-hidden">
-                                            <img src="{{ asset($path) }}" alt="{{ $avatarLabels[$key] ?? $key }}" class="h-20 w-auto object-contain">
+                                            <img src="{{ filter_var($path, FILTER_VALIDATE_URL) ? $path : asset($path) }}" alt="{{ $avatarLabels[$key] ?? $key }}" class="h-20 w-auto object-contain">
                                         </div>
                                         <span class="text-[11px] font-semibold text-slate-700">{{ $avatarLabels[$key] ?? $key }}</span>
                                     </div>

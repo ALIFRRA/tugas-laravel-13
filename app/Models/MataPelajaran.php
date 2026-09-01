@@ -1,4 +1,28 @@
 <?php
+/**
+     * Nilais.
+     *
+     * @return public nilais
+     */
+
+    /**
+     * Jadwals.
+     *
+     * @return public jadwals
+     */
+
+    /**
+     * Guru.
+     *
+     * @return public guru
+     */
+
+    /**
+     * Casts.
+     *
+     * @return protected casts
+     */
+
 
 namespace App\Models;
 
@@ -24,9 +48,14 @@ class MataPelajaran extends Model
         ];
     }
 
+    /**
+     * Get the guru that owns this mata pelajaran.
+     *
+     * @return \App\Models\Guru
+     */
     public function guru(): BelongsTo
-    {
-        return $this->belongsTo(Guru::class);
+        {
+            return $this->belongsTo(Guru::class);
     }
 
     public function jadwals(): HasMany

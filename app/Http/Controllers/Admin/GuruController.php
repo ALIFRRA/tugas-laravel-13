@@ -1,4 +1,52 @@
 <?php
+/**
+     * Destroy.
+     *
+     * @return public destroy
+     */
+
+    /**
+     * Update.
+     *
+     * @return public update
+     */
+
+    /**
+     * Edit.
+     *
+     * @return public edit
+     */
+
+    /**
+     * Show.
+     *
+     * @return public show
+     */
+
+    /**
+     * Store.
+     *
+     * @return public store
+     */
+
+    /**
+     * Create.
+     *
+     * @return public create
+     */
+
+    /**
+     * Apiindex.
+     *
+     * @return public apiIndex
+     */
+
+    /**
+     * Index.
+     *
+     * @return public index
+     */
+
 
 namespace App\Http\Controllers\Admin;
 
@@ -7,11 +55,11 @@ use App\Http\Requests\Admin\StoreGuruRequest;
 use App\Http\Requests\Admin\UpdateGuruRequest;
 use App\Models\Guru;
 use App\Models\User;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 
 class GuruController extends Controller
@@ -24,11 +72,11 @@ class GuruController extends Controller
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
                 $q->where('nama', 'like', "%{$search}%")
-                  ->orWhere('nip', 'like', "%{$search}%")
-                  ->orWhereHas('mataPelajarans', function ($mapelQuery) use ($search) {
-                      $mapelQuery->where('nama', 'like', "%{$search}%")
-                          ->orWhere('kode', 'like', "%{$search}%");
-                  });
+                    ->orWhere('nip', 'like', "%{$search}%")
+                    ->orWhereHas('mataPelajarans', function ($mapelQuery) use ($search) {
+                        $mapelQuery->where('nama', 'like', "%{$search}%")
+                            ->orWhere('kode', 'like', "%{$search}%");
+                    });
             });
         }
 
@@ -70,7 +118,7 @@ class GuruController extends Controller
                 $userId = User::create([
                     'name' => $validated['nama'],
                     'email' => $validated['email'],
-                    'password' => Hash::make($validated['password'] ?? 'password123'),
+                    'password' => Hash::make($validated['password']),
                     'role' => User::ROLE_GURU,
                 ])->id;
             }
@@ -116,7 +164,7 @@ class GuruController extends Controller
                     $guru->user_id = User::create([
                         'name' => $validated['nama'],
                         'email' => $validated['email'],
-                        'password' => Hash::make($validated['password'] ?? 'password123'),
+                        'password' => Hash::make($validated['password']),
                         'role' => User::ROLE_GURU,
                     ])->id;
                 }

@@ -1,3 +1,4 @@
+<?php
 @props(['messages'])
 
 @if ($messages)

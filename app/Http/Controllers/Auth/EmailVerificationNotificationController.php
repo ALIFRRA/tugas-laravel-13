@@ -1,4 +1,10 @@
 <?php
+/**
+     * Store.
+     *
+     * @return public store
+     */
+
 
 namespace App\Http\Controllers\Auth;
 

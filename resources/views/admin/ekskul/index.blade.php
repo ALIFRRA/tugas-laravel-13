@@ -1,3 +1,4 @@
+<?php
 @extends('layouts.admin')
 
 @section('title', 'Daftar Ekstrakurikuler — SMK Shuka')
@@ -13,10 +14,12 @@
             <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">Direktori Ekstrakurikuler</h1>
             <p class="text-xs sm:text-sm text-slate-500 mt-1">Kelola 12 klub ekstrakurikuler: musik, audio, desain, broadcasting, teknologi, dan kebugaran.</p>
         </div>
+        @if(Auth::user()->isAdministratorLevel())
         <a href="{{ route('admin.ekskul.create') }}" class="px-4 py-2 bg-pink-500 hover:bg-pink-600 text-white font-semibold text-xs rounded transition-colors shadow-sm inline-flex items-center gap-1.5">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
             <span>Tambah Klub Baru</span>
         </a>
+        @endif
     </div>
 
     <!-- Filter Bar -->
@@ -101,6 +104,7 @@
                     <a href="{{ route('admin.ekskul.show', $ekskul) }}" class="flex-1 px-2 py-1.5 text-[11px] font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded text-center transition-colors">
                         Detail
                     </a>
+                    @if(Auth::user()->isAdministratorLevel())
                     <a href="{{ route('admin.ekskul.edit', $ekskul) }}" class="px-2 py-1.5 text-[11px] font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded transition-colors">
                         Edit
                     </a>
@@ -109,6 +113,7 @@
                         @method('DELETE')
                         <button type="submit" class="px-2 py-1.5 text-[11px] font-semibold text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 rounded">Hapus</button>
                     </form>
+                    @endif
                 </div>
             </div>
         @empty

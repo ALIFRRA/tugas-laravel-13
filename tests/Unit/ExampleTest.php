@@ -1,4 +1,10 @@
 <?php
+/**
+     * Test that true is true.
+     *
+     * @return public test_that_true_is_true
+     */
+
 
 namespace Tests\Unit;
 

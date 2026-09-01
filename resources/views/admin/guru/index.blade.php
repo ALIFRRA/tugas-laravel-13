@@ -1,3 +1,4 @@
+<?php
 @extends('layouts.admin')
 
 @section('title', 'Data Guru — SMK Shuka')
@@ -70,14 +71,15 @@
                         <tr class="hover:bg-slate-50 transition-colors">
                             <td class="py-3 px-4">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded bg-slate-100 text-slate-700 flex items-center justify-center font-bold text-xs border border-slate-200 shrink-0">
-                                        {{ strtoupper(substr($guru->nama, 0, 2)) }}
-                                    </div>
+                                    <x-avatar :user="$guru->user" :name="$guru->nama" size="sm" class="shrink-0" />
                                     <div>
                                         <p class="font-bold text-slate-900">
                                             {{ $guru->nama }}
                                         </p>
-                                        <p class="text-[11px] text-slate-500">Pendidik SMK Shuka</p>
+                                        <p class="text-[11px] text-slate-500">{{ $guru->user?->roleLabel() ?? 'Tenaga Pendidik' }}</p>
+                                        @if($guru->user?->jabatan)
+                                            <p class="text-[10px] text-pink-600 truncate max-w-[180px]">{{ $guru->user->jabatan }}</p>
+                                        @endif
                                     </div>
                                 </div>
                             </td>

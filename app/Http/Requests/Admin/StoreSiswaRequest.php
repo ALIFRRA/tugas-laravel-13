@@ -1,4 +1,16 @@
 <?php
+/**
+     * Rules.
+     *
+     * @return public rules
+     */
+
+    /**
+     * Authorize.
+     *
+     * @return public authorize
+     */
+
 
 namespace App\Http\Requests\Admin;
 
@@ -22,7 +34,7 @@ class StoreSiswaRequest extends FormRequest
             'alamat' => ['required', 'string'],
             'tanggal_lahir' => ['required', 'date'],
             'email' => ['nullable', 'email', 'max:255', 'unique:users,email'],
-            'password' => ['nullable', 'string', 'min:8'],
+            'password' => ['nullable', 'string', 'min:8', 'required_with:email'],
         ];
     }
 }

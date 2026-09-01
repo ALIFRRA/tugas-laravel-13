@@ -1,4 +1,16 @@
 <?php
+/**
+     * Exportcsv.
+     *
+     * @return public exportCsv
+     */
+
+    /**
+     * Index.
+     *
+     * @return public index
+     */
+
 
 namespace App\Http\Controllers\Admin;
 
@@ -15,7 +27,9 @@ class AnalisisNilaiController extends Controller
     {
         $selectedKelas = $request->get('kelas', 'all');
 
-        $siswaQuery = Siswa::with(['nilais.mapel']);
+        $siswaQuery = Siswa::query()
+            ->withAvg('nilais', 'nilai')
+            ->withCount('nilais');
         if ($selectedKelas !== 'all') {
             $siswaQuery->where('kelas', $selectedKelas);
         }
@@ -24,11 +38,10 @@ class AnalisisNilaiController extends Controller
 
         // Calculate rankings
         $leaderboard = $allSiswa->map(function ($s) {
-            $avg = $s->nilais->avg('nilai') ?? 0;
             return [
                 'siswa' => $s,
-                'rata_rata' => round($avg, 2),
-                'total_nilai' => $s->nilais->count(),
+                'rata_rata' => round((float) ($s->nilais_avg_nilai ?? 0), 2),
+                'total_nilai' => $s->nilais_count,
             ];
         })->sortByDesc('rata_rata')->values();
 
@@ -63,7 +76,7 @@ class AnalisisNilaiController extends Controller
 
     public function exportCsv()
     {
-        $fileName = 'rekap_nilai_shuka_highschool_' . date('Ymd_His') . '.csv';
+        $fileName = 'rekap_nilai_shuka_highschool_'.date('Ymd_His').'.csv';
 
         $response = new StreamedResponse(function () {
             $handle = fopen('php://output', 'w');
@@ -75,9 +88,13 @@ class AnalisisNilaiController extends Controller
             Nilai::with(['siswa', 'mapel'])->chunk(200, function ($nilais) use ($handle) {
                 foreach ($nilais as $n) {
                     $predikat = 'D';
-                    if ($n->nilai >= 90) $predikat = 'A (Sangat Baik)';
-                    elseif ($n->nilai >= 80) $predikat = 'B (Baik)';
-                    elseif ($n->nilai >= 70) $predikat = 'C (Cukup)';
+                    if ($n->nilai >= 90) {
+                        $predikat = 'A (Sangat Baik)';
+                    } elseif ($n->nilai >= 80) {
+                        $predikat = 'B (Baik)';
+                    } elseif ($n->nilai >= 70) {
+                        $predikat = 'C (Cukup)';
+                    }
 
                     fputcsv($handle, [
                         $n->siswa->nis ?? '-',

@@ -1,28 +1,29 @@
+<?php
 @extends('layouts.public')
 
-@section('title', 'Kontak & Akses Kampus — SMK Shuka')
+@section('title', 'Kontak & Akses Sekolah — SMK Shuka')
 @section('page_header', true)
-@section('page_heading', 'Kontak & Akses Kampus')
+@section('page_heading', 'Kontak & Akses Sekolah')
 @section('page_subheading', '秀華高等専門学校 • Alamat, Transportasi & Portal Akademik')
-@section('page_description', 'Informasi alamat kampus, rute transportasi kereta, kontak resmi tata usaha, dan akses portal akademik.')
+@section('page_description', 'Informasi alamat sekolah, rute transportasi kereta, kontak resmi tata usaha, dan akses portal akademik.')
 
 @section('content')
 <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10 space-y-8">
 
     <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
         
-        <!-- Kolom Kiri: Informasi Alamat & Akses Transportasi (8 Col) -->
+        <!-- kolom kiri: informasi alamat dan akses transportasi -->
         <div class="md:col-span-8 space-y-6">
             
             <section class="bg-white border border-slate-200 rounded-lg p-6 shadow-sm space-y-4">
                 <div class="flex items-center gap-2 pb-3 border-b border-slate-200">
                     <span class="w-2.5 h-6 bg-pink-500 rounded-sm"></span>
-                    <h2 class="text-base sm:text-lg font-bold text-slate-900">Alamat & Lokasi Kampus</h2>
+                    <h2 class="text-base sm:text-lg font-bold text-slate-900">Alamat & Lokasi Sekolah</h2>
                 </div>
 
                 <div class="space-y-2 text-xs sm:text-sm text-slate-700 leading-relaxed">
                     <p><strong>Nama Sekolah:</strong> SMK Shuka (秀華高等専門学校)</p>
-                    <p><strong>Alamat Kampus:</strong> 〒155-0031 東京都世田谷区北沢 (Kitazawa, Setagaya-ku, Tokyo 155-0031)</p>
+                    <p><strong>Alamat Sekolah:</strong> 〒155-0031 東京都世田谷区北沢 (Kitazawa, Setagaya-ku, Tokyo 155-0031)</p>
                     <p><strong>Lokasi Strategis:</strong> Kawasan Livehouse Musik Indie Shimokitazawa (STARRY Partnership Center)</p>
                     <p><strong>Nomor Telepon:</strong> (03) 3468-SHUKA (Representatif Tata Usaha)</p>
                     <p><strong>Email Resmi:</strong> info@smk-shuka.sch.id / admissions@shuka.test</p>
@@ -38,7 +39,7 @@
                 <div class="space-y-3 text-xs text-slate-600 leading-relaxed">
                     <div class="p-3 bg-slate-50 border border-slate-200 rounded space-y-1">
                         <span class="font-bold text-slate-900 text-xs">Jalur Odakyu Odawara</span>
-                        <p>Turun di <strong>Stasiun Shimokitazawa</strong>, keluar melalui Gerbang Timur, berjalan kaki sekitar 4 menit menuju area Livehouse STARRY & Kampus SMK Shuka.</p>
+                        <p>Turun di <strong>Stasiun Shimokitazawa</strong>, keluar melalui Gerbang Timur, berjalan kaki sekitar 4 menit menuju area Livehouse STARRY & Gedung SMK Shuka.</p>
                     </div>
 
                     <div class="p-3 bg-slate-50 border border-slate-200 rounded space-y-1">

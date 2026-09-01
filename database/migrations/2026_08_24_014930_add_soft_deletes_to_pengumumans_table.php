@@ -1,4 +1,16 @@
 <?php
+/**
+     * Down.
+     *
+     * @return public down
+     */
+
+    /**
+     * Up.
+     *
+     * @return public up
+     */
+
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -11,9 +23,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('pengumumans', function (Blueprint $table) {
-            $table->softDeletes();
-        });
+        if (Schema::hasTable('pengumumans') && ! Schema::hasColumn('pengumumans', 'deleted_at')) {
+            Schema::table('pengumumans', function (Blueprint $table) {
+                $table->softDeletes();
+            });
+        }
     }
 
     /**
@@ -21,8 +35,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('pengumumans', function (Blueprint $table) {
-            $table->dropSoftDeletes();
-        });
+        if (Schema::hasTable('pengumumans') && Schema::hasColumn('pengumumans', 'deleted_at')) {
+            Schema::table('pengumumans', function (Blueprint $table) {
+                $table->dropSoftDeletes();
+            });
+        }
     }
 };

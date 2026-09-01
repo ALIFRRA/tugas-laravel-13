@@ -97,6 +97,7 @@ CREATE TABLE IF NOT EXISTS `gurus` (
   `no_telepon` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `gurus_nip_unique` (`nip`),
   UNIQUE KEY `gurus_user_id_unique` (`user_id`)
@@ -127,6 +128,7 @@ CREATE TABLE IF NOT EXISTS `jadwals` (
   `jam_selesai` time NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `jadwals_mapel_id_foreign` (`mapel_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -267,6 +269,7 @@ CREATE TABLE IF NOT EXISTS `nilais` (
   `nilai` decimal(5,2) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `nilais_siswa_id_foreign` (`siswa_id`),
   KEY `nilais_mapel_id_foreign` (`mapel_id`)
@@ -391,6 +394,7 @@ CREATE TABLE IF NOT EXISTS `siswas` (
   `tanggal_lahir` date NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `siswas_nis_unique` (`nis`),
   UNIQUE KEY `siswas_user_id_unique` (`user_id`)

@@ -1,4 +1,16 @@
 <?php
+/**
+     * Rules.
+     *
+     * @return public rules
+     */
+
+    /**
+     * Authorize.
+     *
+     * @return public authorize
+     */
+
 
 namespace App\Http\Requests\Admin;
 
@@ -22,7 +34,12 @@ class UpdateGuruRequest extends FormRequest
             'nip' => ['required', 'string', 'max:50', Rule::unique('gurus', 'nip')->ignore($guru)],
             'no_telepon' => ['required', 'string', 'max:20'],
             'email' => ['nullable', 'email', 'max:255', Rule::unique('users', 'email')->ignore($userId)],
-            'password' => ['nullable', 'string', 'min:8'],
+            'password' => [
+                'nullable',
+                'string',
+                'min:8',
+                Rule::requiredIf(fn (): bool => $this->filled('email') && ! $userId),
+            ],
         ];
     }
 }

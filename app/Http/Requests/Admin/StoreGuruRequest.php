@@ -1,4 +1,16 @@
 <?php
+/**
+     * Rules.
+     *
+     * @return public rules
+     */
+
+    /**
+     * Authorize.
+     *
+     * @return public authorize
+     */
+
 
 namespace App\Http\Requests\Admin;
 
@@ -18,7 +30,7 @@ class StoreGuruRequest extends FormRequest
             'nip' => ['required', 'string', 'max:50', 'unique:gurus,nip'],
             'no_telepon' => ['required', 'string', 'max:20'],
             'email' => ['nullable', 'email', 'max:255', 'unique:users,email'],
-            'password' => ['nullable', 'string', 'min:8'],
+            'password' => ['nullable', 'string', 'min:8', 'required_with:email'],
         ];
     }
 }

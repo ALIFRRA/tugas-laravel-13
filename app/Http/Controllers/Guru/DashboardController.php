@@ -32,10 +32,14 @@ class DashboardController extends Controller
             'rataRata' => round((float) (clone $nilaiQuery)->avg('nilai'), 2),
             'mapels' => $guru->mataPelajarans()->withCount('nilais')->orderBy('nama')->get(),
             'kelasList' => $kelasList,
-            'nilaiTerbaru' => Nilai::with(['siswa', 'mapel'])
+            'nilaiRingkasan' => Nilai::query()
+                ->select('mapel_id')
+                ->selectRaw('COUNT(*) as total_nilai')
+                ->selectRaw('ROUND(AVG(nilai), 2) as rata_rata')
+                ->with('mapel')
                 ->whereIn('mapel_id', $mapelIds)
-                ->latest()
-                ->take(5)
+                ->groupBy('mapel_id')
+                ->orderByDesc('total_nilai')
                 ->get(),
         ]);
     }
