@@ -1,4 +1,4 @@
-# SMK Shuka (秀華高等専門学校) — Sistem Informasi Akademik & Portal Kejuruan
+# SMK Shuka — Sistem Informasi Akademik & Portal Kejuruan
 
 [![Laravel 13](https://img.shields.io/badge/Laravel-13.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
 [![PHP 8.3+](https://img.shields.io/badge/PHP-8.3%2B-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://www.php.net)
