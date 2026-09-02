@@ -1,4 +1,3 @@
-<?php
 @props([
     'siswas' => [],
     'selected' => null,
@@ -42,8 +41,8 @@
 
             if (this.search.trim() !== '') {
                 const q = this.search.toLowerCase().trim();
-                list = list.filter(s => 
-                    (s.nama && s.nama.toLowerCase().includes(q)) || 
+                list = list.filter(s =>
+                    (s.nama && s.nama.toLowerCase().includes(q)) ||
                     (s.nis && s.nis.toLowerCase().includes(q))
                 );
             }

@@ -1,4 +1,3 @@
-<?php
 <x-guest-layout>
     <div class="mb-6">
         <h1 class="text-2xl font-bold tracking-tight text-slate-900">Masuk ke Akun Portal</h1>
@@ -35,15 +34,15 @@
         <!-- Email Address -->
         <div>
             <label for="email" class="block text-xs font-semibold text-slate-700 mb-1">Alamat Email</label>
-            <input 
-                id="email" 
-                class="w-full text-xs rounded border-slate-300 focus:border-pink-500 focus:ring-pink-500 py-2.5 px-3 text-slate-900 transition-colors shadow-2xs" 
-                type="email" 
-                name="email" 
-                value="{{ old('email', 'admin@shuka.test') }}" 
-                required 
-                autofocus 
-                autocomplete="username" 
+            <input
+                id="email"
+                class="w-full text-xs rounded border-slate-300 focus:border-pink-500 focus:ring-pink-500 py-2.5 px-3 text-slate-900 transition-colors shadow-2xs"
+                type="email"
+                name="email"
+                value="{{ old('email', 'admin@shuka.test') }}"
+                required
+                autofocus
+                autocomplete="username"
                 placeholder="nama@shuka.test"
             />
             <x-input-error :messages="$errors->get('email')" class="mt-1.5 text-xs text-rose-600" />
@@ -52,14 +51,14 @@
         <!-- Password -->
         <div>
             <label for="password" class="block text-xs font-semibold text-slate-700 mb-1">Kata Sandi (Password)</label>
-            <input 
-                id="password" 
-                class="w-full text-xs rounded border-slate-300 focus:border-pink-500 focus:ring-pink-500 py-2.5 px-3 text-slate-900 transition-colors shadow-2xs" 
-                type="password" 
-                name="password" 
+            <input
+                id="password"
+                class="w-full text-xs rounded border-slate-300 focus:border-pink-500 focus:ring-pink-500 py-2.5 px-3 text-slate-900 transition-colors shadow-2xs"
+                type="password"
+                name="password"
                 value="password"
-                required 
-                autocomplete="current-password" 
+                required
+                autocomplete="current-password"
                 placeholder="••••••••"
             />
             <x-input-error :messages="$errors->get('password')" class="mt-1.5 text-xs text-rose-600" />

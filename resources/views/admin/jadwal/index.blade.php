@@ -1,4 +1,3 @@
-<?php
 @extends('layouts.admin')
 
 @section('title', 'Jadwal Pelajaran — Shuka Highschool')

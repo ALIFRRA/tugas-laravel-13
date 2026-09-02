@@ -1,4 +1,3 @@
-<?php
 @php
     $layout = match (true) {
         Auth::user()->isGuru() => 'layouts.guru',

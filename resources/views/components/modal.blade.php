@@ -1,4 +1,3 @@
-<?php
 @props([
     'name',
     'show' => false,

@@ -1,4 +1,3 @@
-<?php
 @extends('layouts.guru')
 
 @section('title', 'Tambah Nilai Siswa — SMK Shuka')

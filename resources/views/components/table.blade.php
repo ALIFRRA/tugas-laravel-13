@@ -1,4 +1,3 @@
-<?php
 @props(['headers' => []])
 
 <div class="overflow-x-auto border border-slate-200 bg-white rounded-lg shadow-sm">

@@ -1,4 +1,3 @@
-<?php
 @props([
     'src' => '',
     'alt' => '',
@@ -16,7 +15,7 @@
     $placeholderSrc = $placeholder ?? 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFUlEQVR42mP8/5+hnoEIwDiqkL4KAcT9G0AB4Y9gZgABzQM2RIUFAAAAAElFTkSuQmCC';
 @endphp
 
-<div 
+<div
     class="relative overflow-hidden {{ $class }}"
     x-data="{ loaded: false, error: false }"
     @if($style) style="{{ $style }}" @endif
@@ -43,8 +42,8 @@
     >
 
     <!-- Error fallback -->
-    <div 
-        x-show="error" 
+    <div
+        x-show="error"
         class="absolute inset-0 w-full h-full flex items-center justify-center bg-slate-100 text-slate-400 text-xs"
     >
         <svg class="w-8 h-8 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">

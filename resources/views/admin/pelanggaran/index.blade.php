@@ -1,4 +1,3 @@
-<?php
 @extends('layouts.admin')
 
 @section('title', 'Kedisiplinan & Pelanggaran Siswa — SMK Shuka')

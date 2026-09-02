@@ -1,4 +1,3 @@
-<?php
 <div class="flex items-center gap-3">
     <!-- shortcut input nilai cepat untuk guru dan admin -->
     @if(Auth::user()?->isGuru())

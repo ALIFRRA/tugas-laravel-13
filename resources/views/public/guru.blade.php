@@ -1,4 +1,3 @@
-<?php
 @extends('layouts.public')
 
 @section('title', 'Tenaga Pendidik — SMK Shuka')

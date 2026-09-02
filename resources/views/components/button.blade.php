@@ -1,4 +1,3 @@
-<?php
 @props([
     'variant' => 'primary',
     'type' => 'submit',

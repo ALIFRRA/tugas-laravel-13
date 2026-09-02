@@ -1,4 +1,3 @@
-<?php
 @extends('layouts.guru')
 
 @section('title', 'Dashboard Guru — SMK Shuka')

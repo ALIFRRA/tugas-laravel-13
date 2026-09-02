@@ -1,4 +1,3 @@
-<?php
 <nav x-data="{ open: false }" class="border-b border-shuka-line bg-white">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="flex h-16 justify-between">

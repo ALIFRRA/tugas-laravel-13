@@ -1,4 +1,3 @@
-<?php
 @extends('layouts.public')
 
 @section('title', 'SMK Shuka — Portal Resmi Sekolah Menengah Kejuruan Musik & Media')
@@ -87,27 +86,6 @@
                     </div>
                 </div>
 
-                <!-- kartu statistik kilas di hero -->
-                <div class="lg:col-span-4 bg-white/90 border border-slate-200 rounded-xl p-5 backdrop-blur-sm shadow-2xs space-y-4">
-                    <span class="text-[11px] font-bold uppercase tracking-wider text-slate-600 block border-b border-slate-200 pb-2">
-                        Statistik Institusi
-                    </span>
-                    <div class="grid grid-cols-2 gap-3 text-center">
-                        <div class="p-3 bg-slate-50 rounded border border-slate-200">
-                            <span class="text-2xl font-bold text-slate-900 block">{{ $siswaCount ?? 600 }}</span>
-                            <span class="text-[10px] text-slate-500 font-semibold">Peserta Didik</span>
-                        </div>
-                        <div class="p-3 bg-slate-50 rounded border border-slate-200">
-                            <span class="text-2xl font-bold text-pink-600 block">{{ $guruCount ?? 45 }}</span>
-                            <span class="text-[10px] text-slate-500 font-semibold">Tenaga Guru</span>
-                        </div>
-                        <div class="p-3 bg-slate-50 rounded border border-slate-200">
-                            <span class="text-2xl font-bold text-slate-900 block">18</span>
-                            <span class="text-[10px] text-slate-500 font-semibold">Rombel Kelas</span>
-                        </div>
-                        <div class="p-3 bg-slate-50 rounded border border-slate-200">
-                            <span class="text-2xl font-bold text-emerald-600 block">{{ $ekskulCount ?? 12 }}</span>
-                            <span class="text-[10px] text-slate-500 font-semibold">Klub Bakat</span>
                         </div>
                     </div>
                 </div>

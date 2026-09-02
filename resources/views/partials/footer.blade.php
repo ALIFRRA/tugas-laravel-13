@@ -1,4 +1,3 @@
-<?php
 <div>
     <strong class="text-slate-700">SMK Shuka (秀華高等専門学校) — Sistem Informasi Akademik</strong> &copy; 2026.
 </div>

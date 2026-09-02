@@ -1,4 +1,3 @@
-<?php
 @extends('layouts.admin')
 
 @section('title', 'Direktori Akun Siswa — SMK Shuka')

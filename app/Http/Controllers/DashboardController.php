@@ -1,4 +1,20 @@
 <?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Agenda;
+use App\Models\Guru;
+use App\Models\Jadwal;
+use App\Models\MataPelajaran;
+use App\Models\Nilai;
+use App\Models\Pelanggaran;
+use App\Models\Pengumuman;
+use App\Models\Siswa;
+use App\Models\User;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
+
 class DashboardController extends Controller
 {
     /** Handle an incoming request. */

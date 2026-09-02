@@ -1,4 +1,3 @@
-<?php
 @props([
     'user' => null,
     'size' => 'md',
