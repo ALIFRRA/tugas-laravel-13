@@ -20,3 +20,7 @@
         </ul>
     </div>
 @endif
+
+@if ($slot->isNotEmpty())
+    {{ $slot }}
+@endif
